@@ -16,6 +16,8 @@ Or on IIS webserver
 
 ### Sticky note
 
+Docker SqlServer : https://medium.com/@analyticscodeexplained/running-microsoft-sql-server-in-docker-a8dfdd246e45
+
 EF Core migration commands: https://www.entityframeworktutorial.net/efcore/entity-framework-core-migration.aspx
 
 Delivery platform with CircleCI: https://app.circleci.com/ or other solution
