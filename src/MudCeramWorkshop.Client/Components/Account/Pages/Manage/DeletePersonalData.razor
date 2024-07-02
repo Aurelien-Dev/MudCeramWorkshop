@@ -5,8 +5,8 @@
 @using MudCeramWorkshop.Client.IdentityData;
 @using MudCeramWorkshop.Client.IdentityData.Model
 
-@inject UserManager<ApplicationUser> UserManager
-@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<WorkshopUser> UserManager
+@inject SignInManager<WorkshopUser> SignInManager
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<DeletePersonalData> Logger
@@ -41,7 +41,7 @@
 
 @code {
     private string? message;
-    private ApplicationUser user = default!;
+    private WorkshopUser user = default!;
     private bool requirePassword;
 
     [CascadingParameter]

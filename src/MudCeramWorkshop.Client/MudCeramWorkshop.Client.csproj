@@ -17,4 +17,10 @@
     <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.*" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\MudCeramWorkshop.Data.Domain\MudCeramWorkshop.Data.Domain.csproj" />
+    <ProjectReference Include="..\MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -3,9 +3,9 @@ using MudCeramWorkshop.Client.IdentityData.Model;
 
 namespace MudCeramWorkshop.Client.Components.Account
 {
-    internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
+    internal sealed class IdentityUserAccessor(UserManager<WorkshopUser> userManager, IdentityRedirectManager redirectManager)
     {
-        public async Task<ApplicationUser> GetRequiredUserAsync(HttpContext context)
+        public async Task<WorkshopUser> GetRequiredUserAsync(HttpContext context)
         {
             var user = await userManager.GetUserAsync(context.User);
 

@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35017.193
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MudCeramWorkshop.Client", "MudCeramWorkshop.Client\MudCeramWorkshop.Client.csproj", "{9EB6B573-B5ED-4FFE-9B2B-EC3427E5AB15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Client", "MudCeramWorkshop.Client\MudCeramWorkshop.Client.csproj", "{9EB6B573-B5ED-4FFE-9B2B-EC3427E5AB15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Data.Domain", "MudCeramWorkshop.Data.Domain\MudCeramWorkshop.Data.Domain.csproj", "{44AE3FE8-703E-4B9F-9FBA-10A354172355}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Data.Repository", "MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj", "{49629159-9F2C-4848-B583-385AADE67B6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{9EB6B573-B5ED-4FFE-9B2B-EC3427E5AB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EB6B573-B5ED-4FFE-9B2B-EC3427E5AB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EB6B573-B5ED-4FFE-9B2B-EC3427E5AB15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44AE3FE8-703E-4B9F-9FBA-10A354172355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44AE3FE8-703E-4B9F-9FBA-10A354172355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44AE3FE8-703E-4B9F-9FBA-10A354172355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44AE3FE8-703E-4B9F-9FBA-10A354172355}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49629159-9F2C-4848-B583-385AADE67B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49629159-9F2C-4848-B583-385AADE67B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49629159-9F2C-4848-B583-385AADE67B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49629159-9F2C-4848-B583-385AADE67B6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

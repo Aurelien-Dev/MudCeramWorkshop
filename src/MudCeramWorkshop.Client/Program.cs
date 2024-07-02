@@ -6,6 +6,7 @@ using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
 using MudCeramWorkshop.Client.IdentityData;
 using MudCeramWorkshop.Client.IdentityData.Model;
+using MudCeramWorkshop.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,18 +30,28 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+builder.Services.AddIdentityCore<WorkshopUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<IdentityDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddSingleton<IEmailSender<WorkshopUser>, IdentityNoOpEmailSender>();
 
 var app = builder.Build();
+
+// Apply pending migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var identitydbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+    identitydbContext.Database.Migrate();
+
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
