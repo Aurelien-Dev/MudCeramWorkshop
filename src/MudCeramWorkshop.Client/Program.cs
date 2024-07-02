@@ -6,16 +6,18 @@ using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
 using MudCeramWorkshop.Client.IdentityData;
 using MudCeramWorkshop.Client.IdentityData.Model;
+using MudCeramWorkshop.Client.MinimalApi;
 using MudCeramWorkshop.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -29,6 +31,7 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(connectionString));
@@ -41,7 +44,27 @@ builder.Services.AddIdentityCore<WorkshopUser>(options => options.SignIn.Require
 
 builder.Services.AddSingleton<IEmailSender<WorkshopUser>, IdentityNoOpEmailSender>();
 
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = async (contxext) =>
+{
+    if (contxext.HttpContext.Request.Path.HasValue && contxext.HttpContext.Request.Path.Value.Contains("api"))
+    {
+        contxext.Response.StatusCode = 401;
+    }
+    else
+    {
+        var redirectpath = contxext.RedirectUri;
+        contxext.HttpContext.Response.Redirect(redirectpath);
+    }
+});
+
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Apply pending migrations at startup
 using (var scope = app.Services.CreateScope())
@@ -53,10 +76,14 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
@@ -67,13 +94,15 @@ else
 
 app.UseHttpsRedirection();
 
+app.MapPageRoute();
+
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
 app.Run();
+

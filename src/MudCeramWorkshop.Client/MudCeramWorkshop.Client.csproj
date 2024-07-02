@@ -9,16 +9,20 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.*" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.*" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.*" />
     <PackageReference Include="MudBlazor" Version="7.*" />
     <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.*" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <ProjectReference Include="..\MudCeramWorkshop.Aspire.ServiceDefaults\MudCeramWorkshop.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\MudCeramWorkshop.Data.Domain\MudCeramWorkshop.Data.Domain.csproj" />
     <ProjectReference Include="..\MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj" />
   </ItemGroup>
