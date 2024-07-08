@@ -1,0 +1,32 @@
+﻿@page "/"
+@page "/products"
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@rendermode InteractiveServer
+
+@inherits MudCeramWorkshop.Client.Utils.ComponentBase.CustomComponentBase
+
+<h3>ProductList</h3>
+
+
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+    <MudGrid>
+        <MudItem xs="2" sm="2" md="6">
+            <MudCard Elevation="2" Class="pa-4" Style="height: 200px;">
+                <MudCardMedia Image="Image" Height="200" loading="lazy" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">#Reference - Name</MudText>
+
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="#">DDasdasd</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    // [Inject] IStringLocalizer Localizer { get; set; } = default!;
+
+}

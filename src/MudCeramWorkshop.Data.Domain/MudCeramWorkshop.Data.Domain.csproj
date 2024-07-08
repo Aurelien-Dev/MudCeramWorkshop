@@ -7,17 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\FormErrors.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FormErrors.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
+    <EmbeddedResource Update="Resources\FormErrors.en.resx">
+      <Generator></Generator>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\FormErrors.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>FormErrors.Designer.cs</LastGenOutput>
+      <Generator></Generator>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

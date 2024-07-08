@@ -2,22 +2,25 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
-using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
 using MudCeramWorkshop.Client.IdentityData;
 using MudCeramWorkshop.Client.IdentityData.Model;
 using MudCeramWorkshop.Client.MinimalApi;
 using MudCeramWorkshop.Data.Repository;
+using MudCeramWorkshop.Client.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+
+builder.Services.AddLocalization();
+builder.Services.AddMudLocalization();
+
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -64,8 +67,6 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
-
 // Apply pending migrations at startup
 using (var scope = app.Services.CreateScope())
 {
@@ -99,9 +100,8 @@ app.MapPageRoute();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();// Add additional endpoints required by the Identity /Account Razor components.
 
-// Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
 app.Run();

@@ -22,9 +22,13 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\MudCeramWorkshop.Aspire.ServiceDefaults\MudCeramWorkshop.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\MudCeramWorkshop.Data.Domain\MudCeramWorkshop.Data.Domain.csproj" />
     <ProjectReference Include="..\MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Components\Pages\ProductPage\Resources\" />
   </ItemGroup>
 
 </Project>
