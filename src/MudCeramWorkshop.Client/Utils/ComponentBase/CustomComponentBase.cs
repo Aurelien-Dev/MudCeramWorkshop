@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace MudCeramWorkshop.Client.Utils.ComponentBase
 {
     public abstract class CustomComponentBase : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
     {
         [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+        [Inject] public IDialogService Dialog { get; set; } = default!;
 
         protected CancellationToken ComponentDisposed => (_cancellationTokenSource ??= new()).Token;
         private CancellationTokenSource? _cancellationTokenSource;

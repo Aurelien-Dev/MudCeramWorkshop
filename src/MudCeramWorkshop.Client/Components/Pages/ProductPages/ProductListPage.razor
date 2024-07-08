@@ -2,7 +2,8 @@
 @page "/products"
 @using Microsoft.Extensions.Localization
 @using System.Globalization
-@rendermode InteractiveServer
+@using MudCeramWorkshop.Client.Components.Dialogs
+@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
 
 @inherits MudCeramWorkshop.Client.Utils.ComponentBase.CustomComponentBase
 
@@ -16,10 +17,9 @@
                 <MudCardMedia Image="Image" Height="200" loading="lazy" />
                 <MudCardContent>
                     <MudText Typo="Typo.h6">#Reference - Name</MudText>
-
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="#">DDasdasd</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="NewProduct">@Localizer["hi"]</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -27,6 +27,14 @@
 </MudContainer>
 
 @code {
-    // [Inject] IStringLocalizer Localizer { get; set; } = default!;
+    [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
 
+
+    private Task NewProduct()
+    {
+
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return Dialog.ShowAsync<TestDialog>("Custom Options Dialog", options);
+    }
 }

@@ -1,18 +1,41 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.Extensions.Localization
+@using MudCeramWorkshop.Client.Components.Dialogs
+@using MudCeramWorkshop.Client.Components.Layout.Resources
+@inherits LayoutComponentBase
 
 <MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
 <MudLayout>
+
     <MudAppBar Elevation="1">
-        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDrawer())" />
+        <MudButton Href="/" Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Style="text-transform:none">CeramWorkshop</MudButton>
+        <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())" />
+
+        <MudSpacer />
+
+        <MudMenu ActivationEvent="MouseEvent.MouseOver" Icon="@Icons.Custom.Uncategorized.Radioactive">
+            <ActivatorContent>
+                <MudFab EndIcon="@Icons.Material.Filled.Person" Color="Color.Primary" Size="Size.Small" />
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem Href="/Profil">@Localizer["Profile"]</MudMenuItem>
+                <MudMenuItem Href="/Logout">@Localizer["SignOut"]</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+
+    <MudDrawer Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
     </MudDrawer>
+
     <MudMainContent Class="mt-16 pa-4">
         @Body
     </MudMainContent>
 </MudLayout>
-
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
@@ -20,14 +43,24 @@
     <a class="dismiss">🗙</a>
 </div>
 
-@code {
-    private bool _drawerOpen = true;
 
-    private void DrawerToggle()
+@code {
+    [Inject] IStringLocalizer<MenuTranslation> Localizer { get; set; } = default!;
+    [Inject] IDialogService Dialog { get; set; } = default!;
+
+    bool _drawerOpen = true;
+
+    private async Task ToggleDrawer()
     {
         _drawerOpen = !_drawerOpen;
     }
 
+    private Task NewProduct()
+    {
+
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return Dialog.ShowAsync<TestDialog>("Custom Options Dialog", options);
+    }
+
 }
-
-
