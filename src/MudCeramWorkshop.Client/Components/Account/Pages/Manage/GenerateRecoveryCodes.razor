@@ -4,7 +4,7 @@
 @using MudCeramWorkshop.Client.IdentityData;
 @using MudCeramWorkshop.Client.IdentityData.Model
 
-@inject UserManager<WorkshopUser> UserManager
+@inject UserManager<ApplicationUser> UserManager
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<GenerateRecoveryCodes> Logger
@@ -41,7 +41,7 @@ else
 
 @code {
     private string? message;
-    private WorkshopUser user = default!;
+    private ApplicationUser user = default!;
     private IEnumerable<string>? recoveryCodes;
 
     [CascadingParameter]

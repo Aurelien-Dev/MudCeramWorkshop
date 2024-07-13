@@ -5,7 +5,7 @@
 @using MudBlazor.StaticInput
 @using MudCeramWorkshop.Client.IdentityData.Model
 
-@inject SignInManager<WorkshopUser> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
 
 @if (externalLogins.Length == 0)

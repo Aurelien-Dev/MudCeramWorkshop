@@ -21,7 +21,6 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddLocalization();
 builder.Services.AddMudLocalization();
 
-
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -40,12 +39,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<WorkshopUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<WorkshopUser>, IdentityNoOpEmailSender>();
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -67,15 +66,15 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
 
 var app = builder.Build();
 
-// Apply pending migrations at startup
-using (var scope = app.Services.CreateScope())
-{
-    var identitydbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-    identitydbContext.Database.Migrate();
+//// Apply pending migrations at startup
+//using (var scope = app.Services.CreateScope())
+//{
+//    var identitydbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+//    identitydbContext.Database.Migrate();
 
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.Migrate();
-}
+//    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    dbContext.Database.Migrate();
+//}
 
 
 

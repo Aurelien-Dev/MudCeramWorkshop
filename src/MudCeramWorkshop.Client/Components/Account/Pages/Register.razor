@@ -8,10 +8,10 @@
 @using MudCeramWorkshop.Client.IdentityData;
 @using MudCeramWorkshop.Client.IdentityData.Model
 
-@inject UserManager<WorkshopUser> UserManager
-@inject IUserStore<WorkshopUser> UserStore
-@inject SignInManager<WorkshopUser> SignInManager
-@inject IEmailSender<WorkshopUser> EmailSender
+@inject UserManager<ApplicationUser> UserManager
+@inject IUserStore<ApplicationUser> UserStore
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IEmailSender<ApplicationUser> EmailSender
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
@@ -104,26 +104,26 @@
         RedirectManager.RedirectTo(ReturnUrl);
     }
 
-    private WorkshopUser CreateUser()
+    private ApplicationUser CreateUser()
     {
         try
         {
-            return Activator.CreateInstance<WorkshopUser>();
+            return Activator.CreateInstance<ApplicationUser>();
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(WorkshopUser)}'. " +
-                $"Ensure that '{nameof(WorkshopUser)}' is not an abstract class and has a parameterless constructor.");
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
         }
     }
 
-    private IUserEmailStore<WorkshopUser> GetEmailStore()
+    private IUserEmailStore<ApplicationUser> GetEmailStore()
     {
         if (!UserManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
-        return (IUserEmailStore<WorkshopUser>)UserStore;
+        return (IUserEmailStore<ApplicationUser>)UserStore;
     }
 
     private sealed class InputModel
