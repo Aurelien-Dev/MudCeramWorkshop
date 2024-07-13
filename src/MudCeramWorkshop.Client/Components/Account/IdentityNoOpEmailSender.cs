@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using MudCeramWorkshop.Client.IdentityData.Model;
+using MudCeramWorkshop.Data.Identity.Model;
 
 namespace MudCeramWorkshop.Client.Components.Account
 {

@@ -1,60 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-MudCeramWorkshop.Client-e2382502-4b14-48d9-87d5-6f60adcd7626</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<!--<UserSecretsId>aspnet-MudCeramWorkshop.Client-e2382502-4b14-48d9-87d5-6f60adcd7626</UserSecretsId>-->
+	</PropertyGroup>
 
 
-  <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.12.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.*" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.*" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
-    <PackageReference Include="MudBlazor" Version="7.*" />
-    <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.*" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
+	<!--<ItemGroup>
+		<PackageReference Include="Azure.Identity" Version="1.12.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.*" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+		<PackageReference Include="MudBlazor" Version="7.*" />
+		<PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.*" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+	</ItemGroup>-->
 
 
-  <ItemGroup>
-    <ProjectReference Include="..\MudCeramWorkshop.Data.Domain\MudCeramWorkshop.Data.Domain.csproj" />
-    <ProjectReference Include="..\MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj" />
-  </ItemGroup>
+	<!--<ItemGroup>
+		<ProjectReference Include="..\MudCeramWorkshop.Data.Domain\MudCeramWorkshop.Data.Domain.csproj" />
+		<ProjectReference Include="..\MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj" />
+	</ItemGroup>-->
 
 
-  <ItemGroup>
-    <Compile Update="Components\Layout\Resources\MenuTranslation.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MenuTranslation.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Components\Pages\ProductPages\Resources\ProductTranslation.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ProductTranslation.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Components\Layout\Resources\MenuTranslation.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MenuTranslation.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Components\Pages\ProductPages\Resources\ProductTranslation.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ProductTranslation.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
 
-  <ItemGroup>
-    <EmbeddedResource Update="Components\Layout\Resources\MenuTranslation.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MenuTranslation.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Components\Pages\ProductPages\Resources\ProductTranslation.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Components\Pages\ProductPages\Resources\ProductTranslation.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProductTranslation.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Components\Layout\Resources\MenuTranslation.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>MenuTranslation.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Components\Pages\ProductPages\Resources\ProductTranslation.en.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Components\Pages\ProductPages\Resources\ProductTranslation.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ProductTranslation.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>

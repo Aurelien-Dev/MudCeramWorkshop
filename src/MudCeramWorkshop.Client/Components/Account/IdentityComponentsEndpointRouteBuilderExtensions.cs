@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using MudCeramWorkshop.Client.Components.Account.Pages;
 using MudCeramWorkshop.Client.Components.Account.Pages.Manage;
-using MudCeramWorkshop.Client.IdentityData.Model;
+using MudCeramWorkshop.Data.Identity.Model;
 using System.Security.Claims;
 using System.Text.Json;
 
