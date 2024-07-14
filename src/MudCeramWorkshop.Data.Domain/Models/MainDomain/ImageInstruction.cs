@@ -19,18 +19,18 @@ public class ImageInstruction
     /// </summary>
     [CeramRequired]
     public int IdProduct { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the URL of the image file.
     /// </summary>
     [CeramRequired]
-    public string UrlMedium { get; set; }
-    
+    public string UrlMedium { get; set; } = string.Empty;
+
     /// <summary>
     /// Gets or sets the URL of the image file.
     /// </summary>
     [CeramRequired]
-    public string Url { get; set; }
+    public string Url { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the comment associated with the image instruction.
@@ -54,9 +54,4 @@ public class ImageInstruction
     /// Gets or sets the product associated with the image instruction.
     /// </summary>
     public Product? ProductAssociate { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ImageInstruction"/> class.
-    /// </summary>
-    public ImageInstruction() { }
 }

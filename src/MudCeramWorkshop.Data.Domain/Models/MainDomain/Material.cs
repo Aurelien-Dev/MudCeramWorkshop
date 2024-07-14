@@ -18,13 +18,13 @@ public class Material
     /// Gets or sets the reference code of the material.
     /// </summary>
     [CeramRequired]
-    public string Reference { get; set; }
+    public string Reference { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the name of the material.
     /// </summary>
     [CeramRequired]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets a value indicating whether the material is homemade.
@@ -65,11 +65,6 @@ public class Material
     /// Gets or sets the products associated with the material.
     /// </summary>
     public ICollection<ProductMaterial> ProductMaterial { get; set; } = new List<ProductMaterial>();
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Material"/> class.
-    /// </summary>
-    public Material() { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Material"/> class.

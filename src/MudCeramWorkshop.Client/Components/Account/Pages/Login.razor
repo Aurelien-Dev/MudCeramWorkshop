@@ -72,10 +72,10 @@
     private string? ReturnUrl { get; set; }
 
     [Inject]
-    public SessionInfo Session { get; set; }
+    public SessionInfo Session { get; set; } = default!;
 
     [Inject]
-    IWorkshopWorker WorkshopWorker { get; set; }
+    IWorkshopWorker WorkshopWorker { get; set; } = default!;
 
 
     protected override async Task OnInitializedAsync()

@@ -50,7 +50,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = async (contxext) =>
+builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = (contxext) =>
 {
     if (contxext.HttpContext.Request.Path.HasValue && contxext.HttpContext.Request.Path.Value.Contains("api"))
     {
@@ -61,6 +61,7 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
         var redirectpath = contxext.RedirectUri;
         contxext.HttpContext.Response.Redirect(redirectpath);
     }
+    return Task.CompletedTask;
 });
 
 var app = builder.Build();

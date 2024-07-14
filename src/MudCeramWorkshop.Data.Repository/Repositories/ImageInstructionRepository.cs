@@ -7,7 +7,7 @@ namespace MudCeramWorkshop.Data.Repository.Repositories;
 
 public class ImageInstructionRepository : GenericRepository<ImageInstruction, int>, IImageInstructionRepository
 {
-    public ImageInstructionRepository(ApplicationDbContext context) : base(context)
+    public ImageInstructionRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
 
@@ -30,10 +30,10 @@ public class ImageInstructionRepository : GenericRepository<ImageInstruction, in
 
     public async Task SetNewFavorite(bool isFavorite, int id, int idProduct, CancellationToken cancellationToken = default)
     {
-        ImageInstruction newFavorite = await Context.ImageInstruction
+        ImageInstruction? newFavorite = await Context.ImageInstruction
             .FirstOrDefaultAsyncWait(i => i.IdProduct == idProduct && i.Id == id, cancellationToken);
 
-        if (!isFavorite)
+        if (!isFavorite && newFavorite != null)
         {
             newFavorite.IsFavoriteImage = false;
             Context.Update(newFavorite);
@@ -45,7 +45,7 @@ public class ImageInstructionRepository : GenericRepository<ImageInstruction, in
             return;
         }
 
-        ImageInstruction image = await Context.ImageInstruction
+        ImageInstruction? image = await Context.ImageInstruction
             .FirstOrDefaultAsyncWait(i => i.IdProduct == idProduct && i.IsFavoriteImage, cancellationToken);
 
         if (image != null)

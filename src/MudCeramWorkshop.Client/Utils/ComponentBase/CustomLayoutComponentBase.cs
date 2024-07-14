@@ -5,7 +5,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
     public class CustomLayoutComponentBase : LayoutComponentBase
     {
 
-        [Inject] public SessionInfo Session { get; set; }
+        [Inject] public SessionInfo Session { get; set; } = default!;
 
     }
 }

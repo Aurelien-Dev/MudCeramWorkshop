@@ -10,6 +10,6 @@ namespace MudCeramWorkshop.Data.Domain.Models.Identity
         [ForeignKey("UserAssociation")]
         public int WorkshopId { get; set; }
 
-        public virtual Workshop UserWorkshop { get; set; }
+        public virtual Workshop? UserWorkshop { get; set; }
     }
 }

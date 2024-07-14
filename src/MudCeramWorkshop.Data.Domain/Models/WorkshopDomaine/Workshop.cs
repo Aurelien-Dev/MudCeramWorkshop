@@ -43,11 +43,12 @@ public class Workshop
     /// </summary>
     public ICollection<WorkshopParameter> WorkshopParameters { get; set; } = new List<WorkshopParameter>();
 
-    public ApplicationUser ApplicationUser { get; set; }
+    public ApplicationUser? ApplicationUser { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Workshop"/> class.
     /// </summary>
+    /// <param name="name">The name of the workshop.</param>
     public Workshop(string name)
     {
         Name = name;
@@ -59,14 +60,9 @@ public class Workshop
     /// </summary>
     /// <param name="name">The name of the workshop.</param>
     /// <param name="logo">The logo of the workshop, if any.</param>
-    /// <param name="email">The email address of the workshop.</param>
-    /// <param name="userName">The username of the workshop.</param>
-    /// <param name="password">The password of the workshop.</param>
-    /// <param name="salt">The salt used in password hashing.</param>
-    public Workshop(string name, string? logo)
+    public Workshop(string name, string culture)
     {
         Name = name;
-        Logo = logo;
-        Culture = "fr";
+        Culture = culture;
     }
 }

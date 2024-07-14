@@ -54,17 +54,21 @@
     bool _drawerOpen = true;
     string WorkshopName = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         if (Session.IsAuthenticate)
         {
-            WorkshopName = Session.Workshop.Name;
+            WorkshopName = Session.Workshop?.Name ?? string.Empty;
         }
+
+        return Task.CompletedTask;
     }
 
-    private async Task ToggleDrawer()
+    private Task ToggleDrawer()
     {
         _drawerOpen = !_drawerOpen;
+
+        return Task.CompletedTask;
     }
 
     private Task NewProduct()

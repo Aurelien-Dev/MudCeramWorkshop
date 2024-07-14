@@ -14,6 +14,12 @@ public class WorkshopRepository : GenericRepository<Workshop, int>, IWorkshopRep
     public async Task<Workshop> GetWorkshopInformationForLogin(string email, CancellationToken cancellationToken = default)
     {
         ApplicationUser appUser = await Context.ApplicationUsers.Include(w => w.UserWorkshop).FirstAsyncWait(w => w.Email == email, cancellationToken);
+
+        if (appUser.UserWorkshop == null)
+        {
+            throw new Exception("Warning : A user must have a workshop.");
+        }
+
         return appUser.UserWorkshop;
     }
 
