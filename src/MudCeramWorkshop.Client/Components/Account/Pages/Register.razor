@@ -5,8 +5,8 @@
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
-@using MudCeramWorkshop.Data.Identity;
-@using MudCeramWorkshop.Data.Identity.Model
+@using MudCeramWorkshop.Data.Domain.Models.Identity
+@using MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -74,6 +74,9 @@
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        user.UserWorkshop = new Workshop("New workshops");
+
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)

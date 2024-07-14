@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Data.Domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Data.Repository", "MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj", "{49629159-9F2C-4848-B583-385AADE67B6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MudCeramWorkshop.Data.Identity", "MudCeramWorkshop.Data.Identity\MudCeramWorkshop.Data.Identity.csproj", "{B7146DEF-FCC1-482D-8CBA-C8918FB708BF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{49629159-9F2C-4848-B583-385AADE67B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49629159-9F2C-4848-B583-385AADE67B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49629159-9F2C-4848-B583-385AADE67B6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7146DEF-FCC1-482D-8CBA-C8918FB708BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7146DEF-FCC1-482D-8CBA-C8918FB708BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7146DEF-FCC1-482D-8CBA-C8918FB708BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7146DEF-FCC1-482D-8CBA-C8918FB708BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

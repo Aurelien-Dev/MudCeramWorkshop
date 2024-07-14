@@ -1,4 +1,6 @@
-﻿using MudCeramWorkshop.Data.Domain.InterfacesRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using MudCeramWorkshop.Data.Domain.InterfacesRepository;
+using MudCeramWorkshop.Data.Domain.Models.Identity;
 using MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine;
 using MudCeramWorkshop.Data.Repository.Extensions;
 
@@ -8,17 +10,16 @@ public class WorkshopRepository : GenericRepository<Workshop, int>, IWorkshopRep
 {
     public WorkshopRepository(ApplicationDbContext context) : base(context) { }
 
-    public async  Task<(Workshop?, bool)> GetWorkshopInformationForLogin(string email, CancellationToken cancellationToken = default)
-    {
-        Workshop workshop = await Context.Workshops.FirstOrDefaultAsyncWait(w => w.Email == email, cancellationToken);
-        
-        bool mailExist = workshop != null && email == workshop.Email;
 
-        return (workshop, mailExist);
+    public async Task<Workshop> GetWorkshopInformationForLogin(string email, CancellationToken cancellationToken = default)
+    {
+        ApplicationUser appUser = await Context.ApplicationUsers.Include(w => w.UserWorkshop).FirstAsyncWait(w => w.Email == email, cancellationToken);
+        return appUser.UserWorkshop;
     }
 
-    public async Task<bool> CheckIfEmailExists(string email, CancellationToken cancellationToken = default)
+    public async Task<Workshop> GetWorkshopInformationForLogin(int id, CancellationToken cancellationToken = default)
     {
-        return await Context.Workshops.AnyAsyncWait(w => w.Email == email, cancellationToken);
+        Workshop workshop = await Context.Workshops.FirstAsyncWait(w => w.Id == id, cancellationToken);
+        return workshop;
     }
 }

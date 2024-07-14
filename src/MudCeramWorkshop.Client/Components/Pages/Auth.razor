@@ -1,6 +1,7 @@
 ﻿@page "/auth"
 
 @using Microsoft.AspNetCore.Authorization
+@using MudCeramWorkshop.Client.Components.Account
 
 @attribute [Authorize]
 
@@ -12,3 +13,8 @@
 <AuthorizeView>
     <MudText Class="mb-4">Hello @context.User.Identity?.Name!</MudText>
 </AuthorizeView>
+
+
+@code {
+    
+}

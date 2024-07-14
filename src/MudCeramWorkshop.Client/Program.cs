@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using MudCeramWorkshop.Client.Components.Account;
-using MudCeramWorkshop.Data.Identity;
-using MudCeramWorkshop.Data.Identity.Model;
 using MudCeramWorkshop.Client.MinimalApi;
 using MudCeramWorkshop.Data.Repository;
 using MudCeramWorkshop.Client.Components;
+using MudCeramWorkshop.Data.Domain.Models.Identity;
+using MudCeramWorkshop.Client.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +25,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddSingleton<SessionInfo>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -33,14 +34,12 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
+builder.Services.AddRepository();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<IdentityDbContext>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
@@ -66,15 +65,12 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
 
 var app = builder.Build();
 
-//// Apply pending migrations at startup
-//using (var scope = app.Services.CreateScope())
-//{
-//    var identitydbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-//    identitydbContext.Database.Migrate();
-
-//    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//    dbContext.Database.Migrate();
-//}
+// Apply pending migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 
 

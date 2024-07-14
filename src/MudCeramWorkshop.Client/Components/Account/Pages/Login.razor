@@ -3,8 +3,9 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
-@using MudCeramWorkshop.Data.Identity;
-@using MudCeramWorkshop.Data.Identity.Model
+@using MudCeramWorkshop.Client.Utils
+@using MudCeramWorkshop.Data.Domain.InterfacesWorker
+@using MudCeramWorkshop.Data.Domain.Models.Identity
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
@@ -25,14 +26,14 @@
 
             <MudGrid>
                 <MudItem md="12">
-                    <MudStaticTextField For="@(() => Input.Email)" @bind-Value="Input.Email" 
-                        Label="Email" Placeholder="name@example.com" 
-                        UserAttributes="@(new() { { "autocomplete", "true" }, { "aria-required", "true" } } )" />
+                    <MudStaticTextField For="@(() => Input.Email)" @bind-Value="Input.Email"
+                                        Label="Email" Placeholder="name@example.com"
+                                        UserAttributes="@(new() { { "autocomplete", "true" }, { "aria-required", "true" } } )" />
                 </MudItem>
                 <MudItem md="12">
-                    <MudStaticTextField For="@(() => Input.Password)" @bind-Value="Input.Password" 
-                        Label="Password" InputType="InputType.Password" Placeholder="password" 
-                        UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } } )" />
+                    <MudStaticTextField For="@(() => Input.Password)" @bind-Value="Input.Password"
+                                        Label="Password" InputType="InputType.Password" Placeholder="password"
+                                        UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } } )" />
                 </MudItem>
                 <MudItem md="12">
                     <MudStaticCheckBox For="@(() => Input.RememberMe)" @bind-Value="Input.RememberMe">Remember me</MudStaticCheckBox>
@@ -70,6 +71,13 @@
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
+    [Inject]
+    public SessionInfo Session { get; set; }
+
+    [Inject]
+    IWorkshopWorker WorkshopWorker { get; set; }
+
+
     protected override async Task OnInitializedAsync()
     {
         if (HttpMethods.IsGet(HttpContext.Request.Method))
@@ -84,8 +92,15 @@
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
         var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+
+
         if (result.Succeeded)
         {
+            var workshop = await WorkshopWorker.WorkshopRepository.GetWorkshopInformationForLogin(Input.Email);
+            Session.IsAuthenticate = result.Succeeded;
+            Session.Workshop = workshop;
+
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo(ReturnUrl);
         }

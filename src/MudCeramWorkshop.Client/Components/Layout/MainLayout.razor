@@ -1,7 +1,10 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@using Domain.InterfacesWorker
+@using Microsoft.Extensions.Localization
 @using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Layout.Resources
-@inherits LayoutComponentBase
+@using MudCeramWorkshop.Client.Utils.ComponentBase
+@using MudCeramWorkshop.Data.Domain.InterfacesWorker
+@inherits CustomLayoutComponentBase
 
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -12,7 +15,7 @@
 
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDrawer())" />
-        <MudButton Href="/" Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Style="text-transform:none">CeramWorkshop</MudButton>
+        <MudButton Href="/" Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Style="text-transform:none">@WorkshopName</MudButton>
         <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())" />
 
         <MudSpacer />
@@ -49,6 +52,15 @@
     [Inject] IDialogService Dialog { get; set; } = default!;
 
     bool _drawerOpen = true;
+    string WorkshopName = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Session.IsAuthenticate)
+        {
+            WorkshopName = Session.Workshop.Name;
+        }
+    }
 
     private async Task ToggleDrawer()
     {

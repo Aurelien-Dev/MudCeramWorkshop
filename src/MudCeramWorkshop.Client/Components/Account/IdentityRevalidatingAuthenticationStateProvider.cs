@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using MudCeramWorkshop.Data.Identity.Model;
+using MudCeramWorkshop.Data.Domain.Models.Identity;
 using System.Security.Claims;
 
 namespace MudCeramWorkshop.Client.Components.Account

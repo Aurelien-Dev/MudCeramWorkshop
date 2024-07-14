@@ -27,11 +27,8 @@ public static class DependencyInjection
         //DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            var sqlServerCs = $"Server=tcp:ceram.database.windows.net,1433;Initial Catalog=sql-db-Ceram;Persist Security Info=False;User ID=ceramadmin;Password=Rxroyr21;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            var postgresCs = $"Server=127.0.0.1;Port=5432;Userid=postgres;Password=dd;Protocol=3;SSL=false;Pooling=false;MinPoolSize=1;MaxPoolSize=20;Timeout=15;SslMode=Disable;";
-
+            var sqlServerCs = $"Server=localhost,1433;Database=CeramWorkshopTest;User Id=sa;Password=Password_123#;TrustServerCertificate=True";
             options.UseSqlServer(sqlServerCs);
-            //options.UseNpgsql(postgresCs);
         });
 
         return services;

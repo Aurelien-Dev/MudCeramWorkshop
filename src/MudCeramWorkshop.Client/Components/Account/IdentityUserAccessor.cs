@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using MudCeramWorkshop.Data.Identity.Model;
+using MudCeramWorkshop.Data.Domain.Models.Identity;
 
 namespace MudCeramWorkshop.Client.Components.Account
 {

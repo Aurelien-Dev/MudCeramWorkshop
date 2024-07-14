@@ -1,4 +1,5 @@
-﻿using MudCeramWorkshop.Data.Domain.Models.MainDomain;
+﻿using MudCeramWorkshop.Data.Domain.Models.Identity;
+using MudCeramWorkshop.Data.Domain.Models.MainDomain;
 using System.ComponentModel.DataAnnotations;
 
 namespace MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine;
@@ -14,29 +15,6 @@ public class Workshop
     [Required]
     public int Id { get; set; }
 
-    /// <summary>
-    /// The email address of the workshop.
-    /// </summary>
-    [Required]
-    public string Email { get; set; }
-
-    /// <summary>
-    /// The username of the workshop.
-    /// </summary>
-    [Required]
-    public string UserName { get; set; }
-
-    /// <summary>
-    /// The hashed password of the workshop.
-    /// </summary>
-    [Required]
-    public string PasswordHash { get; set; }
-
-    /// <summary>
-    /// The salt used in password hashing.
-    /// </summary>
-    [Required]
-    public byte[] Salt { get; set; }
 
     /// <summary>
     /// The name of the workshop.
@@ -65,10 +43,16 @@ public class Workshop
     /// </summary>
     public ICollection<WorkshopParameter> WorkshopParameters { get; set; } = new List<WorkshopParameter>();
 
+    public ApplicationUser ApplicationUser { get; set; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Workshop"/> class.
     /// </summary>
-    public Workshop() { }
+    public Workshop(string name)
+    {
+        Name = name;
+        Culture = "fr";
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Workshop"/> class with the specified parameters and default french culture.
@@ -79,14 +63,10 @@ public class Workshop
     /// <param name="userName">The username of the workshop.</param>
     /// <param name="password">The password of the workshop.</param>
     /// <param name="salt">The salt used in password hashing.</param>
-    public Workshop(string name, string? logo, string email, string userName, string password, byte[] salt)
+    public Workshop(string name, string? logo)
     {
         Name = name;
         Logo = logo;
-        Email = email;
-        UserName = userName;
-        PasswordHash = password;
-        Salt = salt;
         Culture = "fr";
     }
 }
