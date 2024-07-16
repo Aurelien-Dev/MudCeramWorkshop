@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
 using MudCeramWorkshop.Client.MinimalApi;
-using MudCeramWorkshop.Data.Repository;
-using MudCeramWorkshop.Client.Components;
-using MudCeramWorkshop.Data.Domain.Models.Identity;
 using MudCeramWorkshop.Client.Utils;
+using MudCeramWorkshop.Data.Domain.Models.Identity;
+using MudCeramWorkshop.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +44,12 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddTransient<IdentityCookieHandler>();
+builder.Services.AddHttpClient("LocalApi", (client) =>
+{
+    client.BaseAddress = new Uri($"{builder.Configuration["BaseUrl:ApiUrl"]}/api/");
+}).AddHttpMessageHandler<IdentityCookieHandler>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -102,4 +108,3 @@ app.MapRazorComponents<App>()
 app.MapAdditionalIdentityEndpoints();
 
 await app.RunAsync();
-

@@ -7,6 +7,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
     {
         [Inject] public NavigationManager NavigationManager { get; set; } = default!;
         [Inject] public IDialogService Dialog { get; set; } = default!;
+        [Inject] public IHttpClientFactory HttpClientFactory { get; set; } = default!;
 
         protected CancellationToken ComponentDisposed => (_cancellationTokenSource ??= new()).Token;
         private CancellationTokenSource? _cancellationTokenSource;
