@@ -1,10 +1,11 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
-using MudCeramWorkshop.Client.MinimalApi;
+using MudCeramWorkshop.Client.Routes;
 using MudCeramWorkshop.Client.Utils;
 using MudCeramWorkshop.Data.Domain.Models.Identity;
 using MudCeramWorkshop.Data.Repository;
@@ -25,7 +26,6 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
-builder.Services.AddSingleton<SessionInfo>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -69,6 +69,8 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
     }
     return Task.CompletedTask;
 });
+
+builder.Services.AddBlazoredLocalStorage();
 
 var app = builder.Build();
 

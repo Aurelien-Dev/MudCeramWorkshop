@@ -3,15 +3,18 @@
 @inject NavigationManager NavigationManager
 
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
-    <MudNavLink Href="auth" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">Auth Required</MudNavLink>
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Personal</MudText>
+
+    <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Outlined.Person">Manage Account</MudNavLink>
+    <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Outlined.Person">Manage Workshop</MudNavLink>
+
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Workshop</MudText>
+    <MudNavLink Href="products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ListAlt">products</MudNavLink>
+
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Other</MudText>
     <MudNavLink Href="swagger" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">swagger</MudNavLink>
-    <MudNavLink Href="products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">products</MudNavLink>
     <AuthorizeView>
         <Authorized>
-            <MudNavLink Href="Account/Manage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">@context.User.Identity?.Name</MudNavLink>
             <MudNavLink Href="@($"Account/Logout?ReturnUrl={currentUrl}")" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Logout</MudNavLink>
         </Authorized>
         <NotAuthorized>

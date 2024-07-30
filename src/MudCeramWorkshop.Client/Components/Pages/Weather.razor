@@ -39,20 +39,11 @@ else
 }
 
 @code {
-    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-
     private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-
-        var authState = await AuthenticationStateProvider .GetAuthenticationStateAsync();
-
-
-        
-
         var httpClient = HttpClientFactory.CreateClient("LocalApi");
-
         
         forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("weatherforecast");
     }
