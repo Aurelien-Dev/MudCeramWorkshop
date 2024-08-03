@@ -29,7 +29,7 @@ public static class DependencyInjection
         {
             var sqlServerCs = $"Server=localhost,1433;Database=CeramWorkshopTest;User Id=sa;Password=Password_123#;TrustServerCertificate=True";
             options.UseSqlServer(sqlServerCs);
-        });
+        }, ServiceLifetime.Transient);
 
         return services;
     }

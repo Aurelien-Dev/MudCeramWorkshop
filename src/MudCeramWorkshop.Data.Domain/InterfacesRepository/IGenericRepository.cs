@@ -30,7 +30,7 @@ public interface IGenericRepository<T, TId> where T : class
     /// </summary>
     /// <param name="entity">The entity to update.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
-    void Update(T entity);
+    Task Update(T entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes the specified entity from the context.

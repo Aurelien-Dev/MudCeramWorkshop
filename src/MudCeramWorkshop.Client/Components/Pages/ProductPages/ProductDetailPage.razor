@@ -1,0 +1,120 @@
+﻿@page "/Product/{id:int?}"
+@page "/Product/New"
+@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+
+@inherits CustomComponentBase
+
+@if (product is not null)
+{
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex flex-grow-1 gap-4 align-top" Style="height: 100vh;">
+
+        <MudStack Class="mud-width-full">
+
+            <MudGrid Spacing="1">
+                <MudItem md="1">
+                    <MudTextField @bind-Value="@product.Reference" Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+                <MudItem md="5">
+                    <MudTextField @bind-Value="@product.Name" Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+            </MudGrid>
+
+            <MudGrid Spacing="1">
+                <MudItem md="5">
+                    <MudPaper Class="pa-4 mud-height-full" MinHeight="600px">
+
+                        <MudCarousel Style="height:60%" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object"
+                                     BulletsColor="Color.Primary" BulletsPosition="Position.Bottom">
+                            <MudCarouselItem Transition="Transition.Slide">
+                                <div class="d-flex" style="height:100%">
+                                    <MudImage Src="https://ucarecdn.com/40ff508f-01e5-4417-bee0-20633efc6147/"
+                                              ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
+                                              Style="width:100%; height:100%"
+                                              Class="rounded-lg" />
+                                </div>
+                            </MudCarouselItem>
+                            <MudCarouselItem Transition="Transition.Slide">
+                                <div class="d-flex" style="height:100%">
+                                    <MudImage Src="https://fotorama.io/fit/frog.png"
+                                              ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
+                                              Style="width:100%; height:100%"
+                                              Class="rounded-lg" />
+                                </div>
+                            </MudCarouselItem>
+                            <MudCarouselItem Transition="Transition.Slide">
+                                <div class="d-flex" style="height:100%">
+                                    <MudImage Src="https://ucarecdn.com/8e62227c-5acb-4603-abb9-ac0643b7b478/"
+                                              ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
+                                              Style="width:100%; height:100%"
+                                              Class="rounded-lg" />
+                                </div>
+                            </MudCarouselItem>
+                        </MudCarousel>
+
+                    </MudPaper>
+                </MudItem>
+                <MudItem md="7">
+                    <MudPaper Class="pa-4" MinHeight="600px">
+                        <MudText Typo="Typo.overline">Informations</MudText>
+                        <MudTextField @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+
+                        <MudTextField @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Filled" Lines="5" Margin="margin"></MudTextField>
+                        <MudTextField @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Filled" Lines="5" Margin="margin"></MudTextField>
+                        <MudTextField @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Filled" Lines="5" Margin="margin"></MudTextField>
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">Update informations</MudButton>
+                    </MudPaper>
+                </MudItem>
+
+            </MudGrid>
+
+
+            <MudGrid Spacing="1">
+                <MudItem sm="12" md="12" lg="6" xl="6">
+                    <MudPaper Class="pa-4">
+                        a
+                    </MudPaper>
+                </MudItem>
+                <MudItem sm="12" md="12" lg="6" xl="6">
+                    <MudPaper Class="pa-4">
+                        a
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+
+        </MudStack>
+
+    </MudContainer>
+}
+
+@code {
+    [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
+    [Inject] IProductRepository productRepository { get; set; } = default!;
+    [Parameter] public int? Id { get; set; } = default!;
+
+    #region styling
+
+    Margin margin = Margin.Normal;
+
+    #endregion
+
+    private Product product = null!;
+
+    public async Task UpdateProduct()
+    {
+        await productRepository.Update(product);
+        NavigationManager.NavigateTo($"Product/{product.Id}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (Id is not null)
+            product = await productRepository.Get(Id.Value);
+        else
+            product = new Product(Workshop.Id, string.Empty, string.Empty);
+    }
+}

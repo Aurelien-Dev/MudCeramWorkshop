@@ -16,7 +16,7 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
     public virtual async Task<TEntity> Get(TId id, CancellationToken cancellationToken = default)
     {
         return await Context.Set<TEntity>()
-            .FindAsync(new object?[] { id, cancellationToken }, cancellationToken: cancellationToken)
+            .FindAsync([id, cancellationToken], cancellationToken: cancellationToken)
             .ConfigureAwait(false);
     }
 
@@ -31,9 +31,10 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
         await Context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
     }
 
-    public void Update(TEntity entity)
+    public async Task Update(TEntity entity, CancellationToken cancellationToken = default)
     {
-        Context.Set<TEntity>().Update(entity );
+        Context.Set<TEntity>().Update(entity);
+        await Context.SaveChangesAsync();
     }
 
     public void Delete(TEntity entity)
@@ -47,32 +48,20 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
         return await Context.SaveChangesAsync(cancellationToken);
     }
 
-    protected IQueryable<TEntity> AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
+    protected IQueryable<TEntity>? AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
     {
         var param = Expression.Parameter(typeof(TEntity));
         var prop = Expression.PropertyOrField(param, propertyName);
         var sortLambda = Expression.Lambda(prop, param);
 
-        Expression<Func<IOrderedQueryable<TEntity>>> sortMethod = null;
-
-        switch (sortDirection)
+        Expression<Func<IOrderedQueryable<TEntity>>> sortMethod = sortDirection switch
         {
-            case "Ascending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>):
-                sortMethod = () => ((IOrderedQueryable<TEntity>)query).ThenBy<TEntity, object>(k => null);
-                break;
-            case "Ascending":
-                sortMethod = () => query.OrderBy<TEntity, object>(k => null);
-                break;
-            case "Descending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>):
-                sortMethod = () => ((IOrderedQueryable<TEntity>)query).ThenByDescending<TEntity, object>(k => null);
-                break;
-            case "Descending":
-                sortMethod = () => query.OrderByDescending<TEntity, object>(k => null);
-                break;
-            default:
-                sortMethod = () => query.OrderByDescending<TEntity, object>(k => null);
-                break;
-        }
+            "Ascending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>) => () => ((IOrderedQueryable<TEntity>)query).ThenBy<TEntity, object>(k => null),
+            "Ascending" => () => query.OrderBy<TEntity, object>(k => null),
+            "Descending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>) => () => ((IOrderedQueryable<TEntity>)query).ThenByDescending<TEntity, object>(k => null),
+            "Descending" => () => query.OrderByDescending<TEntity, object>(k => null),
+            _ => () => query.OrderByDescending<TEntity, object>(k => null),
+        };
 
         var methodCallExpression = (sortMethod.Body as MethodCallExpression);
         if (methodCallExpression == null)
@@ -80,6 +69,6 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
 
         var method = methodCallExpression.Method.GetGenericMethodDefinition();
         var genericSortMethod = method.MakeGenericMethod(typeof(TEntity), prop.Type);
-        return (IOrderedQueryable<TEntity>)genericSortMethod.Invoke(query, new object[] { query, sortLambda });
+        return genericSortMethod.Invoke(query, [query, sortLambda]) as IOrderedQueryable<TEntity>;
     }
 }

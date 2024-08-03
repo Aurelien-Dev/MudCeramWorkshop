@@ -1,31 +1,30 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using MudCeramWorkshop.Data.Domain.InterfacesWorker;
+using MudCeramWorkshop.Data.Domain.InterfacesRepository;
 using MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine;
 
 namespace MudCeramWorkshop.Client.Utils.ComponentBase
 {
     public class CustomLayoutComponentBase : LayoutComponentBase
     {
-        [Inject] public NavigationManager Navigation { get; set; } = default!;
-        [Inject] IWorkshopWorker WorkshopWorker { get; set; } = default!;
+        [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+        [Inject] IWorkshopRepository WorkshopRepository { get; set; } = default!;
+        [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
 
-        [CascadingParameter] Task<AuthenticationState> authenticationStateTask { get; set; }
-
-
-        public Workshop? Workshop { get => _workshop; set => _workshop = value; }
-        private Workshop? _workshop = null;
+        public Workshop Workshop { get; set; } = default!;
         public bool IsAuthenticate { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
-            var authState = await authenticationStateTask;
+            var authState = await AuthenticationStateTask;
             var user = authState.User;
 
-            if (user.Identity is not null && user.Identity.IsAuthenticated && _workshop is null)
-                _workshop = await WorkshopWorker.WorkshopRepository.GetWorkshopInformationForLogin(user.Identity.Name);
+            IsAuthenticate = user?.Identity?.IsAuthenticated ?? false;
 
-            IsAuthenticate = user.Identity.IsAuthenticated;
+            if (IsAuthenticate && Workshop == null)
+            {
+                Workshop = await WorkshopRepository.GetWorkshopInformationForLogin(user!.Identity!.Name!);
+            }
         }
     }
 }
