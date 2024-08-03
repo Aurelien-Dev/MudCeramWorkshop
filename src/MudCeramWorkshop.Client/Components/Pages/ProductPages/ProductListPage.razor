@@ -4,31 +4,45 @@
 @using System.Globalization
 @using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Data.Domain.InterfacesRepository
+@using MudCeramWorkshop.Data.Domain.Models.MainDomain
 
 @inherits MudCeramWorkshop.Client.Utils.ComponentBase.CustomComponentBase
 
-<h3>ProductList</h3>
+<MudText Typo="Typo.h6">ProductList</MudText>
+
 
 
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
-        <MudItem xs="2" sm="2" md="6">
-            <MudCard Elevation="2" Class="pa-4" Style="height: 200px;">
-                <MudCardMedia Image="Image" Height="200" loading="lazy" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">#Reference - Name</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="NewProduct">@Localizer["hi"]</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
+        @foreach (Product product in products)
+        {
+            <MudItem xs="4" sm="4" md="3">
+                <MudCard Elevation="2" Style="height:100%">
+                    <MudCardMedia Image="https://fotorama.io/fit/frog.png" Height="200" loading="lazy" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" GutterBottom="false">@product.Name</MudText>
+                        <MudText Typo="Typo.overline" GutterBottom="false">#@product.Reference</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@($"product/{@product.Id}")" Size="Size.Small">@Localizer["hi"]</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
     </MudGrid>
 </MudContainer>
 
 @code {
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
+    [Inject] IProductRepository productRepository { get; set; } = default!;
 
+    private ICollection<Product> products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productRepository.GetAll();
+    }
 
     private Task NewProduct()
     {

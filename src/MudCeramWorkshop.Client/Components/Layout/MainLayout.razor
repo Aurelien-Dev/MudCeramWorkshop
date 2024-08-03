@@ -1,10 +1,13 @@
 ﻿@using Domain.InterfacesWorker
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Layout.Resources
 @using MudCeramWorkshop.Client.Utils.ComponentBase
 @using MudCeramWorkshop.Data.Domain.InterfacesWorker
+
 @inherits CustomLayoutComponentBase
+@attribute [Authorize]
 
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -16,28 +19,22 @@
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDrawer())" />
         <MudButton Href="/" Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Style="text-transform:none">@WorkshopName</MudButton>
-        <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())" />
 
         <MudSpacer />
-
-        <MudMenu ActivationEvent="MouseEvent.MouseOver" Icon="@Icons.Custom.Uncategorized.Radioactive">
-            <ActivatorContent>
-                <MudFab EndIcon="@Icons.Material.Filled.Person" Color="Color.Primary" Size="Size.Small" />
-            </ActivatorContent>
-            <ChildContent>
-                <MudMenuItem Href="/Profil">@Localizer["Profile"]</MudMenuItem>
-                <MudMenuItem Href="/Logout">@Localizer["SignOut"]</MudMenuItem>
-            </ChildContent>
-        </MudMenu>
+        <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())" />
     </MudAppBar>
 
     <MudDrawer Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
     </MudDrawer>
 
-    <MudMainContent Class="mt-16 pa-4">
-        @Body
-    </MudMainContent>
+    <CascadingValue Value="@IsAuthenticate">
+        <CascadingValue Value="@Workshop">
+            <MudMainContent Class="mt-16 pa-4">
+                @Body
+            </MudMainContent>
+        </CascadingValue>
+    </CascadingValue>
 </MudLayout>
 
 <div id="blazor-error-ui">
@@ -54,15 +51,16 @@
     bool _drawerOpen = true;
     string WorkshopName = string.Empty;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        if (Session.IsAuthenticate)
-        {
-            WorkshopName = Session.Workshop?.Name ?? string.Empty;
-        }
+        await base.OnInitializedAsync();
 
-        return Task.CompletedTask;
+        if (IsAuthenticate)
+            WorkshopName = Workshop.Name;
+        else
+            NavigationManager.NavigateTo($"Account/Login");
     }
+
 
     private Task ToggleDrawer()
     {
@@ -73,10 +71,8 @@
 
     private Task NewProduct()
     {
+        NavigationManager.NavigateTo("Product/New");
 
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-
-        return Dialog.ShowAsync<TestDialog>("Custom Options Dialog", options);
+        return Task.CompletedTask;
     }
-
 }

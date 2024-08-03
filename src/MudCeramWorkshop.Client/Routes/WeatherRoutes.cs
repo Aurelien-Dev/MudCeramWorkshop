@@ -1,4 +1,4 @@
-﻿namespace MudCeramWorkshop.Client.MinimalApi;
+﻿namespace MudCeramWorkshop.Client.Routes;
 
 public static class WeatherRoutes
 {
@@ -7,7 +7,7 @@ public static class WeatherRoutes
         var apiGroup = endpoints.MapGroup("/api");
 
         var summaries = new[]
-                {
+        {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 

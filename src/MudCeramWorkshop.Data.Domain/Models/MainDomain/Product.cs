@@ -12,7 +12,7 @@ public class Product
     /// Gets or sets the ID of the product.
     /// </summary>
     [CeramRequired]
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the workshop where the product is made.
@@ -101,8 +101,9 @@ public class Product
     /// <summary>
     /// Initializes a new instance of the <see cref="Product"/> class with the specified name and reference.
     /// </summary>
-    public Product(string name, string reference)
+    public Product(int idWorkshop, string name, string reference)
     {
+        IdWorkshop = idWorkshop;
         Name = name;
         Reference = reference;
     }

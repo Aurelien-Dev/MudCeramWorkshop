@@ -62,11 +62,110 @@ namespace MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Salut.
+        ///   Looks up a localized string similar to Ø Bottom.
         /// </summary>
-        public static string hi {
+        public static string Text_BottomDiameter {
             get {
-                return ResourceManager.GetString("hi", resourceCulture);
+                return ResourceManager.GetString("Text_BottomDiameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instruction de construction.
+        /// </summary>
+        public static string Text_BuildInstructions {
+            get {
+                return ResourceManager.GetString("Text_BuildInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commentaire.
+        /// </summary>
+        public static string Text_Comment {
+            get {
+                return ResourceManager.GetString("Text_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Composition.
+        /// </summary>
+        public static string Text_Composition {
+            get {
+                return ResourceManager.GetString("Text_Composition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Détail des coûts.
+        /// </summary>
+        public static string Text_CostDetails {
+            get {
+                return ResourceManager.GetString("Text_CostDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Text_Description {
+            get {
+                return ResourceManager.GetString("Text_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instructions de conception.
+        /// </summary>
+        public static string Text_DesignInstructions {
+            get {
+                return ResourceManager.GetString("Text_DesignInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Glisser et déposer les fichiers ici ou cliquer.
+        /// </summary>
+        public static string Text_DragAndDrop {
+            get {
+                return ResourceManager.GetString("Text_DragAndDrop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instructions d&apos;émaillage.
+        /// </summary>
+        public static string Text_GlazingInstructions {
+            get {
+                return ResourceManager.GetString("Text_GlazingInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hauteur.
+        /// </summary>
+        public static string Text_Height {
+            get {
+                return ResourceManager.GetString("Text_Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prix de vente.
+        /// </summary>
+        public static string Text_SellingPrice {
+            get {
+                return ResourceManager.GetString("Text_SellingPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ø Top.
+        /// </summary>
+        public static string Text_TopDiameter {
+            get {
+                return ResourceManager.GetString("Text_TopDiameter", resourceCulture);
             }
         }
     }

@@ -249,7 +249,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Firings");
+                    b.ToTable("Firings", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.MainDomain.ImageInstruction", b =>
@@ -285,7 +285,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasIndex("IdProduct");
 
-                    b.ToTable("ImageInstruction");
+                    b.ToTable("ImageInstruction", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.MainDomain.Material", b =>
@@ -327,7 +327,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Materials");
+                    b.ToTable("Materials", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.MainDomain.Product", b =>
@@ -380,7 +380,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasIndex("IdWorkshop");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.MainDomain.ProductFiring", b =>
@@ -412,7 +412,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasIndex("IdProduct");
 
-                    b.ToTable("ProductFirings");
+                    b.ToTable("ProductFirings", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.MainDomain.ProductMaterial", b =>
@@ -441,7 +441,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasIndex("IdProduct");
 
-                    b.ToTable("ProductMaterials");
+                    b.ToTable("ProductMaterials", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine.Workshop", b =>
@@ -465,7 +465,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Workshops");
+                    b.ToTable("Workshops", (string)null);
                 });
 
             modelBuilder.Entity("MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine.WorkshopParameter", b =>
@@ -491,7 +491,7 @@ namespace MudCeramWorkshop.Data.Repository.Migrations
 
                     b.HasIndex("WorkshopId");
 
-                    b.ToTable("WorkshopParameters");
+                    b.ToTable("WorkshopParameters", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

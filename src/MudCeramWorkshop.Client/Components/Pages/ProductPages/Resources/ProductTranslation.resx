@@ -117,7 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="hi" xml:space="preserve">
-    <value>Salut</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Text_BottomDiameter" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Text_BuildInstructions" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Text_Comment" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Text_BottomDiameter" xml:space="preserve">
+    <value>Ø Bottom</value>
+  </data>
+  <data name="Text_BuildInstructions" xml:space="preserve">
+    <value>Instruction de construction</value>
+  </data>
+  <data name="Text_Comment" xml:space="preserve">
+    <value>Commentaire</value>
+  </data>
+  <data name="Text_Composition" xml:space="preserve">
+    <value>Composition</value>
+  </data>
+  <data name="Text_CostDetails" xml:space="preserve">
+    <value>Détail des coûts</value>
+  </data>
+  <data name="Text_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Text_DesignInstructions" xml:space="preserve">
+    <value>Instructions de conception</value>
+  </data>
+  <data name="Text_DragAndDrop" xml:space="preserve">
+    <value>Glisser et déposer les fichiers ici ou cliquer</value>
+  </data>
+  <data name="Text_GlazingInstructions" xml:space="preserve">
+    <value>Instructions d'émaillage</value>
+  </data>
+  <data name="Text_Height" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="Text_SellingPrice" xml:space="preserve">
+    <value>Prix de vente</value>
+  </data>
+  <data name="Text_TopDiameter" xml:space="preserve">
+    <value>Ø Top</value>
   </data>
 </root>

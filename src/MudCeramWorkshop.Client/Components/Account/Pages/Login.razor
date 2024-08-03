@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
+@using MudCeramWorkshop.Client.Components.Layout
 @using MudCeramWorkshop.Client.Utils
 @using MudCeramWorkshop.Data.Domain.InterfacesWorker
 @using MudCeramWorkshop.Data.Domain.Models.Identity
@@ -72,9 +73,6 @@
     private string? ReturnUrl { get; set; }
 
     [Inject]
-    public SessionInfo Session { get; set; } = default!;
-
-    [Inject]
     IWorkshopWorker WorkshopWorker { get; set; } = default!;
 
 
@@ -93,14 +91,8 @@
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
         var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-
-
         if (result.Succeeded)
         {
-            var workshop = await WorkshopWorker.WorkshopRepository.GetWorkshopInformationForLogin(Input.Email);
-            Session.IsAuthenticate = result.Succeeded;
-            Session.Workshop = workshop;
-
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo(ReturnUrl);
         }

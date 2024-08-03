@@ -1,13 +1,14 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
-using MudCeramWorkshop.Client.Components.Account;
-using MudCeramWorkshop.Client.MinimalApi;
-using MudCeramWorkshop.Data.Repository;
 using MudCeramWorkshop.Client.Components;
-using MudCeramWorkshop.Data.Domain.Models.Identity;
+using MudCeramWorkshop.Client.Components.Account;
+using MudCeramWorkshop.Client.Routes;
 using MudCeramWorkshop.Client.Utils;
+using MudCeramWorkshop.Data.Domain.Models.Identity;
+using MudCeramWorkshop.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,6 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
-builder.Services.AddSingleton<SessionInfo>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -45,6 +45,12 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+builder.Services.AddTransient<IdentityCookieHandler>();
+builder.Services.AddHttpClient("LocalApi", (client) =>
+{
+    client.BaseAddress = new Uri($"{builder.Configuration["BaseUrl:ApiUrl"]}/api/");
+}).AddHttpMessageHandler<IdentityCookieHandler>();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -63,6 +69,8 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
     }
     return Task.CompletedTask;
 });
+
+builder.Services.AddBlazoredLocalStorage();
 
 var app = builder.Build();
 
@@ -102,4 +110,3 @@ app.MapRazorComponents<App>()
 app.MapAdditionalIdentityEndpoints();
 
 await app.RunAsync();
-
