@@ -123,4 +123,22 @@
   <data name="SignOut" xml:space="preserve">
     <value>SignOut</value>
   </data>
+  <data name="NavMenu_Accessory" xml:space="preserve">
+    <value>Accessoires</value>
+  </data>
+  <data name="NavMenu_Clays" xml:space="preserve">
+    <value>Argiles</value>
+  </data>
+  <data name="NavMenu_Firing" xml:space="preserve">
+    <value>Mes cuissons</value>
+  </data>
+  <data name="NavMenu_Glaze" xml:space="preserve">
+    <value>Émaux</value>
+  </data>
+  <data name="NavMenu_MyInventory" xml:space="preserve">
+    <value>Mon inventaire</value>
+  </data>
+  <data name="NavMenu_MyProducts" xml:space="preserve">
+    <value>Mes produits</value>
+  </data>
 </root>

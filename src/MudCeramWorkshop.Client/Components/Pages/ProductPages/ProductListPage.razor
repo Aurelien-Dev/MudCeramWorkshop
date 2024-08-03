@@ -1,5 +1,5 @@
 ﻿@page "/"
-@page "/products"
+@page "/Products"
 @using Microsoft.Extensions.Localization
 @using System.Globalization
 @using MudCeramWorkshop.Client.Components.Dialogs
@@ -25,7 +25,7 @@
                         <MudText Typo="Typo.overline" GutterBottom="false">#@product.Reference</MudText>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@($"product/{@product.Id}")" Size="Size.Small">@Localizer["hi"]</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@($"product/{@product.Id}")" Size="Size.Small">@Localizer["ProductList_ShowProduct"]</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -42,13 +42,5 @@
     protected override async Task OnInitializedAsync()
     {
         products = await productRepository.GetAll();
-    }
-
-    private Task NewProduct()
-    {
-
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-
-        return Dialog.ShowAsync<TestDialog>("Custom Options Dialog", options);
     }
 }

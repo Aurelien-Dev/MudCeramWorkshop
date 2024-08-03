@@ -123,4 +123,22 @@
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="NavMenu_Accessory" xml:space="preserve">
+    <value>Accessories</value>
+  </data>
+  <data name="NavMenu_Clays" xml:space="preserve">
+    <value>Clays</value>
+  </data>
+  <data name="NavMenu_Firing" xml:space="preserve">
+    <value>My firings</value>
+  </data>
+  <data name="NavMenu_Glaze" xml:space="preserve">
+    <value>Glazes</value>
+  </data>
+  <data name="NavMenu_MyInventory" xml:space="preserve">
+    <value>My inventory</value>
+  </data>
+  <data name="NavMenu_MyProducts" xml:space="preserve">
+    <value>My products</value>
+  </data>
 </root>

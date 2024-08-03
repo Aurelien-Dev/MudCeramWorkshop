@@ -22,18 +22,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Workshop> Workshops { get; set; } = default!;
     public DbSet<WorkshopParameter> WorkshopParameters { get; set; } = default!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        WorkshopMap.Build(modelBuilder);
-        IdentityMap.Build(modelBuilder);
+        WorkshopMap.Build(builder);
+        IdentityMap.Build(builder);
 
-        ProductMap.Build(modelBuilder);
-        ImageInstructionMap.Build(modelBuilder);
-        MaterialMap.Build(modelBuilder);
-        FiringMap.Build(modelBuilder);
-        ProductMaterialMap.Build(modelBuilder);
-        ProductFiringMap.Build(modelBuilder);
+        ProductMap.Build(builder);
+        ImageInstructionMap.Build(builder);
+        MaterialMap.Build(builder);
+        FiringMap.Build(builder);
+        ProductMaterialMap.Build(builder);
+        ProductFiringMap.Build(builder);
 
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
     }
 }

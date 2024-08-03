@@ -11,11 +11,13 @@
         <MudStack Class="mud-width-full">
 
             <MudGrid Spacing="1">
-                <MudItem md="1">
-                    <MudTextField @bind-Value="@product.Reference" Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
+                <MudItem md="2">
+                    <MudTextField @bind-Value="@product.Reference" Label="Reference"
+                                  Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
                 </MudItem>
-                <MudItem md="5">
-                    <MudTextField @bind-Value="@product.Name" Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
+                <MudItem md="10">
+                    <MudTextField @bind-Value="@product.Name" Label="Name"
+                                  Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
                 </MudItem>
             </MudGrid>
 
@@ -97,7 +99,7 @@
 
     #region styling
 
-    Margin margin = Margin.Normal;
+    private readonly Margin margin = Margin.Normal;
 
     #endregion
 

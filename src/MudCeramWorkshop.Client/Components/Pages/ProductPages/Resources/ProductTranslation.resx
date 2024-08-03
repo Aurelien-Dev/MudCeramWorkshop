@@ -163,4 +163,7 @@
   <data name="Text_TopDiameter" xml:space="preserve">
     <value>Ø Top</value>
   </data>
+  <data name="ProductList_ShowProduct" xml:space="preserve">
+    <value>Voir</value>
+  </data>
 </root>

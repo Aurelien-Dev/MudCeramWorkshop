@@ -11,6 +11,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
         [Inject] public IDialogService Dialog { get; set; } = default!;
         [Inject] public IHttpClientFactory HttpClientFactory { get; set; } = default!;
         [Inject] public IWorkshopRepository WorkshopRepository { get; set; } = default!;
+
         [CascadingParameter] public Workshop Workshop { get; set; } = default!;
         [CascadingParameter] public bool IsAuthenticate { get; set; } = false;
 
@@ -19,9 +20,14 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
         protected CancellationToken ComponentDisposed => (_cancellationTokenSource ??= new()).Token;
         private CancellationTokenSource? _cancellationTokenSource;
 
-        public virtual void Dispose()
+        public void Dispose()
         {
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = null;

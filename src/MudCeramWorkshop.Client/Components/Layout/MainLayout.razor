@@ -21,7 +21,8 @@
         <MudButton Href="/" Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Style="text-transform:none">@WorkshopName</MudButton>
 
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())" />
+
+        <MudButton EndIcon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())">New product</MudButton>
     </MudAppBar>
 
     <MudDrawer Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">

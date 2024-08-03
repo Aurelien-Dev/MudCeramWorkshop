@@ -13,6 +13,8 @@ public interface IMaterialRepository : IGenericRepository<Material, int>
     /// <returns>A task representing the asynchronous operation, with a result containing the collection of Material objects matching the specified type.</returns>
     Task<ICollection<Material>> GetAll(EnumMaterialType type, CancellationToken cancellationToken = default);
 
+    Task<int> Count(EnumMaterialType type, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Updates the cost of all product materials associated with a specific material ID.
     /// </summary>

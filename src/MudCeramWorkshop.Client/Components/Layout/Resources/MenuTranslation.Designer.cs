@@ -61,6 +61,60 @@ namespace MudCeramWorkshop.Client.Components.Layout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accessoires.
+        /// </summary>
+        public static string NavMenu_Accessory {
+            get {
+                return ResourceManager.GetString("NavMenu_Accessory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argiles.
+        /// </summary>
+        public static string NavMenu_Clays {
+            get {
+                return ResourceManager.GetString("NavMenu_Clays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mes cuissons.
+        /// </summary>
+        public static string NavMenu_Firing {
+            get {
+                return ResourceManager.GetString("NavMenu_Firing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Émaux.
+        /// </summary>
+        public static string NavMenu_Glaze {
+            get {
+                return ResourceManager.GetString("NavMenu_Glaze", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mon inventaire.
+        /// </summary>
+        public static string NavMenu_MyInventory {
+            get {
+                return ResourceManager.GetString("NavMenu_MyInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mes produits.
+        /// </summary>
+        public static string NavMenu_MyProducts {
+            get {
+                return ResourceManager.GetString("NavMenu_MyProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string Profile {

@@ -62,6 +62,15 @@ namespace MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Voir.
+        /// </summary>
+        public static string ProductList_ShowProduct {
+            get {
+                return ResourceManager.GetString("ProductList_ShowProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ø Bottom.
         /// </summary>
         public static string Text_BottomDiameter {
