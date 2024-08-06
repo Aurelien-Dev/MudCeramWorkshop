@@ -12,38 +12,37 @@
 
 <MudContainer Class="mt-3 px-8" MaxWidth="MaxWidth.False">
 
-    <MudTabs Elevation="2" Rounded="true" PanelClass="pa-6" ActivePanelIndexChanged="PanelChanged">
+    <MudTabs Elevation="1" Rounded="false" ActivePanelIndexChanged="PanelChanged" @ref="_tabs">
         <Header>
-            <MudButton EndIcon="@Icons.Material.Outlined.Add" Color="Color.Inherit" />
+            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="delete" OnClick="Add" Class="ma-1"></MudIconButton>
         </Header>
         <ChildContent>
-            <MudTabPanel Text="@(EnumMaterialType.Email.ToString())" BadgeData="@countEmail" />
-            <MudTabPanel Text="@(EnumMaterialType.Argile.ToString())" BadgeData="@countArgile" />
-            <MudTabPanel Text="@(EnumMaterialType.Engobe.ToString())" BadgeData="@countEngobe" />
-            <MudTabPanel Text="@(EnumMaterialType.Accessory.ToString())" BadgeData="@countAccessory" />
+            <MudTabPanel Text="@(EnumMaterialType.Argile.ToString())" ID="EnumMaterialType.Argile" BadgeData="@countArgile" />
+            <MudTabPanel Text="@(EnumMaterialType.Email.ToString())" ID="EnumMaterialType.Email" BadgeData="@countEmail" />
+            <MudTabPanel Text="@(EnumMaterialType.Engobe.ToString())" ID="EnumMaterialType.Engobe" BadgeData="@countEngobe" />
+            <MudTabPanel Text="@(EnumMaterialType.Accessory.ToString())" ID="EnumMaterialType.Accessory" BadgeData="@countAccessory" />
         </ChildContent>
     </MudTabs>
 
-    <MudDataGrid T="Material" Items="@Elements.Take(4)" Dense="true"
-                 EditMode="DataGridEditMode.Form" ReadOnly="false"
+    <MudDataGrid @ref="_dataGrid" T="Material" Items="@Elements" Dense="true" Class="rounded-0" FixedHeader="true" Height="calc(100vh - 210px)" ReadOnly="false"
+                 Virtualize="true"
+                 EditDialogOptions="new DialogOptions(){ NoHeader = true }"
+                 EditMode="DataGridEditMode.Form"
                  EditTrigger="DataGridEditTrigger.Manual"
                  CommittedItemChanges="@CommittedItemChanges">
-        @*       <ToolBarContent>
 
-        <MudText Typo="Typo.h6">Periodic Elements</MudText>
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())" />
-        </ToolBarContent> *@
         <Columns>
-            @* <PropertyColumn Property="x => x.Id" Title="#" Editable="false" /> *@
             <PropertyColumn Property="x => x.Reference" Title="Reference" />
             <PropertyColumn Property="x => x.Name" Title="Name" />
-            <PropertyColumn Property="x => x.IsHomeMade" Title="IsHomeMade" />
-            <PropertyColumn Property="x => x.Cost" Title="Cost" />
-            <PropertyColumn Property="x => x.Comment" Title="Comment" />
-            <PropertyColumn Property="x => x.UniteMesure" Title="UniteMesure">
+            <PropertyColumn Property="x => x.Cost" Title="Cost">
+                <CellTemplate>
+                    @($"{context.Item.Cost}/{context.Item.Quantity}{context.Item.UniteMesure}")
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.Quantity" Title="Quantity" Hidden="true" />
+            <PropertyColumn Property="x => x.UniteMesure" Title="UniteMesure" Hidden="true">
                 <EditTemplate>
-                    <MudSelect T="EnumMaterialUnite" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense"
+                    <MudSelect T="EnumMaterialUnite" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Label="TT"
                                @bind-Value="context.Item.UniteMesure">
                         @foreach (EnumMaterialUnite item in Enum.GetValues(typeof(EnumMaterialUnite)))
                         {
@@ -52,13 +51,17 @@
                     </MudSelect>
                 </EditTemplate>
             </PropertyColumn>
-            <TemplateColumn CellClass="d-flex justify-end">
+            <PropertyColumn Property="x => x.Comment" Title="Comment" />
+            <TemplateColumn CellClass="d-flex justify-end" Sortable="false">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                    <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
                 </CellTemplate>
             </TemplateColumn>
-
         </Columns>
+        <PagerContent>
+            <MudDataGridPager T="Material" PageSizeOptions="@([25, 50, 100])" />
+        </PagerContent>
     </MudDataGrid>
 
 </MudContainer>
@@ -66,9 +69,10 @@
 @code {
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
     [Inject] IMaterialRepository MaterialRepository { get; set; } = default!;
-
     private IEnumerable<Material> Elements { get; set; } = new List<Material>();
-    int activeIndex = 0;
+
+    MudDataGrid<Material> _dataGrid;
+    MudTabs _tabs;
 
     int countEngobe = 0;
     int countArgile = 0;
@@ -82,7 +86,12 @@
 
     public async Task GetDatas()
     {
-        Elements = await MaterialRepository.GetAll((EnumMaterialType)activeIndex);
+        EnumMaterialType type = EnumMaterialType.Argile;
+
+        if (_tabs is not null && _tabs.ActivePanel is not null)
+            type = (EnumMaterialType)_tabs.ActivePanel.ID;
+
+        Elements = await MaterialRepository.GetAll(type);
 
         countEngobe = await MaterialRepository.Count(EnumMaterialType.Engobe);
         countArgile = await MaterialRepository.Count(EnumMaterialType.Argile);
@@ -90,27 +99,29 @@
         countAccessory = await MaterialRepository.Count(EnumMaterialType.Accessory);
     }
 
-    public async Task AddMatCallback()
-    {
-
-    }
-
     async Task PanelChanged(int index)
     {
-        activeIndex = index;
         await GetDatas();
     }
 
-    void CommittedItemChanges(Material item)
+    public async Task CommittedItemChanges(Material item)
     {
-        MaterialRepository.Update(item);
+        await MaterialRepository.Update(item);
     }
 
-    private Task NewProduct()
+    public async Task DeleteItem(Material item)
     {
+        await MaterialRepository.Delete(item);
+        await GetDatas();
+    }
 
-        var options = new DialogOptions { CloseOnEscapeKey = true };
+    public async Task Add()
+    {
+        await _dataGrid.SetEditingItemAsync(new Material("", "")
+            {
+                Type = (EnumMaterialType)_tabs.ActivePanel.ID
+            });
 
-        return Dialog.ShowAsync<TestDialog>("Custom Options Dialog", options);
+        await GetDatas();
     }
 }

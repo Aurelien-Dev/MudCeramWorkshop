@@ -37,9 +37,10 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
         await Context.SaveChangesAsync();
     }
 
-    public void Delete(TEntity entity)
+    public async Task Delete(TEntity entity)
     {
         Context.Set<TEntity>().Remove(entity);
+        await Context.SaveChangesAsync();
     }
 
 
