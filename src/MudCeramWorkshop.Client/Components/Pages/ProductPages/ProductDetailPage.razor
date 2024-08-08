@@ -1,6 +1,9 @@
 ﻿@page "/Product/{id:int?}"
 @page "/Product/New"
+@using Microsoft.AspNetCore.Identity
+@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Components
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Data.Domain.Models.Identity
 
 @inherits CustomComponentBase
 
@@ -77,12 +80,14 @@
             <MudGrid Spacing="1">
                 <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
                     <MudPaper Class="pa-4">
-                        a
+
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
                     <MudPaper Class="pa-4">
-                        a
+
+                        <AssociationFiring Product="product" />
+
                     </MudPaper>
                 </MudItem>
             </MudGrid>
@@ -117,7 +122,7 @@
     {
         await base.OnInitializedAsync();
         if (Id is not null)
-            product = await productRepository.Get(Id.Value);
+            product = await productRepository.Get(Id.Value, Workshop.Id);
         else
             product = new Product(Workshop.Id, string.Empty, string.Empty);
     }

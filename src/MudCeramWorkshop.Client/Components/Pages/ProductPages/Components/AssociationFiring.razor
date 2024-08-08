@@ -1,0 +1,64 @@
+﻿@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+
+@inherits CustomComponentBase
+
+@if (Product is not null)
+{
+    <MudDataGrid @ref="_dataGrid" T="ProductFiring" Items="@Product.ProductFiring" Dense="true" FixedHeader="false"
+                 Height="calc(100vh - 210px)" ReadOnly="false" Class="rounded-t-11"
+                 Virtualize="true"
+                 EditDialogOptions="new DialogOptions(){ NoHeader = true }"
+                 EditMode="DataGridEditMode.Form"
+                 EditTrigger="DataGridEditTrigger.Manual"
+                 CommittedItemChanges="@CommittedItemChanges">
+
+        <Columns>
+            <PropertyColumn Property="x => x.Firing.Name" Title="Name">
+                <CellTemplate>
+                    @($"{context.Item.Firing.Name} ({context.Item.Firing.TotalKwH} Kw/h)")
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.NumberProducts" Title="CostKwH" />
+            <PropertyColumn Property="x => x.CostKwH" Title="CostKwH">
+                <CellTemplate>
+                    @($"{context.Item.CostKwH * context.Item.Firing.TotalKwH / context.Item.NumberProducts}")
+                </CellTemplate>
+            </PropertyColumn>
+
+            <TemplateColumn Sortable="false">
+                <CellTemplate>
+                    <MudStack Row="true">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                        <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="Firing" PageSizeOptions="@([25, 50, 100])" />
+        </PagerContent>
+    </MudDataGrid>
+}
+
+@code {
+    [Parameter] public Product? Product { get; set; } = default!;
+
+    [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
+    [Inject] IFiringRepository FiringRepository { get; set; } = default!;
+
+    MudDataGrid<ProductFiring> _dataGrid = null!;
+
+
+
+    public async Task CommittedItemChanges(ProductFiring item)
+    {
+    }
+
+    public async Task DeleteItem(ProductFiring item)
+    {
+    }
+
+    public async Task OpenDialogNewItem()
+    {
+    }
+}
