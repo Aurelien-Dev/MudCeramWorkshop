@@ -79,8 +79,8 @@
     [Inject] IMaterialRepository MaterialRepository { get; set; } = default!;
     private IEnumerable<Material> Elements { get; set; } = new List<Material>();
 
-    MudDataGrid<Material> _dataGrid;
-    MudTabs _tabs;
+    MudDataGrid<Material> _dataGrid = null!;
+    MudTabs _tabs = null!;
     string textSearch = string.Empty;
 
     int countEngobe = 0;

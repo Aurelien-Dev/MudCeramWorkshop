@@ -60,8 +60,8 @@
     [Inject] IFiringRepository FiringRepository { get; set; } = default!;
     private IEnumerable<Firing> Elements { get; set; } = new List<Firing>();
 
-    MudDataGrid<Firing> _dataGrid;
-    MudTabs _tabs;
+    MudDataGrid<Firing> _dataGrid = null!;
+    MudTabs _tabs = null!;
     string textSearch = string.Empty;
 
     int countFiring = 0;

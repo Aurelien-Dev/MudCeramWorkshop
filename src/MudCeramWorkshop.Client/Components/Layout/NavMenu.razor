@@ -21,7 +21,7 @@
 
 
 @code {
-    [Inject] IStringLocalizer<MenuTranslation> Localizer { get; set; }
+    [Inject] IStringLocalizer<MenuTranslation> Localizer { get; set; } = null!;
 
     private string? currentUrl;
 
