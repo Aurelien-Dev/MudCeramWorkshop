@@ -2,8 +2,8 @@
 using MudCeramWorkshop.Data.Domain.Models.MainDomain;
 using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums;
 using Microsoft.EntityFrameworkCore;
-using MudCeramWorkshop.Data.Repository.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 

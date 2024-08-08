@@ -2,7 +2,8 @@
 using MudCeramWorkshop.Data.Domain.InterfacesRepository;
 using MudCeramWorkshop.Data.Domain.Models.Identity;
 using MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine;
-using MudCeramWorkshop.Data.Repository.Extensions;
+using MudCeramWorkshop.Data.Repository.Utils.Exceptions;
+using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
@@ -17,7 +18,7 @@ public class WorkshopRepository : GenericRepository<Workshop, int>, IWorkshopRep
 
         if (appUser.UserWorkshop == null)
         {
-            throw new Exception("Warning : A user must have a workshop.");
+            throw new WorkshopInvalidDataException("Warning : A user must have a workshop.");
         }
 
         return appUser.UserWorkshop;

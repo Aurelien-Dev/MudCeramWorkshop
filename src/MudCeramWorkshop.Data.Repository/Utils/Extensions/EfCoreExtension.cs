@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 
-namespace MudCeramWorkshop.Data.Repository.Extensions;
+namespace MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 public static class EfCoreExtension
 {

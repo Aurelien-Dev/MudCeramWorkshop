@@ -1,5 +1,5 @@
 ﻿using MudCeramWorkshop.Data.Domain.InterfacesRepository;
-using MudCeramWorkshop.Data.Repository.Extensions;
+using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 using System.Linq.Expressions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
@@ -49,7 +49,7 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
         return await Context.SaveChangesAsync(cancellationToken);
     }
 
-    protected IQueryable<TEntity>? AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
+    protected IQueryable<TEntity> AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
     {
         var param = Expression.Parameter(typeof(TEntity));
         var prop = Expression.PropertyOrField(param, propertyName);
@@ -66,10 +66,17 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
 
         var methodCallExpression = (sortMethod.Body as MethodCallExpression);
 
-        if (methodCallExpression == null) throw new ArgumentException("MethodCallExpression null");
+        if (methodCallExpression == null)
+            throw new ArgumentException("MethodCallExpression null");
 
         var method = methodCallExpression.Method.GetGenericMethodDefinition();
         var genericSortMethod = method.MakeGenericMethod(typeof(TEntity), prop.Type);
-        return genericSortMethod.Invoke(query, [query, sortLambda]) as IOrderedQueryable<TEntity>;
+
+        var orderQuery = genericSortMethod.Invoke(query, [query, sortLambda]) as IOrderedQueryable<TEntity>;
+
+        if (orderQuery is null)
+            throw new ArgumentException("MethodCallExpression null");
+
+        return orderQuery;
     }
 }

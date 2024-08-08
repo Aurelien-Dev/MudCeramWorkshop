@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using MudCeramWorkshop.Data.Domain.InterfacesRepository;
 using MudCeramWorkshop.Data.Domain.Models.MainDomain;
-using MudCeramWorkshop.Data.Repository.Extensions;
+using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
