@@ -24,13 +24,13 @@ public class Product
     /// Gets or sets the reference code of the product.
     /// </summary>
     [CeramRequired]
-    public string Reference { get; set; } = string.Empty;
+    public string Reference { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the product.
     /// </summary>
     [CeramRequired]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the description of the product.

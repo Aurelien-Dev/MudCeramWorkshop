@@ -8,7 +8,7 @@ public interface IGenericRepository<T, TId> where T : class
     /// <param name="id">The primary key (ID) of the entity to retrieve.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>A task representing the asynchronous operation, with a result containing the requested entity of type T or null if not found.</returns>
-    Task<T> Get(TId id, CancellationToken cancellationToken = default);
+    Task<T?> Get(TId id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all entities of type T from the database.

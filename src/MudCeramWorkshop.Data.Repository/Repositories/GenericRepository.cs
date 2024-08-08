@@ -13,7 +13,7 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
         Context = context;
     }
 
-    public virtual async Task<TEntity> Get(TId id, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity?> Get(TId id, CancellationToken cancellationToken = default)
     {
         return await Context.Set<TEntity>()
             .FindAsync([id, cancellationToken], cancellationToken: cancellationToken)

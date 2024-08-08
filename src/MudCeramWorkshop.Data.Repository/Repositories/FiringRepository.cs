@@ -25,6 +25,6 @@ public class FiringRepository : GenericRepository<Firing, int>, IFiringRepositor
 
     public async Task<int> Count(CancellationToken cancellationToken = default)
     {
-        return await Context.Firings.CountAsync();
+        return await Context.Firings.CountAsyncWait(cancellationToken);
     }
 }

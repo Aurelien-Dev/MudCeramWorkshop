@@ -12,7 +12,7 @@
 
 <MudContainer Class="mt-3 px-8" MaxWidth="MaxWidth.False">
 
-    <MudTabs @ref="_tabs" Elevation="1" Rounded="true" Ripple="false" Centered="false">
+    <MudTabs Elevation="1" Rounded="true" Ripple="false" Centered="false">
         <Header>
             <MudStack Row="true" AlignItems="AlignItems.Center">
                 <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" ValueChanged="@(s=>OnSearch(s))" Clearable="true"
@@ -61,7 +61,6 @@
     private IEnumerable<Firing> Elements { get; set; } = new List<Firing>();
 
     MudDataGrid<Firing> _dataGrid = null!;
-    MudTabs _tabs = null!;
     string textSearch = string.Empty;
 
     int countFiring = 0;
