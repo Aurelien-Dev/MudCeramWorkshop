@@ -1,19 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using MudCeramWorkshop.Data.Domain.InterfacesRepository;
 using MudCeramWorkshop.Data.Domain.Models.MainDomain;
 using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class FiringRepository : GenericRepository<Firing, int>, IFiringRepository
+public class FiringRepository(ApplicationDbContext context) : GenericRepository<Firing, int>(context), IFiringRepository
 {
-    public FiringRepository(ApplicationDbContext context) : base(context) { }
-
 
     public async Task<ICollection<Firing>> GetAll(string textSearch, CancellationToken cancellationToken = default)
     {
-        IQueryable<Firing> query = Context.Firings.AsQueryable();
+        IQueryable<Firing> query = context.Firings.AsQueryable();
 
         if (!textSearch.IsNullOrEmpty())
         {
@@ -25,6 +22,6 @@ public class FiringRepository : GenericRepository<Firing, int>, IFiringRepositor
 
     public async Task<int> Count(CancellationToken cancellationToken = default)
     {
-        return await Context.Firings.CountAsyncWait(cancellationToken);
+        return await context.Firings.CountAsyncWait(cancellationToken);
     }
 }

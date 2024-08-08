@@ -39,7 +39,7 @@ public class Material
     /// <summary>
     /// Gets or sets a comment associated with the material.
     /// </summary>
-    public string? Comment { get; set; }
+    public string Comment { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets a link associated with the material.

@@ -7,14 +7,11 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class WorkshopRepository : GenericRepository<Workshop, int>, IWorkshopRepository
+public class WorkshopRepository(ApplicationDbContext context) : GenericRepository<Workshop, int>(context), IWorkshopRepository
 {
-    public WorkshopRepository(ApplicationDbContext context) : base(context) { }
-
-
     public async Task<Workshop> GetWorkshopInformationForLogin(string email, CancellationToken cancellationToken = default)
     {
-        ApplicationUser appUser = await Context.ApplicationUsers.Include(w => w.UserWorkshop).FirstAsyncWait(w => w.Email == email, cancellationToken);
+        ApplicationUser appUser = await context.ApplicationUsers.Include(w => w.UserWorkshop).FirstAsyncWait(w => w.Email == email, cancellationToken);
 
         if (appUser.UserWorkshop == null)
         {
@@ -26,7 +23,7 @@ public class WorkshopRepository : GenericRepository<Workshop, int>, IWorkshopRep
 
     public async Task<Workshop> GetWorkshopInformationForLogin(int id, CancellationToken cancellationToken = default)
     {
-        Workshop workshop = await Context.Workshops.FirstAsyncWait(w => w.Id == id, cancellationToken);
+        Workshop workshop = await context.Workshops.FirstAsyncWait(w => w.Id == id, cancellationToken);
         return workshop;
     }
 }

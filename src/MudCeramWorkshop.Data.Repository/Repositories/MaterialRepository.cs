@@ -7,20 +7,16 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class MaterialRepository : GenericRepository<Material, int>, IMaterialRepository
+public class MaterialRepository(ApplicationDbContext context) : GenericRepository<Material, int>(context), IMaterialRepository
 {
-    public MaterialRepository(ApplicationDbContext context) : base(context)
-    {
-    }
-
     public async Task<int> Count(EnumMaterialType type, CancellationToken cancellationToken = default)
     {
-        return await Context.Materials.CountAsync(p => p.Type == type, cancellationToken);
+        return await context.Materials.CountAsync(p => p.Type == type, cancellationToken);
     }
 
     public async Task<ICollection<Material>> GetAll(EnumMaterialType type, CancellationToken cancellationToken = default)
     {
-        return await Context.Materials
+        return await context.Materials
             .Include(m => m.ProductMaterial)
             .Where(p => p.Type == type)
             .ToListAsyncWait(cancellationToken);
@@ -28,7 +24,7 @@ public class MaterialRepository : GenericRepository<Material, int>, IMaterialRep
 
     public async Task<ICollection<Material>> GetAll(EnumMaterialType type, string textSearch, CancellationToken cancellationToken = default)
     {
-        IQueryable<Material> query = Context.Materials
+        IQueryable<Material> query = context.Materials
                 .Where(p => p.Type == type)
                 .AsQueryable();
 
@@ -50,12 +46,9 @@ public class MaterialRepository : GenericRepository<Material, int>, IMaterialRep
 
     public async Task<(IEnumerable<Material>, int)> GetAllWithPaging(EnumMaterialType type, string textSearch, int pageNumber, int pageSize, string sortByName, string sortDirection, CancellationToken cancellationToken = default)
     {
-        IQueryable<Material> query = Context.Materials
+        IQueryable<Material> query = context.Materials
             .Where(p => p.Type == type)
             .AsQueryable();
-
-        //if (!string.IsNullOrWhiteSpace(textSearch))
-        //    query = query.Where(p => EF.Functions.ILike(p.Name + p.Reference, $"%{textSearch}%"));
 
         if (sortDirection != "None")
             query = AddSorting(query, sortDirection, sortByName);
@@ -74,7 +67,7 @@ public class MaterialRepository : GenericRepository<Material, int>, IMaterialRep
 
     public async Task UpdateAllMaterialCost(int idMat, CancellationToken cancellationToken = default)
     {
-        var matToUpdate = await Context.Materials
+        var matToUpdate = await context.Materials
             .Include(p => p.ProductMaterial)
             .SingleAsyncWait(m => m.Id == idMat, cancellationToken);
 

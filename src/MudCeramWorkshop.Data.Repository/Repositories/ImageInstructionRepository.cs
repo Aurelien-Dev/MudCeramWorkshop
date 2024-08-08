@@ -5,61 +5,57 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class ImageInstructionRepository : GenericRepository<ImageInstruction, int>, IImageInstructionRepository
+public class ImageInstructionRepository(ApplicationDbContext context) : GenericRepository<ImageInstruction, int>(context), IImageInstructionRepository
 {
-    public ImageInstructionRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-    }
-
-    public async Task<IEnumerable<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default) => await Context.ImageInstruction
+    public async Task<IEnumerable<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default) => await context.ImageInstruction
         .Where(i => i.FileLocation == EnumLocation.Server)
         .ToListAsyncWait(cancellationToken);
 
     public async Task<ImageInstruction?> GetFavoritImageByProduct(int idProduct, CancellationToken cancellationToken = default)
     {
-        bool hasFavorite = await Context.ImageInstruction
+        bool hasFavorite = await context.ImageInstruction
             .AnyAsyncWait(i => i.IdProduct == idProduct && i.IsFavoriteImage, cancellationToken);
 
         if (hasFavorite)
-            return await Context.ImageInstruction
+            return await context.ImageInstruction
                 .FirstAsyncWait(i => i.IdProduct == idProduct && i.IsFavoriteImage, cancellationToken);
 
-        return await Context.ImageInstruction
+        return await context.ImageInstruction
             .FirstOrDefaultAsyncWait(i => i.IdProduct == idProduct, cancellationToken);
     }
 
     public async Task SetNewFavorite(bool isFavorite, int id, int idProduct, CancellationToken cancellationToken = default)
     {
-        ImageInstruction? newFavorite = await Context.ImageInstruction
+        ImageInstruction? newFavorite = await context.ImageInstruction
             .FirstOrDefaultAsyncWait(i => i.IdProduct == idProduct && i.Id == id, cancellationToken);
 
         if (!isFavorite && newFavorite != null)
         {
             newFavorite.IsFavoriteImage = false;
-            Context.Update(newFavorite);
+            context.Update(newFavorite);
             
-            await Context
+            await context
                 .SaveChangesAsync(cancellationToken)
                 .WaitAsync(cancellationToken)
                 .ConfigureAwait(false);
             return;
         }
 
-        ImageInstruction? image = await Context.ImageInstruction
+        ImageInstruction? image = await context.ImageInstruction
             .FirstOrDefaultAsyncWait(i => i.IdProduct == idProduct && i.IsFavoriteImage, cancellationToken);
 
         if (image != null)
         {
             image.IsFavoriteImage = false;
-            Context.Update(image);
+            context.Update(image);
         }
 
         if (newFavorite != null)
         {
             newFavorite.IsFavoriteImage = true;
-            Context.Update(newFavorite);
+            context.Update(newFavorite);
         }
 
-        await Context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

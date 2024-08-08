@@ -5,13 +5,11 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class ProductRepository : GenericRepository<Product, int>, IProductRepository
-{
-    public ProductRepository(ApplicationDbContext context) : base(context) { }
-    
+public class ProductRepository(ApplicationDbContext context) : GenericRepository<Product, int>(context), IProductRepository
+{    
     public async Task<Product> Get(int id, int idWorkshop, CancellationToken cancellationToken = default)
     {
-        return await Context.Products
+        return await context.Products
             .Where(p => p.Id == id && p.IdWorkshop == idWorkshop)
             .Include(p => p.ImageInstructions.OrderByDescending(i => i.IsFavoriteImage))
             .Include(p => p.ProductMaterial)
@@ -23,7 +21,7 @@ public class ProductRepository : GenericRepository<Product, int>, IProductReposi
 
     public async Task<ICollection<Product>> GetAll(int idWorkshop, CancellationToken cancellationToken = default)
     {
-        return await Context.Products
+        return await context.Products
             .Where(p => p.IdWorkshop == idWorkshop)
             .Include(p => p.ImageInstructions)
             .ToListAsyncWait(cancellationToken);
@@ -31,36 +29,36 @@ public class ProductRepository : GenericRepository<Product, int>, IProductReposi
 
     public async Task<Product> GetLight(object id, CancellationToken cancellationToken = default)
     {
-        return await Context.Products
+        return await context.Products
             .Where(p => p.Id == (int)id)
             .FirstAsyncWait(cancellationToken);
     }
 
     public async Task<int> CountImage(int id, CancellationToken cancellationToken = default)
     {
-        return await Context.ImageInstruction
+        return await context.ImageInstruction
             .Where(i => i.IdProduct == id)
             .CountAsyncWait(cancellationToken);
     }
 
     public async Task UpdateProductMaterialCostAndQuantity(ProductMaterial productMaterial, CancellationToken cancellationToken = default)
     {
-        ProductMaterial pMaterial = await Context.ProductMaterials
+        ProductMaterial pMaterial = await context.ProductMaterials
             .FirstAsyncWait(p => p.Id == productMaterial.Id, cancellationToken);
 
         pMaterial.Cost = productMaterial.Cost;
         pMaterial.Quantity = productMaterial.Quantity;
 
-        await Context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdateProductFiring(ProductFiring productFiring, CancellationToken cancellationToken = default)
     {
-        ProductFiring pFiring = await Context.ProductFirings
+        ProductFiring pFiring = await context.ProductFirings
             .FirstAsyncWait(p => p.Id == productFiring.Id, cancellationToken);
 
         pFiring.CostKwH = productFiring.CostKwH;
 
-        await Context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

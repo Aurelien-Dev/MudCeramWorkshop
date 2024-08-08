@@ -4,49 +4,42 @@ using System.Linq.Expressions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> where TEntity : class
+public class GenericRepository<TEntity, TId>(ApplicationDbContext context) : IGenericRepository<TEntity, TId> where TEntity : class
 {
-    protected readonly ApplicationDbContext Context;
-
-    protected GenericRepository(ApplicationDbContext context)
-    {
-        Context = context;
-    }
-
     public virtual async Task<TEntity?> Get(TId id, CancellationToken cancellationToken = default)
     {
-        return await Context.Set<TEntity>()
+        return await context.Set<TEntity>()
             .FindAsync([id, cancellationToken], cancellationToken: cancellationToken)
             .ConfigureAwait(false);
     }
 
     public virtual async Task<ICollection<TEntity>> GetAll(CancellationToken cancellationToken = default)
     {
-        return await Context.Set<TEntity>()
+        return await context.Set<TEntity>()
             .ToListAsyncWait(cancellationToken);
     }
 
     public async Task Add(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await Context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
+        await context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task Update(TEntity entity, CancellationToken cancellationToken = default)
     {
-        Context.Set<TEntity>().Update(entity);
-        await Context.SaveChangesAsync(cancellationToken);
+        context.Set<TEntity>().Update(entity);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task Delete(TEntity entity)
     {
-        Context.Set<TEntity>().Remove(entity);
-        await Context.SaveChangesAsync();
+        context.Set<TEntity>().Remove(entity);
+        await context.SaveChangesAsync();
     }
 
 
     public async Task<int> SaveChangeAsync(CancellationToken cancellationToken = default)
     {
-        return await Context.SaveChangesAsync(cancellationToken);
+        return await context.SaveChangesAsync(cancellationToken);
     }
 
     protected IQueryable<TEntity> AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
