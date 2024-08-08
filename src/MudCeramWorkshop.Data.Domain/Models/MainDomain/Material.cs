@@ -95,4 +95,9 @@ public class Material
             }
         }
     }
+
+    public string StringSearch()
+    {
+        return $"{Reference}{Name}{Cost}{Comment}{UniteMesure}";
+    }
 }

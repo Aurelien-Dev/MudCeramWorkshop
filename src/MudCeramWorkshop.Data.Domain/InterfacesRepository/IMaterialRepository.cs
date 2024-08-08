@@ -12,6 +12,7 @@ public interface IMaterialRepository : IGenericRepository<Material, int>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>A task representing the asynchronous operation, with a result containing the collection of Material objects matching the specified type.</returns>
     Task<ICollection<Material>> GetAll(EnumMaterialType type, CancellationToken cancellationToken = default);
+    Task<ICollection<Material>> GetAll(EnumMaterialType type, string filter, CancellationToken cancellationToken = default);
 
     Task<int> Count(EnumMaterialType type, CancellationToken cancellationToken = default);
 

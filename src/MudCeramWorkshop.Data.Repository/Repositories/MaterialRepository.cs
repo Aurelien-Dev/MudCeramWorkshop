@@ -3,6 +3,7 @@ using MudCeramWorkshop.Data.Domain.Models.MainDomain;
 using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums;
 using Microsoft.EntityFrameworkCore;
 using MudCeramWorkshop.Data.Repository.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
@@ -23,6 +24,23 @@ public class MaterialRepository : GenericRepository<Material, int>, IMaterialRep
             .Include(m => m.ProductMaterial)
             .Where(p => p.Type == type)
             .ToListAsyncWait(cancellationToken);
+    }
+
+    public async Task<ICollection<Material>> GetAll(EnumMaterialType type, string textSearch, CancellationToken cancellationToken = default)
+    {
+        IQueryable<Material> query = Context.Materials
+                .Where(p => p.Type == type)
+                .AsQueryable();
+
+
+        if (!textSearch.IsNullOrEmpty())
+        {
+            string formatedText = textSearch.Trim();
+            query = query.Where(p => p.Name.Contains(formatedText) ||
+                                     p.Reference.Contains(formatedText) ||
+                                     p.Comment.Contains(formatedText));
+        }
+        return await query.ToListAsyncWait(cancellationToken);
     }
 
     public async Task<(IEnumerable<Material>, int)> GetAllWithPaging(EnumMaterialType type, int pageNumber, int pageSize, string sortByName, string sortDirection, CancellationToken cancellationToken = default)

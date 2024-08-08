@@ -11,6 +11,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
         [Inject] public IDialogService Dialog { get; set; } = default!;
         [Inject] public IHttpClientFactory HttpClientFactory { get; set; } = default!;
         [Inject] public IWorkshopRepository WorkshopRepository { get; set; } = default!;
+        [Inject] public ISnackbar Snackbar { get; set; } = default!;
 
         [CascadingParameter] public Workshop Workshop { get; set; } = default!;
         [CascadingParameter] public bool IsAuthenticate { get; set; } = false;

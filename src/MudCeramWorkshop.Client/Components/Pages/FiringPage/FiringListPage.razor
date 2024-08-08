@@ -1,0 +1,107 @@
+﻿@page "/Firings"
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@using MudCeramWorkshop.Client.Components.Dialogs
+@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Data.Domain.InterfacesRepository
+@using MudCeramWorkshop.Data.Domain.Models.MainDomain
+@using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
+
+@inherits MudCeramWorkshop.Client.Utils.ComponentBase.CustomComponentBase
+
+
+<MudContainer Class="mt-3 px-8" MaxWidth="MaxWidth.False">
+
+    <MudTabs @ref="_tabs" Elevation="1" Rounded="true" Ripple="false" Centered="false">
+        <Header>
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" ValueChanged="@(s=>OnSearch(s))" Clearable="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+                <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="delete" OnClick="OpenDialogNewItem"></MudIconButton>
+            </MudStack>
+        </Header>
+        <ChildContent>
+            <MudTabPanel Text="Firings" BadgeData="@countFiring" />
+        </ChildContent>
+    </MudTabs>
+
+    <MudDataGrid @ref="_dataGrid" T="Firing" Items="@Elements" Dense="true" FixedHeader="false"
+                 Height="calc(100vh - 210px)" ReadOnly="false" Class="rounded-t-11"
+                 Virtualize="true"
+                 EditDialogOptions="new DialogOptions(){ NoHeader = true }"
+                 EditMode="DataGridEditMode.Form"
+                 EditTrigger="DataGridEditTrigger.Manual"
+                 CommittedItemChanges="@CommittedItemChanges">
+
+        <Columns>
+            <PropertyColumn Property="x => x.Name" Title="Name" />
+            <PropertyColumn Property="x => x.Duration" Title="Duration" />
+            <PropertyColumn Property="x => x.TotalKwH" Title="TotalKwH" />
+            <PropertyColumn Property="x => x.CostKwH" Title="CostKwH" />
+
+            <TemplateColumn Sortable="false">
+                <CellTemplate>
+                    <MudStack Row="true">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                        <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="Firing" PageSizeOptions="@([25, 50, 100])" />
+        </PagerContent>
+    </MudDataGrid>
+
+</MudContainer>
+
+@code {
+    [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
+    [Inject] IFiringRepository FiringRepository { get; set; } = default!;
+    private IEnumerable<Firing> Elements { get; set; } = new List<Firing>();
+
+    MudDataGrid<Firing> _dataGrid;
+    MudTabs _tabs;
+    string textSearch = string.Empty;
+
+    int countFiring = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDatas();
+    }
+
+    public async Task GetDatas()
+    {
+        Elements = await FiringRepository.GetAll(textSearch, ComponentDisposed);
+        countFiring = await FiringRepository.Count();
+    }
+
+    public async Task OnSearch(string find)
+    {
+        textSearch = find;
+        await GetDatas();
+    }
+
+
+    public async Task CommittedItemChanges(Firing item)
+    {
+        await FiringRepository.Update(item);
+        await GetDatas();
+    }
+
+    public async Task DeleteItem(Firing item)
+    {
+        bool? result = await Dialog.ShowMessageBox("Warning", "Deleting can not be undone!", yesText: "Delete!", cancelText: "Cancel");
+
+        if (!result.HasValue || !result.Value) return;
+
+        await FiringRepository.Delete(item);
+        await GetDatas();
+    }
+
+    public async Task OpenDialogNewItem()
+    {
+        await _dataGrid.SetEditingItemAsync(new Firing());
+    }
+}

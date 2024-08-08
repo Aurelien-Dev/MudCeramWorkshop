@@ -12,9 +12,15 @@
 
 <MudContainer Class="mt-3 px-8" MaxWidth="MaxWidth.False">
 
-    <MudTabs Elevation="1" Rounded="false" ActivePanelIndexChanged="PanelChanged" @ref="_tabs">
+    <MudTabs Elevation="1" Rounded="true" Ripple="false" Centered="false" ActivePanelIndexChanged="PanelChanged"
+             TabHeaderClass=""
+             @ref="_tabs">
         <Header>
-            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="delete" OnClick="Add" Class="ma-1"></MudIconButton>
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" ValueChanged="@(s=>OnSearch(s))" Clearable="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+                <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="delete" OnClick="OpenDialogNewItem"></MudIconButton>
+            </MudStack>
         </Header>
         <ChildContent>
             <MudTabPanel Text="@(EnumMaterialType.Argile.ToString())" ID="EnumMaterialType.Argile" BadgeData="@countArgile" />
@@ -24,9 +30,9 @@
         </ChildContent>
     </MudTabs>
 
-    <MudDataGrid @ref="_dataGrid" T="Material" Items="@Elements" Dense="true" Class="rounded-0" FixedHeader="true" Height="calc(100vh - 210px)" ReadOnly="false"
+    <MudDataGrid @ref="_dataGrid" T="Material" Items="@Elements" Dense="true" FixedHeader="false"
+                 Height="calc(100vh - 210px)" ReadOnly="false" Class="rounded-t-11"
                  Virtualize="true"
-                 EditDialogOptions="new DialogOptions(){ NoHeader = true }"
                  EditMode="DataGridEditMode.Form"
                  EditTrigger="DataGridEditTrigger.Manual"
                  CommittedItemChanges="@CommittedItemChanges">
@@ -52,10 +58,12 @@
                 </EditTemplate>
             </PropertyColumn>
             <PropertyColumn Property="x => x.Comment" Title="Comment" />
-            <TemplateColumn CellClass="d-flex justify-end" Sortable="false">
+            <TemplateColumn Sortable="false">
                 <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
-                    <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
+                    <MudStack Row="true">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                        <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
+                    </MudStack>
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
@@ -73,6 +81,7 @@
 
     MudDataGrid<Material> _dataGrid;
     MudTabs _tabs;
+    string textSearch = string.Empty;
 
     int countEngobe = 0;
     int countArgile = 0;
@@ -91,7 +100,7 @@
         if (_tabs is not null && _tabs.ActivePanel is not null)
             type = (EnumMaterialType)_tabs.ActivePanel.ID;
 
-        Elements = await MaterialRepository.GetAll(type);
+        Elements = await MaterialRepository.GetAll(type, textSearch, ComponentDisposed);
 
         countEngobe = await MaterialRepository.Count(EnumMaterialType.Engobe);
         countArgile = await MaterialRepository.Count(EnumMaterialType.Argile);
@@ -99,29 +108,45 @@
         countAccessory = await MaterialRepository.Count(EnumMaterialType.Accessory);
     }
 
+    public async Task OnSearch(string find)
+    {
+        textSearch = find;
+        await GetDatas();
+    }
+
     async Task PanelChanged(int index)
     {
         await GetDatas();
     }
 
+
+
     public async Task CommittedItemChanges(Material item)
     {
         await MaterialRepository.Update(item);
+        await GetDatas();
     }
 
     public async Task DeleteItem(Material item)
     {
+        bool? result = await Dialog.ShowMessageBox("Warning", "Deleting can not be undone!",
+        yesText: "Delete!", cancelText: "Cancel",
+        options: new DialogOptions()
+            {
+                CloseOnEscapeKey = true
+            });
+
+        if (!result.HasValue || !result.Value) return;
+
         await MaterialRepository.Delete(item);
         await GetDatas();
     }
 
-    public async Task Add()
+    public async Task OpenDialogNewItem()
     {
         await _dataGrid.SetEditingItemAsync(new Material("", "")
             {
                 Type = (EnumMaterialType)_tabs.ActivePanel.ID
             });
-
-        await GetDatas();
     }
 }
