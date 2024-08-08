@@ -103,10 +103,12 @@
 
     #endregion
 
-    private Product product = null!;
+    private Product? product = null;
 
     public async Task UpdateProduct()
     {
+        if (product is null) return;
+
         await productRepository.Update(product);
         NavigationManager.NavigateTo($"Product/{product.Id}");
     }

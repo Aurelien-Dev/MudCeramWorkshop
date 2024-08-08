@@ -15,7 +15,7 @@ public class MaterialRepository : GenericRepository<Material, int>, IMaterialRep
 
     public async Task<int> Count(EnumMaterialType type, CancellationToken cancellationToken = default)
     {
-        return await Context.Materials.CountAsync(p => p.Type == type);
+        return await Context.Materials.CountAsync(p => p.Type == type, cancellationToken);
     }
 
     public async Task<ICollection<Material>> GetAll(EnumMaterialType type, CancellationToken cancellationToken = default)

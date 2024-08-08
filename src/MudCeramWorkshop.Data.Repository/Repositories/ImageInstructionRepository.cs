@@ -41,7 +41,7 @@ public class ImageInstructionRepository : GenericRepository<ImageInstruction, in
             await Context
                 .SaveChangesAsync(cancellationToken)
                 .WaitAsync(cancellationToken)
-                .ConfigureAwait(false);;
+                .ConfigureAwait(false);
             return;
         }
 

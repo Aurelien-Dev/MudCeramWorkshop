@@ -34,7 +34,7 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
     public async Task Update(TEntity entity, CancellationToken cancellationToken = default)
     {
         Context.Set<TEntity>().Update(entity);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task Delete(TEntity entity)
@@ -57,16 +57,16 @@ public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> 
 
         Expression<Func<IOrderedQueryable<TEntity>>> sortMethod = sortDirection switch
         {
-            "Ascending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>) => () => ((IOrderedQueryable<TEntity>)query).ThenBy<TEntity, object>(k => null),
-            "Ascending" => () => query.OrderBy<TEntity, object>(k => null),
-            "Descending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>) => () => ((IOrderedQueryable<TEntity>)query).ThenByDescending<TEntity, object>(k => null),
-            "Descending" => () => query.OrderByDescending<TEntity, object>(k => null),
-            _ => () => query.OrderByDescending<TEntity, object>(k => null),
+            "Ascending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>) => () => ((IOrderedQueryable<TEntity>)query).ThenBy<TEntity, object>(k => null!),
+            "Ascending" => () => query.OrderBy<TEntity, object>(k => null!),
+            "Descending" when query.Expression.Type == typeof(IOrderedQueryable<TEntity>) => () => ((IOrderedQueryable<TEntity>)query).ThenByDescending<TEntity, object>(k => null!),
+            "Descending" => () => query.OrderByDescending<TEntity, object>(k => null!),
+            _ => () => query.OrderByDescending<TEntity, object>(k => null!),
         };
 
         var methodCallExpression = (sortMethod.Body as MethodCallExpression);
-        if (methodCallExpression == null)
-            throw new Exception("MethodCallExpression null");
+
+        if (methodCallExpression == null) throw new ArgumentException("MethodCallExpression null");
 
         var method = methodCallExpression.Method.GetGenericMethodDefinition();
         var genericSortMethod = method.MakeGenericMethod(typeof(TEntity), prop.Type);
