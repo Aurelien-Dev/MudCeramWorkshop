@@ -5,8 +5,14 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class FiringRepository(ApplicationDbContext context) : GenericRepository<Firing, int>(context), IFiringRepository
+public class FiringRepository : GenericRepository<Firing, int>, IFiringRepository
 {
+    private readonly ApplicationDbContext context;
+
+    public FiringRepository(ApplicationDbContext context) : base(context)
+    {
+        this.context = context;
+    }
 
     public async Task<ICollection<Firing>> GetAll(string textSearch, CancellationToken cancellationToken = default)
     {

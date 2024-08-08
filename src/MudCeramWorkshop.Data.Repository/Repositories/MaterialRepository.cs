@@ -7,8 +7,15 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class MaterialRepository(ApplicationDbContext context) : GenericRepository<Material, int>(context), IMaterialRepository
+public class MaterialRepository : GenericRepository<Material, int>, IMaterialRepository
 {
+    private readonly ApplicationDbContext context;
+
+    public MaterialRepository(ApplicationDbContext context) : base(context)
+    {
+        this.context = context;
+    }
+
     public async Task<int> Count(EnumMaterialType type, CancellationToken cancellationToken = default)
     {
         return await context.Materials.CountAsync(p => p.Type == type, cancellationToken);

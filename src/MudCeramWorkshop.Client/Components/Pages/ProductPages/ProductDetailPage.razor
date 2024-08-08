@@ -11,18 +11,18 @@
         <MudStack Class="mud-width-full">
 
             <MudGrid Spacing="1">
-                <MudItem md="2">
+                <MudItem md="2" xs="12">
                     <MudTextField @bind-Value="@product.Reference" Label="Reference"
                                   Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
                 </MudItem>
-                <MudItem md="10">
+                <MudItem md="10" xs="12">
                     <MudTextField @bind-Value="@product.Name" Label="Name"
                                   Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
                 </MudItem>
             </MudGrid>
 
             <MudGrid Spacing="1">
-                <MudItem md="5">
+                <MudItem md="5" xs="12">
                     <MudPaper Class="pa-4 mud-height-full" MinHeight="600px">
 
                         <MudCarousel Style="height:60%" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object"
@@ -55,7 +55,7 @@
 
                     </MudPaper>
                 </MudItem>
-                <MudItem md="7">
+                <MudItem md="7" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
                         <MudText Typo="Typo.overline">Informations</MudText>
                         <MudTextField @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
@@ -75,12 +75,12 @@
 
 
             <MudGrid Spacing="1">
-                <MudItem sm="12" md="12" lg="6" xl="6">
+                <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
                     <MudPaper Class="pa-4">
                         a
                     </MudPaper>
                 </MudItem>
-                <MudItem sm="12" md="12" lg="6" xl="6">
+                <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
                     <MudPaper Class="pa-4">
                         a
                     </MudPaper>

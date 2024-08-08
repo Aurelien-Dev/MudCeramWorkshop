@@ -5,8 +5,15 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class ProductRepository(ApplicationDbContext context) : GenericRepository<Product, int>(context), IProductRepository
-{    
+public class ProductRepository : GenericRepository<Product, int>, IProductRepository
+{
+    private readonly ApplicationDbContext context;
+
+    public ProductRepository(ApplicationDbContext context) : base(context)
+    {
+        this.context = context;
+    }
+
     public async Task<Product> Get(int id, int idWorkshop, CancellationToken cancellationToken = default)
     {
         return await context.Products

@@ -5,8 +5,15 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class ImageInstructionRepository(ApplicationDbContext context) : GenericRepository<ImageInstruction, int>(context), IImageInstructionRepository
+public class ImageInstructionRepository : GenericRepository<ImageInstruction, int>, IImageInstructionRepository
 {
+    private readonly ApplicationDbContext context;
+
+    public ImageInstructionRepository(ApplicationDbContext context) : base(context)
+    {
+        this.context = context;
+    }
+
     public async Task<IEnumerable<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default) => await context.ImageInstruction
         .Where(i => i.FileLocation == EnumLocation.Server)
         .ToListAsyncWait(cancellationToken);

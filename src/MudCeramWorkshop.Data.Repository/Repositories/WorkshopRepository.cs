@@ -7,8 +7,15 @@ using MudCeramWorkshop.Data.Repository.Utils.Extensions;
 
 namespace MudCeramWorkshop.Data.Repository.Repositories;
 
-public class WorkshopRepository(ApplicationDbContext context) : GenericRepository<Workshop, int>(context), IWorkshopRepository
+public class WorkshopRepository : GenericRepository<Workshop, int>, IWorkshopRepository
 {
+    private readonly ApplicationDbContext context;
+
+    public WorkshopRepository(ApplicationDbContext context) : base(context)
+    {
+        this.context = context;
+    }
+
     public async Task<Workshop> GetWorkshopInformationForLogin(string email, CancellationToken cancellationToken = default)
     {
         ApplicationUser appUser = await context.ApplicationUsers.Include(w => w.UserWorkshop).FirstAsyncWait(w => w.Email == email, cancellationToken);
