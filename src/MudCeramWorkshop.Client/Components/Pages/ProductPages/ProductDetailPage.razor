@@ -125,8 +125,8 @@
         
         await base.OnInitializedAsync();
         if (Id is not null)
-            product = await productRepository.Get(Id.Value, userState.WorkshopId);
+            product = await productRepository.Get(Id.Value, userState.GetWorkshopId());
         else
-            product = new Product(userState.WorkshopId, string.Empty, string.Empty);
+            product = new Product(userState.GetWorkshopId(), string.Empty, string.Empty);
     }
 }

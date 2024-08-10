@@ -50,7 +50,7 @@
     protected override async Task OnInitializedAsync()
     {
         UserInfoState userState = await UserInfoState;
-        WorkshopName = userState.WorkshopName;
+        WorkshopName = userState.GetWorkshopName();
     }
 
     private Task ToggleDrawer()

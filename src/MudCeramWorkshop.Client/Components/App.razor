@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using MudCeramWorkshop.Client.Utils
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,9 +21,9 @@
 </html>
 @code {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
-    [Inject] public AuthenticationStateProvider authenticationStateProvider { get; set; }
+    [CascadingParameter] public Task<UserInfoState> UserState { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
-    // [CascadingParameter(Name = "WorkshopName")] public string WorkshopName { get; set; }
+
 
     private IComponentRenderMode? RenderModeForPage;
     private string BgBodyClass = string.Empty;
@@ -40,19 +41,9 @@
             BgBodyClass = string.Empty;
         }
 
-        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
+        var userState = await UserState;
 
-        // Get the Fullname claim
-        // WorkshopName = user.FindFirst("WorkshopName").Value;
-        var workshopId = user.FindFirst("WorkshopId");
-
-
-
-        // await localStorage.SetItemAsync("WorkshopName", workshopName);
-        // await localStorage.SetItemAsync("WorkshopId", workshopId);
-
-        if (!user.Identity.IsAuthenticated && !HttpContext.Request.Path.StartsWithSegments("/Account"))
+        if (!userState.IsAuthenticated && !HttpContext.Request.Path.StartsWithSegments("/Account"))
             NavigationManager.NavigateTo($"Account/Login");
     }
 }
