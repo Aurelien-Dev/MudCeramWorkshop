@@ -44,7 +44,7 @@ namespace MudCeramWorkshop.Client.Utils
 
         public int GetWorkshopId()
         {
-            if (WorkshopId == null) throw new ArgumentNullException(nameof(WorkshopId));
+            if (WorkshopId == null) throw new InvalidOperationException();
 
             return (int)WorkshopId;
         }
