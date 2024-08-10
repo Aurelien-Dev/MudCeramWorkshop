@@ -41,6 +41,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         products = await productRepository.GetAll();
     }
 }

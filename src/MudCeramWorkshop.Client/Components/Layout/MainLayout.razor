@@ -3,6 +3,7 @@
 @using Microsoft.Extensions.Localization
 @using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Layout.Resources
+@using MudCeramWorkshop.Client.Utils
 @using MudCeramWorkshop.Client.Utils.ComponentBase
 @using MudCeramWorkshop.Data.Domain.InterfacesWorker
 
@@ -15,7 +16,6 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDrawer())" />
         <MudButton Href="/" Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Style="text-transform:none">@WorkshopName</MudButton>
@@ -25,17 +25,13 @@
         <MudButton EndIcon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="@((e) => NewProduct())">New product</MudButton>
     </MudAppBar>
 
-    <MudDrawer Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+    <MudDrawer Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
     </MudDrawer>
 
-    <CascadingValue Value="@IsAuthenticate">
-        <CascadingValue Value="@Workshop">
-            <MudMainContent Class="mt-16 pa-4">
-                @Body
-            </MudMainContent>
-        </CascadingValue>
-    </CascadingValue>
+    <MudMainContent Class="mt-16 pa-4">
+        @Body
+    </MudMainContent>
 </MudLayout>
 
 <div id="blazor-error-ui">
@@ -46,22 +42,16 @@
 
 
 @code {
-    [Inject] IStringLocalizer<MenuTranslation> Localizer { get; set; } = default!;
-    [Inject] IDialogService Dialog { get; set; } = default!;
+    [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; }
 
+    public string WorkshopName { get; set; }
     bool _drawerOpen = true;
-    string WorkshopName = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
-        if (IsAuthenticate)
-            WorkshopName = Workshop.Name;
-        else
-            NavigationManager.NavigateTo($"Account/Login");
+        UserInfoState userState = await UserInfoState;
+        WorkshopName = userState.WorkshopName;
     }
-
 
     private Task ToggleDrawer()
     {

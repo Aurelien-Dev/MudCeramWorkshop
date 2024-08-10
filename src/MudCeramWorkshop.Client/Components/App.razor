@@ -19,13 +19,15 @@
 
 </html>
 @code {
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [Inject] public AuthenticationStateProvider authenticationStateProvider { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
+    // [CascadingParameter(Name = "WorkshopName")] public string WorkshopName { get; set; }
 
     private IComponentRenderMode? RenderModeForPage;
     private string BgBodyClass = string.Empty;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         if (HttpContext.Request.Path.StartsWithSegments("/Account"))
         {
@@ -34,10 +36,23 @@
         }
         else
         {
-            RenderModeForPage = InteractiveServer;
+            RenderModeForPage = new InteractiveServerRenderMode(false);
             BgBodyClass = string.Empty;
         }
 
-        return base.OnInitializedAsync();
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Get the Fullname claim
+        // WorkshopName = user.FindFirst("WorkshopName").Value;
+        var workshopId = user.FindFirst("WorkshopId");
+
+
+
+        // await localStorage.SetItemAsync("WorkshopName", workshopName);
+        // await localStorage.SetItemAsync("WorkshopId", workshopId);
+
+        if (!user.Identity.IsAuthenticated && !HttpContext.Request.Path.StartsWithSegments("/Account"))
+            NavigationManager.NavigateTo($"Account/Login");
     }
 }

@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Components
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Client.Utils
 @using MudCeramWorkshop.Data.Domain.Models.Identity
 
 @inherits CustomComponentBase
@@ -120,10 +121,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        UserInfoState userState = await UserInfoState;
+        
         await base.OnInitializedAsync();
         if (Id is not null)
-            product = await productRepository.Get(Id.Value, Workshop.Id);
+            product = await productRepository.Get(Id.Value, userState.WorkshopId);
         else
-            product = new Product(Workshop.Id, string.Empty, string.Empty);
+            product = new Product(userState.WorkshopId, string.Empty, string.Empty);
     }
 }
