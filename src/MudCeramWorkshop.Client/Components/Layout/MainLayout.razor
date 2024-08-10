@@ -7,7 +7,7 @@
 @using MudCeramWorkshop.Client.Utils.ComponentBase
 @using MudCeramWorkshop.Data.Domain.InterfacesWorker
 
-@inherits CustomLayoutComponentBase
+@inherits LayoutComponentBase
 @attribute [Authorize]
 
 <MudThemeProvider />
@@ -42,9 +42,10 @@
 
 
 @code {
-    [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; } = default!;
 
-    public string WorkshopName { get; set; }
+    public string WorkshopName { get; set; } = string.Empty;
     bool _drawerOpen = true;
 
     protected override async Task OnInitializedAsync()

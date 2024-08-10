@@ -75,7 +75,7 @@ builder.Services.ConfigureApplicationCookie(op => op.Events.OnRedirectToLogin = 
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddCascadingValue(p => p.GetService<UserService>().GetUserState());
+builder.Services.AddCascadingValue(p => p.GetService<UserService>()?.GetUserState());
 
 var app = builder.Build();
 

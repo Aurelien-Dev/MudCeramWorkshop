@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
 namespace MudCeramWorkshop.Client.Utils
 {
@@ -10,7 +11,14 @@ namespace MudCeramWorkshop.Client.Utils
             var user = authState.User;
 
             string? wName = user.FindFirst("WorkshopName")?.Value;
-            int? wId = user.FindFirst("WorkshopId") is null ? null : Convert.ToInt16(user.FindFirst("WorkshopId").Value);
+            int? wId = null;
+
+            Claim? claimWId = user.FindFirst("WorkshopId");
+            if (claimWId != null)
+                wId = Convert.ToInt16(claimWId.Value);
+
+            if (user.Identity is null)
+                throw new InvalidOperationException();
 
             return new UserInfoState(wName, wId, user.Identity.IsAuthenticated);
         }

@@ -21,8 +21,8 @@
 </html>
 @code {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
-    [CascadingParameter] public Task<UserInfoState> UserState { get; set; }
-    [Inject] public NavigationManager NavigationManager { get; set; }
+    [CascadingParameter] public Task<UserInfoState> UserState { get; set; } = default!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
 
 
     private IComponentRenderMode? RenderModeForPage;

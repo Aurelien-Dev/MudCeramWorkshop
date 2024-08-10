@@ -10,7 +10,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
         [Inject] public IHttpClientFactory HttpClientFactory { get; set; } = default!;
         [Inject] public ISnackbar Snackbar { get; set; } = default!;
 
-        [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; }
+        [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; } = default!;
 
 
 
