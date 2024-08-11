@@ -1,5 +1,4 @@
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +8,15 @@ using MudCeramWorkshop.Client.Components.Account;
 using MudCeramWorkshop.Client.Routes;
 using MudCeramWorkshop.Client.Utils;
 using MudCeramWorkshop.Data.Domain.Models.Identity;
-using MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine;
 using MudCeramWorkshop.Data.Repository;
+using MudExtensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
+builder.Services.AddMudExtensions();
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();

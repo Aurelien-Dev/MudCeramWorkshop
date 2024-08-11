@@ -19,6 +19,7 @@ public static class DependencyInjection
         services.AddTransient<IWorkshopRepository, WorkshopRepository>();
         services.AddTransient<IImageInstructionRepository, ImageInstructionRepository>();
         services.AddTransient<IProductFiringRepository, ProductFiringRepository>();
+        services.AddTransient<IProductMaterialRepository, ProductMaterialRepository>();
         
 
         //Workers

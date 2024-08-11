@@ -1,12 +1,15 @@
-﻿<MudDialog>
+﻿@using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
+
+<MudDialog>
     <DialogContent>
-        <MudSelectExtended T="Firing" MultiSelection="true" ItemCollection="Firings" SearchBox="true" @bind-SelectedValues="SelectedFirings" @bind-Value="value" ValuePresenter="ValuePresenter.Chip" ChipCloseable="true"
-                           SearchBoxAutoFocus="true" SearchFunc="@(new Func<Firing, string, bool>(SearchItems))"
-                           Label="Cuissons" SearchBoxPlaceholder="Recherhe"
+        <MudSelectExtended T="Material" MultiSelection="true" ItemCollection="Materials" SearchBox="true" @bind-SelectedValues="SelectedMaterials" @bind-Value="value" ValuePresenter="ValuePresenter.Chip" ChipCloseable="true"
+                           SearchBoxAutoFocus="true" SearchFunc="@(new Func<Material, string, bool>(SearchItems))"
+                           Label="Materiaux" SearchBoxPlaceholder="Recherhe"
                            AnchorOrigin="Origin.TopCenter" TransformOrigin="Origin.BottomCenter" Variant="Variant.Outlined"
                            SearchBoxClearable="true"
                            MultiSelectionTextFunc="@GetMultiSelectionText">
         </MudSelectExtended>
+
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -16,29 +19,29 @@
 
 @code {
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
-    [Inject] public IFiringRepository FiringRepository { get; set; }
+    [Inject] public IMaterialRepository MaterialRepository { get; set; }
 
-    ICollection<Firing> Firings = new List<Firing>();
-    private IEnumerable<Firing> SelectedFirings { get; set; } = new HashSet<Firing>() {  };
-    
-    Firing value { get; set; }
+    ICollection<Material> Materials = new List<Material>();
+    private IEnumerable<Material> SelectedMaterials { get; set; } = new HashSet<Material>() { };
 
-    Func<Firing, string> converter = p => p?.Name;
+    Material value { get; set; }
+
+
 
     protected override async Task OnInitializedAsync()
     {
-        Firings = await FiringRepository.GetAll();
+        Materials = await MaterialRepository.GetAll();
     }
 
-    private string? GetMultiSelectionText(List<Firing> selectedValues)
+    private string? GetMultiSelectionText(List<Material> selectedValues)
     {
         if (!selectedValues.Any())
             return null;
 
-        return string.Join(", ", selectedValues.Select(m => $"{m.Name}"));
+        return string.Join(", ", selectedValues.Select(m => $"{m.Reference} - {m.Name}"));
     }
 
-    private bool SearchItems(Firing value, string searchString)
+    private bool SearchItems(Material value, string searchString)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true; // Si la chaîne de recherche est vide, on considère que l'élément correspond.
@@ -50,7 +53,7 @@
         return searchWords.All(word => value.StringSearch().Contains(word, StringComparison.OrdinalIgnoreCase));
     }
 
-    private void Submit() => MudDialog.Close(DialogResult.Ok(SelectedFirings));
+    private void Submit() => MudDialog.Close(DialogResult.Ok(SelectedMaterials));
 
     private void Cancel() => MudDialog.Cancel();
 }

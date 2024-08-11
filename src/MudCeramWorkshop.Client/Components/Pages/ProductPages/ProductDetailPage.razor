@@ -26,7 +26,7 @@
             </MudGrid>
 
             <MudGrid Spacing="1">
-                <MudItem md="5" xs="12">
+                <MudItem md="6" xs="12">
                     <MudPaper Class="pa-4 mud-height-full" MinHeight="600px">
 
                         <MudCarousel Style="height:60%" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object"
@@ -59,7 +59,7 @@
 
                     </MudPaper>
                 </MudItem>
-                <MudItem md="7" xs="12">
+                <MudItem md="6" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
                         <MudText Typo="Typo.overline">Informations</MudText>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
@@ -80,12 +80,12 @@
 
             <MudGrid Spacing="1">
                 <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
-                    <MudPaper Class="pa-4">
-
+                    <MudPaper Class="pa-0">
+                        <AssociationMaterial Product="product" />
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
-                    <MudPaper Class="pa-4">
+                    <MudPaper Class="pa-0">
 
                         <AssociationFiring Product="product" />
 

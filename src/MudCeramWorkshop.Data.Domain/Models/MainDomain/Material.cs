@@ -96,8 +96,13 @@ public class Material
         }
     }
 
+    public override string ToString()
+    {
+        return $"{Reference} - {Name}";
+    }
+
     public string StringSearch()
     {
-        return $"{Reference}{Name}{Cost}{Comment}{UniteMesure}";
+        return $"{Reference} {Name} {Cost} {Comment} {UniteMesure}";
     }
 }

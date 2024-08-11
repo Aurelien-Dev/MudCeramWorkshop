@@ -1,4 +1,5 @@
-﻿using MudCeramWorkshop.Data.Domain.CustomDataAnotation;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MudCeramWorkshop.Data.Domain.CustomDataAnotation;
 
 namespace MudCeramWorkshop.Data.Domain.Models.MainDomain;
 
@@ -39,9 +40,13 @@ public class Firing
     /// </summary>
     public ICollection<ProductFiring> ProductFiring { get; set; } = new List<ProductFiring>();
 
-    public Firing Clone()
+    public override string ToString()
     {
-        //Both Cloned and Existing Object Point to the Same Memory Location of the Address Object
-        return (Firing)this.MemberwiseClone();
+        return Name;
+    }
+
+    public string StringSearch()
+    {
+        return Name;
     }
 }
