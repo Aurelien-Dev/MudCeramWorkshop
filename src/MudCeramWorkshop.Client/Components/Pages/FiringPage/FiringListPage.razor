@@ -3,6 +3,7 @@
 @using System.Globalization
 @using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Client.Utils.Extension
 @using MudCeramWorkshop.Data.Domain.InterfacesRepository
 @using MudCeramWorkshop.Data.Domain.Models.MainDomain
 @using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
@@ -37,7 +38,11 @@
             <PropertyColumn Property="x => x.Name" Title="Name" />
             <PropertyColumn Property="x => x.Duration" Title="Duration" />
             <PropertyColumn Property="x => x.TotalKwH" Title="TotalKwH" />
-            <PropertyColumn Property="x => x.CostKwH" Title="CostKwH" />
+            <PropertyColumn Property="x => x.CostKwH" Title="CostKwH">
+                <CellTemplate>
+                    @(context.Item.CostKwH.ToStringMonetary(CurrentCultur))
+                </CellTemplate>
+            </PropertyColumn>
 
             <TemplateColumn Sortable="false">
                 <CellTemplate>

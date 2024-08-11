@@ -21,7 +21,8 @@ public class GenericRepository<TEntity, TId>(ApplicationDbContext context) : IGe
 
     public async Task Add(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
+        await context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);  
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task Update(TEntity entity, CancellationToken cancellationToken = default)
@@ -30,10 +31,10 @@ public class GenericRepository<TEntity, TId>(ApplicationDbContext context) : IGe
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task Delete(TEntity entity)
+    public async Task Delete(TEntity entity, CancellationToken cancellationToken = default)
     {
         context.Set<TEntity>().Remove(entity);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 
 
@@ -41,6 +42,7 @@ public class GenericRepository<TEntity, TId>(ApplicationDbContext context) : IGe
     {
         return await context.SaveChangesAsync(cancellationToken);
     }
+
 
     protected IQueryable<TEntity> AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
     {

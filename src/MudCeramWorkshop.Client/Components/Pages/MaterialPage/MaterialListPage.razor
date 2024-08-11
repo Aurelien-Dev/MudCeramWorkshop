@@ -3,11 +3,12 @@
 @using System.Globalization
 @using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Client.Utils.Extension
 @using MudCeramWorkshop.Data.Domain.InterfacesRepository
 @using MudCeramWorkshop.Data.Domain.Models.MainDomain
 @using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
 
-@inherits MudCeramWorkshop.Client.Utils.ComponentBase.CustomComponentBase
+@inherits CustomComponentBase
 
 
 <MudContainer Class="mt-3 px-8" MaxWidth="MaxWidth.False">
@@ -42,7 +43,7 @@
             <PropertyColumn Property="x => x.Name" Title="Name" />
             <PropertyColumn Property="x => x.Cost" Title="Cost">
                 <CellTemplate>
-                    @($"{context.Item.Cost}/{context.Item.Quantity}{context.Item.UniteMesure}")
+                    @($"{context.Item.Cost.ToStringMonetary(CurrentCultur)}/{context.Item.Quantity}{context.Item.UniteMesure}")
                 </CellTemplate>
             </PropertyColumn>
             <PropertyColumn Property="x => x.Quantity" Title="Quantity" Hidden="true" />
@@ -123,7 +124,7 @@
 
     public async Task CommittedItemChanges(Material item)
     {
-        await MaterialRepository.Update(item);
+        await MaterialRepository.Update(item, ComponentDisposed);
         await GetDatas();
     }
 
@@ -138,7 +139,7 @@
 
         if (!result.HasValue || !result.Value) return;
 
-        await MaterialRepository.Delete(item);
+        await MaterialRepository.Delete(item, ComponentDisposed);
         await GetDatas();
     }
 

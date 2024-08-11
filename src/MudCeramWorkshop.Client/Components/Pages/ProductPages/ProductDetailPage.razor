@@ -16,11 +16,11 @@
 
             <MudGrid Spacing="1">
                 <MudItem md="2" xs="12">
-                    <MudTextField @bind-Value="@product.Reference" Label="Reference"
+                    <MudTextField @bind-Value="@product.Reference" Label="Reference" ShrinkLabel="true"
                                   Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
                 </MudItem>
                 <MudItem md="10" xs="12">
-                    <MudTextField @bind-Value="@product.Name" Label="Name"
+                    <MudTextField @bind-Value="@product.Name" Label="Name" ShrinkLabel="true"
                                   Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
                 </MudItem>
             </MudGrid>
@@ -62,21 +62,21 @@
                 <MudItem md="7" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
                         <MudText Typo="Typo.overline">Informations</MudText>
-                        <MudTextField @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                        <MudTextField @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                        <MudTextField @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                        <MudTextField @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
-                        <MudTextField @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Filled" Lines="5" Margin="margin"></MudTextField>
-                        <MudTextField @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Filled" Lines="5" Margin="margin"></MudTextField>
-                        <MudTextField @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Filled" Lines="5" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
+
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">Update informations</MudButton>
                     </MudPaper>
                 </MudItem>
 
             </MudGrid>
-
 
             <MudGrid Spacing="1">
                 <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
@@ -101,32 +101,44 @@
 @code {
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
     [Inject] IProductRepository productRepository { get; set; } = default!;
+    [Inject] IProductFiringRepository productFiringRepository { get; set; } = default!;
     [Parameter] public int? Id { get; set; } = default!;
 
     #region styling
 
     private readonly Margin margin = Margin.Normal;
+    private bool wasNewProduct = false;
 
     #endregion
 
-    private Product? product = null;
+    private Product product = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserInfoState userState = await UserInfoState;
+
+        await base.OnInitializedAsync();
+        if (Id is not null)
+            product = await productRepository.Get(Id.Value, userState.GetWorkshopId(), ComponentDisposed);
+        else
+        {
+            product = new Product(userState.GetWorkshopId(), string.Empty, string.Empty);
+            wasNewProduct = true;
+        }
+    }
 
     public async Task UpdateProduct()
     {
         if (product is null) return;
 
-        await productRepository.Update(product);
-        NavigationManager.NavigateTo($"Product/{product.Id}");
+        await productRepository.Update(product, ComponentDisposed);
+
+        if (wasNewProduct)
+        {
+            // await Task.Delay(1000);
+            NavigationManager.NavigateTo($"Product/{product.Id}", true);
+            wasNewProduct = false;
+        }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        UserInfoState userState = await UserInfoState;
-        
-        await base.OnInitializedAsync();
-        if (Id is not null)
-            product = await productRepository.Get(Id.Value, userState.GetWorkshopId());
-        else
-            product = new Product(userState.GetWorkshopId(), string.Empty, string.Empty);
-    }
 }

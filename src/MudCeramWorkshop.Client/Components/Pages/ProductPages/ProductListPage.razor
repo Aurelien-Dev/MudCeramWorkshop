@@ -1,8 +1,5 @@
 ﻿@page "/"
 @page "/Products"
-@using Microsoft.Extensions.Localization
-@using System.Globalization
-@using MudCeramWorkshop.Client.Components.Dialogs
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
 @using MudCeramWorkshop.Data.Domain.InterfacesRepository
 @using MudCeramWorkshop.Data.Domain.Models.MainDomain
@@ -15,7 +12,7 @@
 
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
-        @foreach (Product product in products)
+        @foreach (Product product in products.OrderBy(p => p.Name))
         {
             <MudItem xs="12" sm="4" md="3">
                 <MudCard Elevation="2" Style="height:100%">
@@ -41,8 +38,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
+        UserInfoState userState = await UserInfoState;
 
-        products = await productRepository.GetAll();
+        products = await productRepository.GetAll(ComponentDisposed);
     }
 }

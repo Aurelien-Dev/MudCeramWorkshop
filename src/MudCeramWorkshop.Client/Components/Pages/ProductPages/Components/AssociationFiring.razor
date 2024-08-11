@@ -1,64 +1,114 @@
 ﻿@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Client.Utils.Extension
 
 @inherits CustomComponentBase
 
-@if (Product is not null)
+@if (Product is not null && Product.Id is not null)
 {
-    <MudDataGrid @ref="_dataGrid" T="ProductFiring" Items="@Product.ProductFiring" Dense="true" FixedHeader="false"
-                 Height="calc(100vh - 210px)" ReadOnly="false" Class="rounded-t-11"
+    <MudDataGrid @ref="_dataGrid" T="ProductFiring" Items="@ProductFirings" Dense="true" FixedHeader="false" Elevation="0" Bordered="true"
+                 ReadOnly="false" Class="rounded-t-11"
                  Virtualize="true"
                  EditDialogOptions="new DialogOptions(){ NoHeader = true }"
-                 EditMode="DataGridEditMode.Form"
-                 EditTrigger="DataGridEditTrigger.Manual"
+                 EditMode="DataGridEditMode.Cell"
                  CommittedItemChanges="@CommittedItemChanges">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Cuissons</MudText>
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="Add" OnClick="OpenDialog"> </MudIconButton>
+        </ToolBarContent>
 
         <Columns>
-            <PropertyColumn Property="x => x.Firing.Name" Title="Name">
+            <PropertyColumn Property="x => x.Firing.Name" Title="Name" Editable="false">
                 <CellTemplate>
                     @($"{context.Item.Firing.Name} ({context.Item.Firing.TotalKwH} Kw/h)")
                 </CellTemplate>
             </PropertyColumn>
-            <PropertyColumn Property="x => x.NumberProducts" Title="CostKwH" />
-            <PropertyColumn Property="x => x.CostKwH" Title="CostKwH">
+            <PropertyColumn Property="x => x.NumberProducts" Title="NumberProducts" />
+            <PropertyColumn Property="x => x.CostKwH" Title="CostKwH" Editable="false">
                 <CellTemplate>
-                    @($"{context.Item.CostKwH * context.Item.Firing.TotalKwH / context.Item.NumberProducts}")
+                    @($"{(context.Item.CostKwH * context.Item.Firing.TotalKwH / context.Item.NumberProducts).ToStringMonetary(CurrentCultur)}")
                 </CellTemplate>
             </PropertyColumn>
 
-            <TemplateColumn Sortable="false">
+            <TemplateColumn Sortable="false" Editable="false">
                 <CellTemplate>
                     <MudStack Row="true">
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
                         <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
-        <PagerContent>
-            <MudDataGridPager T="Firing" PageSizeOptions="@([25, 50, 100])" />
-        </PagerContent>
     </MudDataGrid>
 }
 
 @code {
-    [Parameter] public Product? Product { get; set; } = default!;
+    [Parameter] public Product Product { get; set; } = default!;
 
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
-    [Inject] IFiringRepository FiringRepository { get; set; } = default!;
+    [Inject] IProductFiringRepository ProductFiringRepository { get; set; } = default!;
+    [Inject] IDialogService DialogService { get; set; } = default!;
+
+    public ICollection<ProductFiring> ProductFirings { get; set; }
 
     MudDataGrid<ProductFiring> _dataGrid = null!;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetDatas();
+        }
+    }
 
+    public async Task GetDatas()
+    {
+        if (Product.Id is not null)
+            ProductFirings = await ProductFiringRepository.GetAll(Product.Id.Value, ComponentDisposed);
+
+            StateHasChanged();
+    }
 
     public async Task CommittedItemChanges(ProductFiring item)
     {
+        await ProductFiringRepository.Update(item, ComponentDisposed);
     }
 
     public async Task DeleteItem(ProductFiring item)
     {
+        bool? result = await Dialog.ShowMessageBox("Warning", "Deleting can not be undone!",
+             yesText: "Delete!", cancelText: "Cancel",
+             options: new DialogOptions()
+                 {
+                     CloseOnEscapeKey = true
+                 });
+
+        if (!result.HasValue || !result.Value) return;
+
+        await ProductFiringRepository.Delete(item, ComponentDisposed);
+        await GetDatas();
     }
 
-    public async Task OpenDialogNewItem()
+
+    public async Task OpenDialog()
     {
+        var options = new DialogOptions
+            {
+                BackgroundClass = "my-custom-class",
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+
+            };
+
+        var dialog = await DialogService.ShowAsync<DialogProductFiring>("Simple Dialog", options);
+        var result = await dialog.Result;
+
+        if (result is not null && result.Data is not null)
+            foreach (var item in (result.Data as ICollection<Firing>))
+            {
+                var pFire = new ProductFiring(item.Id, Product.Id.Value, item.TotalKwH, item.CostKwH);
+                await ProductFiringRepository.Update(pFire, ComponentDisposed);
+            }
+
+        await GetDatas();
     }
 }

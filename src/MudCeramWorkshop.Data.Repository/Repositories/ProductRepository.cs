@@ -21,8 +21,6 @@ public class ProductRepository : GenericRepository<Product, int>, IProductReposi
             .Include(p => p.ImageInstructions.OrderByDescending(i => i.IsFavoriteImage))
             .Include(p => p.ProductMaterial)
             .ThenInclude(x => x.Material)
-            .Include(p => p.ProductFiring)
-            .ThenInclude(x => x.Firing)
             .FirstAsyncWait(cancellationToken);
     }
 

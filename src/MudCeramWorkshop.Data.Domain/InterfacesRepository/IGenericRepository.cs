@@ -37,7 +37,7 @@ public interface IGenericRepository<T, TId> where T : class
     /// </summary>
     /// <param name="entity">The entity to delete.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
-    Task Delete(T entity);
+    Task Delete(T entity, CancellationToken cancellationToken = default);
 
     Task<int> SaveChangeAsync(CancellationToken cancellationToken = default);
 }

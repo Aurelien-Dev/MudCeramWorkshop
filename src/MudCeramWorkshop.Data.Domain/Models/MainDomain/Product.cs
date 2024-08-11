@@ -1,6 +1,6 @@
-﻿using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums;
+﻿using MudCeramWorkshop.Data.Domain.CustomDataAnotation;
+using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums;
 using MudCeramWorkshop.Data.Domain.Models.WorkshopDomaine;
-using MudCeramWorkshop.Data.Domain.CustomDataAnotation;
 using System.Xml.Serialization;
 
 namespace MudCeramWorkshop.Data.Domain.Models.MainDomain;
@@ -24,13 +24,13 @@ public class Product
     /// Gets or sets the reference code of the product.
     /// </summary>
     [CeramRequired]
-    public string Reference { get; set; }
+    public string Reference { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the name of the product.
     /// </summary>
     [CeramRequired]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the description of the product.
@@ -97,7 +97,10 @@ public class Product
     /// </summary>
     public Workshop Workshop { get; set; } = default!;
 
-
+    public Product()
+    {
+            
+    }
     /// <summary>
     /// Initializes a new instance of the <see cref="Product"/> class with the specified name and reference.
     /// </summary>

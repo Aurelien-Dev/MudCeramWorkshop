@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Globalization;
 
 namespace MudCeramWorkshop.Client.Utils.ComponentBase
 {
@@ -12,7 +13,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
 
         [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; } = default!;
 
-
+        protected CultureInfo CurrentCultur => CultureInfo.CreateSpecificCulture("fr-fr");
 
         protected CancellationToken ComponentDisposed => (_cancellationTokenSource ??= new()).Token;
         private CancellationTokenSource? _cancellationTokenSource;

@@ -1,0 +1,35 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudSelect T="Firing" ToStringFunc="@converter" Label="Type de cuissons" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="SelectedFirings">
+            @foreach (var fire in Firings)
+            {
+                <MudSelectItem T="Firing" Value="@fire" >@fire.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+    [Inject] public IFiringRepository FiringRepository { get; set; }
+
+    ICollection<Firing> Firings = new List<Firing>();
+    private IEnumerable<Firing> SelectedFirings { get; set; } = new HashSet<Firing>() {  };
+    
+    Firing value { get; set; }
+
+    Func<Firing, string> converter = p => p?.Name;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Firings = await FiringRepository.GetAll();
+    }
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(SelectedFirings));
+
+    private void Cancel() => MudDialog.Cancel();
+}

@@ -11,7 +11,7 @@ public class ProductFiring
     /// Gets or sets the ID of the association.
     /// </summary>
     [CeramRequired]
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the firing used in the association.
@@ -80,6 +80,23 @@ public class ProductFiring
     {
         IdFiring = idFiring;
         IdProduct = idProduct;
+        TotalKwH = totalKwH;
+        CostKwH = costKwH;
+        NumberProducts = 1;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProductFiring"/> class with the specified firing, 
+    /// product, total kWh, and cost per kWh, assuming only one product can be placed in the firing.
+    /// </summary>
+    /// <param name="idFiring">The ID of the firing used in the association.</param>
+    /// <param name="idProduct">The ID of the product used in the association.</param>
+    /// <param name="totalKwH">The total kWh used for the firing.</param>
+    /// <param name="costKwH">The cost per kWh for the firing.</param
+    public ProductFiring(Firing firing, Product product, double totalKwH, double costKwH)
+    {
+        Firing = firing;
+        Product = product;
         TotalKwH = totalKwH;
         CostKwH = costKwH;
         NumberProducts = 1;
