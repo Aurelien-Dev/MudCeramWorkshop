@@ -61,7 +61,7 @@
     [Inject] IProductMaterialRepository ProductMaterialRepository { get; set; } = default!;
     [Inject] IDialogService DialogService { get; set; } = default!;
 
-    public ICollection<ProductMaterial> ProductMaterials { get; set; }
+    public ICollection<ProductMaterial> ProductMaterials { get; set; } = new List<ProductMaterial>();
 
     MudDataGrid<ProductMaterial> _dataGrid = null!;
 
@@ -116,9 +116,9 @@
         var result = await dialog.Result;
 
         if (result is not null && result.Data is not null)
-            foreach (var item in (result.Data as ICollection<Material>))
+            foreach (var item in (ICollection<Material>)result.Data)
             {
-                var pMat = new ProductMaterial(item.Id, Product.Id.Value, 500, item.Cost);
+                var pMat = new ProductMaterial(item.Id, Product.Id!.Value, 500, item.Cost);
                 await ProductMaterialRepository.Update(pMat, ComponentDisposed);
             }
 

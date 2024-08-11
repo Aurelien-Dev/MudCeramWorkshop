@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudSelectExtended T="Firing" MultiSelection="true" ItemCollection="Firings" SearchBox="true" @bind-SelectedValues="SelectedFirings" @bind-Value="value" ValuePresenter="ValuePresenter.Chip" ChipCloseable="true"
+        <MudSelectExtended T="Firing" MultiSelection="true" ItemCollection="Firings" SearchBox="true" @bind-SelectedValues="SelectedFirings" ValuePresenter="ValuePresenter.Chip" ChipCloseable="true"
                            SearchBoxAutoFocus="true" SearchFunc="@(new Func<Firing, string, bool>(SearchItems))"
                            Label="Cuissons" SearchBoxPlaceholder="Recherhe"
                            AnchorOrigin="Origin.TopCenter" TransformOrigin="Origin.BottomCenter" Variant="Variant.Outlined"
@@ -15,15 +15,13 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
-    [Inject] public IFiringRepository FiringRepository { get; set; }
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+    [Inject] public IFiringRepository FiringRepository { get; set; } = default!;
 
     ICollection<Firing> Firings = new List<Firing>();
-    private IEnumerable<Firing> SelectedFirings { get; set; } = new HashSet<Firing>() {  };
-    
-    Firing value { get; set; }
+    private IEnumerable<Firing> SelectedFirings { get; set; } = new HashSet<Firing>() { };
 
-    Func<Firing, string> converter = p => p?.Name;
+    Func<Firing, string> converter = p => p.Name ?? string.Empty;
 
     protected override async Task OnInitializedAsync()
     {

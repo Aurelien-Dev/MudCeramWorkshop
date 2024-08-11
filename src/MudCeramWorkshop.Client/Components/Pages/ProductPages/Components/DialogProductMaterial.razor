@@ -2,7 +2,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudSelectExtended T="Material" MultiSelection="true" ItemCollection="Materials" SearchBox="true" @bind-SelectedValues="SelectedMaterials" @bind-Value="value" ValuePresenter="ValuePresenter.Chip" ChipCloseable="true"
+        <MudSelectExtended T="Material" MultiSelection="true" ItemCollection="Materials" SearchBox="true" @bind-SelectedValues="SelectedMaterials" ValuePresenter="ValuePresenter.Chip" ChipCloseable="true"
                            SearchBoxAutoFocus="true" SearchFunc="@(new Func<Material, string, bool>(SearchItems))"
                            Label="Materiaux" SearchBoxPlaceholder="Recherhe"
                            AnchorOrigin="Origin.TopCenter" TransformOrigin="Origin.BottomCenter" Variant="Variant.Outlined"
@@ -18,15 +18,11 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
-    [Inject] public IMaterialRepository MaterialRepository { get; set; }
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+    [Inject] public IMaterialRepository MaterialRepository { get; set; } = default!;
 
     ICollection<Material> Materials = new List<Material>();
     private IEnumerable<Material> SelectedMaterials { get; set; } = new HashSet<Material>() { };
-
-    Material value { get; set; }
-
-
 
     protected override async Task OnInitializedAsync()
     {

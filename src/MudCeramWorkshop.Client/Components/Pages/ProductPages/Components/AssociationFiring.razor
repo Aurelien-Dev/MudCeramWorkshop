@@ -48,7 +48,7 @@
     [Inject] IProductFiringRepository ProductFiringRepository { get; set; } = default!;
     [Inject] IDialogService DialogService { get; set; } = default!;
 
-    public ICollection<ProductFiring> ProductFirings { get; set; }
+    public ICollection<ProductFiring> ProductFirings { get; set; } = new List<ProductFiring>();
 
     MudDataGrid<ProductFiring> _dataGrid = null!;
 
@@ -103,9 +103,9 @@
         var result = await dialog.Result;
 
         if (result is not null && result.Data is not null)
-            foreach (var item in (result.Data as ICollection<Firing>))
+            foreach (var item in (ICollection<Firing>)result.Data)
             {
-                var pFire = new ProductFiring(item.Id, Product.Id.Value, item.TotalKwH, item.CostKwH);
+                var pFire = new ProductFiring(item.Id, Product.Id!.Value, item.TotalKwH, item.CostKwH);
                 await ProductFiringRepository.Update(pFire, ComponentDisposed);
             }
 
