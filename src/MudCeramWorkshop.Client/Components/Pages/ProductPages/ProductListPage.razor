@@ -40,6 +40,6 @@
     {
         UserInfoState userState = await UserInfoState;
 
-        products = await productRepository.GetAll(ComponentDisposed);
+        products = await productRepository.GetAll(userState.GetWorkshopId(), ComponentDisposed);
     }
 }

@@ -5,7 +5,7 @@
 
 @if (Product is not null && Product.Id is not null)
 {
-    <MudDataGrid @ref="_dataGrid" T="ProductMaterial" Items="@ProductMaterials" Dense="true" FixedHeader="false" Elevation="0" Bordered="true" SortMode="SortMode.None"
+    <MudDataGrid T="ProductMaterial" Items="@ProductMaterials" Dense="true" FixedHeader="false" Elevation="0" Bordered="true" SortMode="SortMode.None"
                  ReadOnly="false" Class="ma-0 pa=0"
                  Virtualize="true"
                  EditDialogOptions="new DialogOptions(){ NoHeader = true }"
@@ -62,8 +62,6 @@
     [Inject] IDialogService DialogService { get; set; } = default!;
 
     public ICollection<ProductMaterial> ProductMaterials { get; set; } = new List<ProductMaterial>();
-
-    MudDataGrid<ProductMaterial> _dataGrid = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

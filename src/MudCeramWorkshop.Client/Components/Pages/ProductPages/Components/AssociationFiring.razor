@@ -5,7 +5,7 @@
 
 @if (Product is not null && Product.Id is not null)
 {
-    <MudDataGrid @ref="_dataGrid" T="ProductFiring" Items="@ProductFirings" Dense="true" FixedHeader="false" Elevation="0" Bordered="true"
+    <MudDataGrid T="ProductFiring" Items="@ProductFirings" Dense="true" FixedHeader="false" Elevation="0" Bordered="true"
                  ReadOnly="false" Class="rounded-t-11"
                  Virtualize="true"
                  EditDialogOptions="new DialogOptions(){ NoHeader = true }"
@@ -50,8 +50,6 @@
 
     public ICollection<ProductFiring> ProductFirings { get; set; } = new List<ProductFiring>();
 
-    MudDataGrid<ProductFiring> _dataGrid = null!;
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -65,7 +63,7 @@
         if (Product.Id is not null)
             ProductFirings = await ProductFiringRepository.GetAll(Product.Id.Value, ComponentDisposed);
 
-            StateHasChanged();
+        StateHasChanged();
     }
 
     public async Task CommittedItemChanges(ProductFiring item)

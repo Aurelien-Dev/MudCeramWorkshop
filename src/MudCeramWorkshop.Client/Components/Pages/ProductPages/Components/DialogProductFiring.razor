@@ -21,8 +21,6 @@
     ICollection<Firing> Firings = new List<Firing>();
     private IEnumerable<Firing> SelectedFirings { get; set; } = new HashSet<Firing>() { };
 
-    Func<Firing, string> converter = p => p.Name ?? string.Empty;
-
     protected override async Task OnInitializedAsync()
     {
         Firings = await FiringRepository.GetAll();
@@ -45,7 +43,7 @@
         var searchWords = searchString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         // Vérifie que chaque mot est contenu dans la chaîne de recherche du Material
-        return searchWords.All(word => value.StringSearch().Contains(word, StringComparison.OrdinalIgnoreCase));
+        return Array.TrueForAll(searchWords, word => value.StringSearch().Contains(word, StringComparison.OrdinalIgnoreCase));
     }
 
     private void Submit() => MudDialog.Close(DialogResult.Ok(SelectedFirings));
