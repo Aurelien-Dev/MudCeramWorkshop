@@ -14,7 +14,11 @@ public class ImageInstructionRepository : GenericRepository<ImageInstruction, in
         this.context = context;
     }
 
-    public async Task<IEnumerable<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default) => await context.ImageInstruction
+    public async Task<IList<ImageInstruction>> GetAll(int productId, CancellationToken cancellationToken = default) => await context.ImageInstruction
+        .Where(i => i.IdProduct == productId)
+        .ToListAsyncWait(cancellationToken);
+
+    public async Task<ICollection<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default) => await context.ImageInstruction
         .Where(i => i.FileLocation == EnumLocation.Server)
         .ToListAsyncWait(cancellationToken);
 
@@ -40,7 +44,7 @@ public class ImageInstructionRepository : GenericRepository<ImageInstruction, in
         {
             newFavorite.IsFavoriteImage = false;
             context.Update(newFavorite);
-            
+
             await context
                 .SaveChangesAsync(cancellationToken)
                 .WaitAsync(cancellationToken)

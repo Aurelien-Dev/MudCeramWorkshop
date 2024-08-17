@@ -19,7 +19,7 @@
             <MudStack Row="true" AlignItems="AlignItems.Center">
                 <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" ValueChanged="@(s=>OnSearch(s))" Clearable="true"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
-                <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="delete" OnClick="OpenDialogNewItem"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="Add" OnClick="OpenDialogNewItem"></MudIconButton>
             </MudStack>
         </Header>
         <ChildContent>

@@ -1,0 +1,126 @@
+﻿@inherits CustomComponentBase
+
+
+<MudItem md="6" xs="12">
+
+    <MudPaper Class="pa-0 mud-height-full" MinHeight="600px">
+
+        <MudStack Class="mud-height-full">
+            <MudCarousel TData="ImageInstruction" @ref="_carousel" Style="height:70%" ItemsSource="@ImageInstructions"
+                         ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false"
+                         SelectedIndexChanged="CarouselIndexChanged"
+                         BulletsColor="Color.Primary" BulletsPosition="Position.Bottom">
+                <ItemTemplate>
+                    <div class="d-flex" style="height:100%">
+                        <MudImage Src="@(context.Url)"
+                                  ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
+                                  Style="width:100%; height:100%"
+                                  Class="rounded-t-lg" />
+                    </div>
+                </ItemTemplate>
+            </MudCarousel>
+
+            <MudCard Elevation="0">
+                <MudCardHeader Class="px-3 py-0">
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.subtitle2">Commentaire</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Default" OnClick="AddImageDialog" />
+                        <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Default" OnClick="AddImageDialog" />
+                        @if (ImageInstructions.Any())
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error" OnClick="DeleteImage" />
+                        }
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent Class="px-3 py-0">
+                    <MudText>
+                        @SelectedImageComment
+                    </MudText>
+                </MudCardContent>
+            </MudCard>
+
+
+        </MudStack>
+    </MudPaper>
+</MudItem>
+
+@code {
+    [Parameter] public int? ProductId { get; set; } = default!;
+    [Inject] public IImageInstructionRepository ImageInstructionRepository { get; set; } = default!;
+    [Inject] IDialogService DialogService { get; set; } = default!;
+
+    public IList<ImageInstruction> ImageInstructions { get; set; } = new List<ImageInstruction>();
+
+    public string SelectedImageComment { get; set; }
+    private MudCarousel<ImageInstruction> _carousel;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetDatas();
+        }
+    }
+
+    public async Task GetDatas()
+    {
+        if (ProductId is not null)
+            ImageInstructions = await ImageInstructionRepository.GetAll(ProductId.Value);
+
+        if (ImageInstructions.Any())
+            _carousel.MoveTo(0);
+
+        StateHasChanged();
+    }
+
+    public async Task AddImageDialog()
+    {
+        var options = new DialogOptions
+            {
+                BackgroundClass = "my-custom-class",
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+
+            };
+
+        var dialog = await DialogService.ShowAsync<DialogImageAssociation>("Choisir les materiaux à ajouter", options);
+        var result = await dialog.Result;
+
+        if (result.Canceled) return;
+
+        var img = new ImageInstruction()
+            {
+                IdProduct = ProductId.Value,
+                Url = "https://ucarecdn.com/40ff508f-01e5-4417-bee0-20633efc6147/",
+                Comment = LoremNET.Lorem.Words(35, 45)
+            };
+
+        await ImageInstructionRepository.Add(img);
+        ImageInstructions.Add(img);
+
+        _carousel.MoveTo(ImageInstructions.Count - 1);
+        StateHasChanged();
+    }
+
+    public async Task DeleteImage()
+    {
+        if (!ImageInstructions.Any()) return;
+
+        ImageInstruction imageToDelete = _carousel.ItemsSource.ElementAt(_carousel.SelectedIndex);
+        await ImageInstructionRepository.Delete(imageToDelete);
+        ImageInstructions.RemoveAt(_carousel.SelectedIndex);
+
+        if (ImageInstructions.Any())
+            _carousel.MoveTo(0);
+    }
+
+    public Task CarouselIndexChanged(int index)
+    {
+        SelectedImageComment = ImageInstructions.ElementAt(index).Comment;
+
+        return Task.CompletedTask;
+    }
+}

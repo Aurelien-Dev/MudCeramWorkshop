@@ -18,9 +18,6 @@ public class ProductRepository : GenericRepository<Product, int>, IProductReposi
     {
         return await context.Products
             .Where(p => p.Id == id && p.IdWorkshop == idWorkshop)
-            .Include(p => p.ImageInstructions.OrderByDescending(i => i.IsFavoriteImage))
-            .Include(p => p.ProductMaterial)
-            .ThenInclude(x => x.Material)
             .FirstAsyncWait(cancellationToken);
     }
 

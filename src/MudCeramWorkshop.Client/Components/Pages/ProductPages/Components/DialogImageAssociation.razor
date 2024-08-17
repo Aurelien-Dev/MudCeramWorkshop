@@ -1,0 +1,85 @@
+﻿@using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Style="width: 100%">
+            <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+                           @ref="@_fileUpload"
+                           Accept=".jpeg, .jpg, .png"
+                           OnFilesChanged="OnInputFileChanged"
+                           MaximumFileCount="1"
+                           AppendMultipleFiles
+                           Hidden="@false"
+                           InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
+                           InputStyle="opacity:0"
+                           tabindex="-1"
+                           @ondrop="@ClearDragClass"
+                           @ondragenter="@SetDragClass"
+                           @ondragleave="@ClearDragClass"
+                           @ondragend="@ClearDragClass">
+                <ActivatorContent>
+                    <MudPaper Height="200px"
+                              Outlined="true"
+                              Class="@_dragClass">
+                        <MudText Typo="Typo.h6">
+                            Drag and drop files here or click
+                        </MudText>
+                        @foreach (var file in _fileNames)
+                        {
+                            <MudChip T="string"
+                                     Color="Color.Dark"
+                                     Text="@file"
+                                     tabindex="-1" />
+                        }
+                    </MudPaper>
+                </ActivatorContent>
+            </MudFileUpload>
+            <MudTextField ShrinkLabel="true" @bind-Value="@imageInstruction.Comment" Label="Commentaire" Variant="Variant.Text" Lines="3" Margin=" Margin.Dense"></MudTextField>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+
+    private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
+    private string _dragClass = DefaultDragClass;
+    private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
+    private readonly List<string> _fileNames = new();
+
+    public ImageInstruction imageInstruction { get; set; } = new ImageInstruction();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        foreach (var file in files)
+        {
+            _fileNames.Add(file.Name);
+        }
+    }
+
+    private async Task ClearAsync()
+    {
+        await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
+        _fileNames.Clear();
+        ClearDragClass();
+    }
+
+    private Task OpenFilePickerAsync() => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    private void ClearDragClass() => _dragClass = DefaultDragClass;
+    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
+
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(imageInstruction));
+
+    private void Cancel() => MudDialog.Cancel();
+}

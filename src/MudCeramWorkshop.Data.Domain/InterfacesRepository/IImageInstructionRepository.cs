@@ -9,7 +9,14 @@ public interface IImageInstructionRepository : IGenericRepository<ImageInstructi
     /// </summary>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>A task representing the asynchronous operation, with a result containing an IEnumerable of ImageInstruction objects with a FileLocation set to 'Server'.</returns>
-    Task<IEnumerable<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default);
+    Task<IList<ImageInstruction>> GetAll(int productId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves all ImageInstruction objects that have not been exported, i.e., their FileLocation is set to 'Server'.
+    /// </summary>
+    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
+    /// <returns>A task representing the asynchronous operation, with a result containing an IEnumerable of ImageInstruction objects with a FileLocation set to 'Server'.</returns>
+    Task<ICollection<ImageInstruction>> GetAllNonExported(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the favorite ImageInstruction for a specified product, or the first ImageInstruction associated with the product if there is no favorite.

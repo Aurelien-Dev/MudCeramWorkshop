@@ -26,39 +26,9 @@
             </MudGrid>
 
             <MudGrid Spacing="1">
-                <MudItem md="6" xs="12">
-                    <MudPaper Class="pa-4 mud-height-full" MinHeight="600px">
 
-                        <MudCarousel Style="height:60%" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object"
-                                     BulletsColor="Color.Primary" BulletsPosition="Position.Bottom">
-                            <MudCarouselItem Transition="Transition.Slide">
-                                <div class="d-flex" style="height:100%">
-                                    <MudImage Src="https://ucarecdn.com/40ff508f-01e5-4417-bee0-20633efc6147/"
-                                              ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
-                                              Style="width:100%; height:100%"
-                                              Class="rounded-lg" />
-                                </div>
-                            </MudCarouselItem>
-                            <MudCarouselItem Transition="Transition.Slide">
-                                <div class="d-flex" style="height:100%">
-                                    <MudImage Src="https://fotorama.io/fit/frog.png"
-                                              ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
-                                              Style="width:100%; height:100%"
-                                              Class="rounded-lg" />
-                                </div>
-                            </MudCarouselItem>
-                            <MudCarouselItem Transition="Transition.Slide">
-                                <div class="d-flex" style="height:100%">
-                                    <MudImage Src="https://ucarecdn.com/8e62227c-5acb-4603-abb9-ac0643b7b478/"
-                                              ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
-                                              Style="width:100%; height:100%"
-                                              Class="rounded-lg" />
-                                </div>
-                            </MudCarouselItem>
-                        </MudCarousel>
+                <AssociationImage ProductId="product.Id" />
 
-                    </MudPaper>
-                </MudItem>
                 <MudItem md="6" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
                         <MudText Typo="Typo.overline">Informations</MudText>
@@ -72,25 +42,20 @@
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">Update informations</MudButton>
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(wasNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
                     </MudPaper>
                 </MudItem>
 
             </MudGrid>
 
             <MudGrid Spacing="1">
-                <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
-                    <MudPaper Class="pa-0">
-                        <AssociationMaterial Product="product" />
-                    </MudPaper>
-                </MudItem>
-                <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
-                    <MudPaper Class="pa-0">
 
-                        <AssociationFiring Product="product" />
+                <AssociationMaterial ProductId="product.Id" />
 
-                    </MudPaper>
-                </MudItem>
+
+                <AssociationFiring ProductId="product.Id" />
+
             </MudGrid>
 
         </MudStack>

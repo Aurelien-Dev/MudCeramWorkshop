@@ -3,59 +3,66 @@
 
 @inherits CustomComponentBase
 
-@if (Product is not null && Product.Id is not null)
+
+
+@if (ProductId is not null)
 {
-    <MudDataGrid T="ProductMaterial" Items="@ProductMaterials" Dense="true" FixedHeader="false" Elevation="0" Bordered="true" SortMode="SortMode.None"
-                 ReadOnly="false" Class="ma-0 pa=0"
-                 Virtualize="true"
-                 EditDialogOptions="new DialogOptions(){ NoHeader = true }"
-                 EditMode="DataGridEditMode.Cell"
-                 CommittedItemChanges="@CommittedItemChanges">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Materiaux utilisés</MudText>
-            <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="Add" OnClick="OpenDialog"> </MudIconButton>
-        </ToolBarContent>
-        <Columns>
-            <PropertyColumn Property="x => x.Material.Name" Title="Name" Editable="false">
-                <CellTemplate>
-                    @context.Item.Material.Reference
+    <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
+        <MudPaper Class="pa-0">
+            <MudDataGrid T="ProductMaterial" Items="@ProductMaterials" Dense="true" FixedHeader="false" Elevation="0" Bordered="true" SortMode="SortMode.None"
+                         ReadOnly="false" Class="ma-0 pa=0"
+                         Virtualize="true"
+                         EditDialogOptions="new DialogOptions(){ NoHeader = true }"
+                         EditMode="DataGridEditMode.Cell"
+                         CommittedItemChanges="@CommittedItemChanges">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Materiaux utilisés</MudText>
+                    <MudSpacer />
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="Add" OnClick="OpenDialog"> </MudIconButton>
+                </ToolBarContent>
+                <Columns>
+                    <PropertyColumn Property="x => x.Material.Name" Title="Name" Editable="false">
+                        <CellTemplate>
+                            @context.Item.Material.Reference
 
-                    <MudTooltip Text="@context.Item.Material.Name">
-                        <MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info" Size="Size.Small" />
-                    </MudTooltip>
-                </CellTemplate>
-            </PropertyColumn>
-            <PropertyColumn Property="x => x.Cost" Title="Cost" Editable="false">
-                <CellTemplate>
-                    @((context.Item.Cost / context.Item.Material.Quantity).ToStringMonetary(CurrentCultur)) /@context.Item.Material.UniteMesure.ToString()
-                </CellTemplate>
-            </PropertyColumn>
-            <PropertyColumn Property="x => x.Quantity" Title="Quantity" />
-            <PropertyColumn Property="x => x.Material.Type" Title="Type" Editable="false">
-                <CellTemplate>
-                    @(context.Item.Material.Type.ToString())
-                </CellTemplate>
-            </PropertyColumn>
-            <PropertyColumn Property="x => x.CalculatedCost" Title="CalculatedCost" Editable="false">
-                <CellTemplate>
-                    @($"{(context.Item.CalculatedCost).ToStringMonetary(CurrentCultur)}")
-                </CellTemplate>
-            </PropertyColumn>
+                            <MudTooltip Text="@context.Item.Material.Name">
+                                <MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info" Size="Size.Small" />
+                            </MudTooltip>
+                        </CellTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.Cost" Title="Cost" Editable="false">
+                        <CellTemplate>
+                            @((context.Item.Cost / context.Item.Material.Quantity).ToStringMonetary(CurrentCultur)) /@context.Item.Material.UniteMesure.ToString()
+                        </CellTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.Quantity" Title="Quantity" />
+                    <PropertyColumn Property="x => x.Material.Type" Title="Type" Editable="false">
+                        <CellTemplate>
+                            @(context.Item.Material.Type.ToString())
+                        </CellTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.CalculatedCost" Title="CalculatedCost" Editable="false">
+                        <CellTemplate>
+                            @($"{(context.Item.CalculatedCost).ToStringMonetary(CurrentCultur)}")
+                        </CellTemplate>
+                    </PropertyColumn>
 
-            <TemplateColumn Sortable="false" Editable="false">
-                <CellTemplate>
-                    <MudStack Row="true">
-                        <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
-                    </MudStack>
-                </CellTemplate>
-            </TemplateColumn>
-        </Columns>
-    </MudDataGrid>
+                    <TemplateColumn Sortable="false" Editable="false">
+                        <CellTemplate>
+                            <MudStack Row="true">
+                                <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteItem(context.Item))" />
+                            </MudStack>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+            </MudDataGrid>
+
+        </MudPaper>
+    </MudItem>
 }
 
 @code {
-    [Parameter] public Product Product { get; set; } = default!;
+    [Parameter] public int? ProductId { get; set; } = default!;
 
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
     [Inject] IProductMaterialRepository ProductMaterialRepository { get; set; } = default!;
@@ -73,8 +80,8 @@
 
     public async Task GetDatas()
     {
-        if (Product.Id is not null)
-            ProductMaterials = await ProductMaterialRepository.GetAll(Product.Id.Value, ComponentDisposed);
+        if (ProductId is not null)
+            ProductMaterials = await ProductMaterialRepository.GetAll(ProductId.Value, ComponentDisposed);
 
         StateHasChanged();
     }
@@ -116,7 +123,7 @@
         if (result is not null && result.Data is not null)
             foreach (var item in (ICollection<Material>)result.Data)
             {
-                var pMat = new ProductMaterial(item.Id, Product.Id!.Value, 500, item.Cost);
+                var pMat = new ProductMaterial(item.Id, ProductId!.Value, 500, item.Cost);
                 await ProductMaterialRepository.Update(pMat, ComponentDisposed);
             }
 
