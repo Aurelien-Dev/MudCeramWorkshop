@@ -3,12 +3,9 @@
 <MudDialog>
     <DialogContent>
         <MudStack Style="width: 100%">
-            <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+            <MudFileUpload T="IBrowserFile"
                            @ref="@_fileUpload"
-                           Accept=".jpeg, .jpg, .png"
-                           OnFilesChanged="OnInputFileChanged"
-                           MaximumFileCount="1"
-                           AppendMultipleFiles
+                           FilesChanged="OnInputFileChanged"
                            Hidden="@false"
                            InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
                            InputStyle="opacity:0"
@@ -18,19 +15,13 @@
                            @ondragleave="@ClearDragClass"
                            @ondragend="@ClearDragClass">
                 <ActivatorContent>
-                    <MudPaper Height="200px"
-                              Outlined="true"
+                    <MudPaper Outlined="true"
                               Class="@_dragClass">
                         <MudText Typo="Typo.h6">
                             Drag and drop files here or click
                         </MudText>
-                        @foreach (var file in _fileNames)
-                        {
-                            <MudChip T="string"
-                                     Color="Color.Dark"
-                                     Text="@file"
-                                     tabindex="-1" />
-                        }
+
+                        <MudImage Src="@imageInstruction.UrlMedium" ObjectFit="ObjectFit.Cover" Fluid="true" Elevation="25" Class="rounded-lg" />
                     </MudPaper>
                 </ActivatorContent>
             </MudFileUpload>
@@ -45,41 +36,43 @@
 
 @code {
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+    [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; } = default!;
+    [Inject] private FileUploader fileUploader { get; set; } = default!;
 
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
-    private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
+    private MudFileUpload<IBrowserFile>? _fileUpload;
     private readonly List<string> _fileNames = new();
 
     public ImageInstruction imageInstruction { get; set; } = new ImageInstruction();
+    public string WorkshopName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
+        UserInfoState userState = await UserInfoState;
+        WorkshopName = userState.GetWorkshopName();
     }
 
-    private void OnInputFileChanged(InputFileChangeEventArgs e)
+
+    private async void OnInputFileChanged(IBrowserFile e)
     {
         ClearDragClass();
-        var files = e.GetMultipleFiles();
-        foreach (var file in files)
-        {
-            _fileNames.Add(file.Name);
-        }
+
+        string folderName = WorkshopName.Trim().Replace(' ', '_');
+
+        imageInstruction.UrlMedium = await fileUploader.LoadFileInput(e, folderName);
+        StateHasChanged();
     }
 
-    private async Task ClearAsync()
-    {
-        await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
-        _fileNames.Clear();
-        ClearDragClass();
-    }
-
-    private Task OpenFilePickerAsync() => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
     private void ClearDragClass() => _dragClass = DefaultDragClass;
     private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
 
 
     private void Submit() => MudDialog.Close(DialogResult.Ok(imageInstruction));
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel()
+    {
+        fileUploader.RemoveFileInput(imageInstruction.UrlMedium);
+        MudDialog.Cancel();
+    }
 }

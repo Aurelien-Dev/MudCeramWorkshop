@@ -1,5 +1,4 @@
 ﻿@using MudCeramWorkshop.Client.Components.Layout.Resources
-@implements IDisposable
 
 @inject NavigationManager NavigationManager
 
@@ -16,31 +15,10 @@
 
     @* <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Other</MudText> *@
     @* <MudNavLink Href="swagger" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">swagger</MudNavLink> *@
-    <MudNavLink Href="@($"Account/Logout?ReturnUrl={currentUrl}")" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Logout</MudNavLink>
+    <MudNavLink Href="@($"Account/Logout")" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Logout</MudNavLink>
 </MudNavMenu>
 
 
 @code {
     [Inject] IStringLocalizer<MenuTranslation> Localizer { get; set; } = null!;
-
-    private string? currentUrl;
-
-    protected override void OnInitialized()
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
-    }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
 }
-
-

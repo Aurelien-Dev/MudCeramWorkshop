@@ -7,6 +7,7 @@ using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
 using MudCeramWorkshop.Client.Routes;
 using MudCeramWorkshop.Client.Utils;
+using MudCeramWorkshop.Client.Utils.Singletons;
 using MudCeramWorkshop.Data.Domain.Models.Identity;
 using MudCeramWorkshop.Data.Repository;
 using MudExtensions.Services;
@@ -28,6 +29,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<FileUploader>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -46,6 +48,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddSingleton<EnvironementSingleton>();
 
 builder.Services.AddTransient<IdentityCookieHandler>();
 builder.Services.AddHttpClient("LocalApi", (client) =>
@@ -84,6 +87,10 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await dbContext.Database.MigrateAsync();
+
+    EnvironementSingleton env = scope.ServiceProvider.GetRequiredService<EnvironementSingleton>();
+    env.WebRootPath = app.Environment.WebRootPath;
+    env.ContentRootPath = app.Environment.ContentRootPath;
 }
 
 
