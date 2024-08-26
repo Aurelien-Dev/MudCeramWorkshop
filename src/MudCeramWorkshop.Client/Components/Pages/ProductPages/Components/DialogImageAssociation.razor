@@ -3,34 +3,37 @@
 <MudDialog>
     <DialogContent>
         <MudStack Style="width: 100%">
-            <MudFileUpload T="IBrowserFile"
-                           @ref="@_fileUpload"
-                           FilesChanged="OnInputFileChanged"
-                           Hidden="@false"
-                           InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
-                           InputStyle="opacity:0"
-                           tabindex="-1"
-                           @ondrop="@ClearDragClass"
-                           @ondragenter="@SetDragClass"
-                           @ondragleave="@ClearDragClass"
-                           @ondragend="@ClearDragClass">
-                <ActivatorContent>
-                    <MudPaper Outlined="true"
-                              Class="@_dragClass">
-                        <MudText Typo="Typo.h6">
-                            Drag and drop files here or click
-                        </MudText>
+            @if (!IdProduct.HasValue)
+            {
+                <MudFileUpload T="IBrowserFile"
+                               @ref="@_fileUpload"
+                               FilesChanged="OnInputFileChanged"
+                               Hidden="@false"
+                               InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
+                               InputStyle="opacity:0"
+                               tabindex="-1"
+                               @ondrop="@ClearDragClass"
+                               @ondragenter="@SetDragClass"
+                               @ondragleave="@ClearDragClass"
+                               @ondragend="@ClearDragClass">
+                    <ActivatorContent>
+                        <MudPaper Outlined="true"
+                                  Class="@_dragClass">
+                            <MudText Typo="Typo.h6">
+                                Drag and drop files here or click
+                            </MudText>
 
-                        <MudImage Src="@imageInstruction.UrlMedium" ObjectFit="ObjectFit.Cover" Fluid="true" Elevation="25" Class="rounded-lg" />
-                    </MudPaper>
-                </ActivatorContent>
-            </MudFileUpload>
+                            <MudImage Src="@imageInstruction.UrlMedium" ObjectFit="ObjectFit.Cover" Fluid="true" Elevation="25" Class="rounded-lg" />
+                        </MudPaper>
+                    </ActivatorContent>
+                </MudFileUpload>
+            }
             <MudTextField ShrinkLabel="true" @bind-Value="@imageInstruction.Comment" Label="Commentaire" Variant="Variant.Text" Lines="3" Margin=" Margin.Dense"></MudTextField>
         </MudStack>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">@ButtonText</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -38,6 +41,11 @@
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
     [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; } = default!;
     [Inject] private FileUploader fileUploader { get; set; } = default!;
+
+    [Parameter] public int? IdProduct { get; set; }
+    [Parameter] public string Comment { get; set; }
+
+    [Parameter] public string ButtonText { get; set; }
 
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
@@ -53,6 +61,10 @@
         WorkshopName = userState.GetWorkshopName();
     }
 
+    protected override void OnParametersSet()
+    {
+        imageInstruction.Comment = Comment;
+    }
 
     private async void OnInputFileChanged(IBrowserFile e)
     {

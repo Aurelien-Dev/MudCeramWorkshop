@@ -11,6 +11,28 @@
                              ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false"
                              SelectedIndexChanged="CarouselIndexChanged"
                              BulletsColor="Color.Primary" BulletsPosition="Position.Bottom">
+                    <BulletTemplate Context="selected">
+                        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                            <span class="mud-icon-button-label">
+                                <MudIcon Icon="@(selected ? Icons.Material.Filled.RadioButtonChecked : Icons.Material.Filled.RadioButtonUnchecked)" Color="@Color.Primary" />
+                            </span>
+                        </div>
+                    </BulletTemplate>
+                    <PreviousButtonTemplate>
+                        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                            <span class="mud-icon-button-label">
+                                <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.NavigateBefore" Color="@Color.Primary" />
+                            </span>
+                        </div>
+                    </PreviousButtonTemplate>
+                    <NextButtonTemplate>
+                        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                            <span class="mud-icon-button-label">
+                                <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.NavigateNext" Color="@Color.Primary" />
+                            </span>
+                        </div>
+                    </NextButtonTemplate>
+
                     <ItemTemplate>
                         <div class="d-flex" style="height:100%">
                             <MudImage Src="@(context.UrlMedium)"
@@ -27,8 +49,8 @@
                             <MudText Typo="Typo.subtitle2">Commentaire</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Default" OnClick="AddImageDialog" />
-                            <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Default" OnClick="AddImageDialog" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Default" OnClick="@(async () => await AddImageDialog(null))" />
+                            <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Default" OnClick="@(async () => await AddImageDialog(ProductId))" />
                             @if (ImageInstructions.Any())
                             {
                                 <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error" OnClick="DeleteImage" />
@@ -79,35 +101,76 @@
         StateHasChanged();
     }
 
-    public async Task AddImageDialog()
+    public async Task AddImageDialog(int? idProduct)
     {
         var options = new DialogOptions
             {
                 BackgroundClass = "my-custom-class",
                 MaxWidth = MaxWidth.Small,
                 FullWidth = true
-
             };
 
-        var dialog = await DialogService.ShowAsync<DialogImageAssociation>("Choisir les materiaux à ajouter", options);
+        var parameters = new DialogParameters<DialogImageAssociation>
+        {
+            { x => x.IdProduct, idProduct},
+        };
+
+        if (idProduct.HasValue)
+        {
+            ImageInstruction imageToUpdate = _carousel.ItemsSource!.ElementAt(_carousel.SelectedIndex);
+
+            parameters.Add(x => x.Comment, imageToUpdate.Comment);
+            parameters.Add(x => x.ButtonText, "Update");
+        }
+        else
+        {
+            parameters.Add(x => x.ButtonText, "Add");            
+        }
+
+        var dialog = await DialogService.ShowAsync<DialogImageAssociation>("Choisir les materiaux à ajouter", parameters, options);
         var result = await dialog.Result;
 
         if (result.Canceled) return;
 
-        if (result is not null && result.Data is not null)
+        //Adding image
+        if (!idProduct.HasValue && result is not null && result.Data is not null)
         {
-            ImageInstruction img = (ImageInstruction)result.Data;
-            img.IdProduct = ProductId!.Value;
-            img.Comment = LoremNET.Lorem.Words(35, 45);
-
-            await ImageInstructionRepository.Add(img);
-            ImageInstructions.Add(img);
-
-            _carousel.MoveTo(ImageInstructions.Count - 1);
-            await CarouselIndexChanged(ImageInstructions.Count - 1);
-
-            StateHasChanged();
+            await AddImage((ImageInstruction)result.Data);
+            return;
         }
+
+        //Updating image comment
+        if (idProduct.HasValue && result is not null && result.Data is not null)
+        {
+            await UpdateImage((ImageInstruction)result.Data);
+        }
+
+    }
+
+    public async Task UpdateImage(ImageInstruction img)
+    {
+        ImageInstruction imageToUpdate = _carousel.ItemsSource!.ElementAt(_carousel.SelectedIndex);
+        imageToUpdate.Comment = img.Comment;
+
+        await ImageInstructionRepository.Update(imageToUpdate);
+
+        await CarouselIndexChanged(_carousel.SelectedIndex);
+        StateHasChanged();
+    }
+
+
+    public async Task AddImage(ImageInstruction img)
+    {
+        img.IdProduct = ProductId!.Value;
+        img.Comment = LoremNET.Lorem.Words(35, 45);
+
+        await ImageInstructionRepository.Add(img);
+        ImageInstructions.Add(img);
+
+        _carousel.MoveTo(ImageInstructions.Count - 1);
+        await CarouselIndexChanged(ImageInstructions.Count - 1);
+
+        StateHasChanged();
     }
 
     public async Task DeleteImage()
