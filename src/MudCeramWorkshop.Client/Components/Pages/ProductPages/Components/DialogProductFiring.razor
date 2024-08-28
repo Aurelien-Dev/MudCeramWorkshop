@@ -26,7 +26,7 @@
         Firings = await FiringRepository.GetAll();
     }
 
-    private string? GetMultiSelectionText(List<Firing> selectedValues)
+    private static string? GetMultiSelectionText(List<Firing> selectedValues)
     {
         if (!selectedValues.Any())
             return null;
@@ -34,7 +34,7 @@
         return string.Join(", ", selectedValues.Select(m => $"{m.Name}"));
     }
 
-    private bool SearchItems(Firing value, string searchString)
+    private static bool SearchItems(Firing value, string searchString)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true; // Si la chaîne de recherche est vide, on considère que l'élément correspond.

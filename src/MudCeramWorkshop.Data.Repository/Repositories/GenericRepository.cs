@@ -44,7 +44,7 @@ public class GenericRepository<TEntity, TId>(ApplicationDbContext context) : IGe
     }
 
 
-    protected IQueryable<TEntity> AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
+    protected static IQueryable<TEntity> AddSorting(IQueryable<TEntity> query, string sortDirection, string propertyName)
     {
         var param = Expression.Parameter(typeof(TEntity));
         var prop = Expression.PropertyOrField(param, propertyName);

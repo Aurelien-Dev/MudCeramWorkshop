@@ -37,7 +37,7 @@ namespace MudCeramWorkshop.Client.Utils
         /// <param name="workshopName">Name of workshop</param>
         /// <param name="extension">Original extension file</param>
         /// <returns>Return completed path for asset folder on server</returns>
-        private string CreateTempFileName(string workshopName, string extension)
+        private static string CreateTempFileName(string workshopName, string extension)
         {
             var trustedFileNameForFileStorage = $"{workshopName}-{Path.GetRandomFileName()}";
             trustedFileNameForFileStorage = Path.ChangeExtension(trustedFileNameForFileStorage, extension);

@@ -6,6 +6,7 @@ namespace MudCeramWorkshop.Data.Domain.CustomDataAnotation;
 /// An extension of the standard <see cref="CompareAttribute"/> that provides
 /// a default error message for comparing two values.
 /// </summary>
+[AttributeUsage(AttributeTargets.Property)]
 public class CeramCompareAttribute : CompareAttribute
 {
     /// <summary>

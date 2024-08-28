@@ -135,14 +135,14 @@
         if (result == null || result.Canceled) return;
 
         //Adding image
-        if (!idProduct.HasValue && result is not null && result.Data is not null)
+        if (!idProduct.HasValue && result.Data is not null)
         {
             await AddImage((ImageInstruction)result.Data);
             return;
         }
 
         //Updating image comment
-        if (idProduct.HasValue && result is not null && result.Data is not null)
+        if (idProduct.HasValue && result.Data is not null)
         {
             await UpdateImage((ImageInstruction)result.Data);
         }
@@ -211,7 +211,7 @@
 
     public Task CarouselIndexChanged(int index)
     {
-        SelectedImageComment = ImageInstructions.ElementAt(index).Comment;
+        SelectedImageComment = ImageInstructions[index].Comment;
 
         return Task.CompletedTask;
     }

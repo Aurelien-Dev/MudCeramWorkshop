@@ -29,7 +29,7 @@
         Materials = await MaterialRepository.GetAll();
     }
 
-    private string? GetMultiSelectionText(List<Material> selectedValues)
+    private static string? GetMultiSelectionText(List<Material> selectedValues)
     {
         if (!selectedValues.Any())
             return null;
@@ -37,7 +37,7 @@
         return string.Join(", ", selectedValues.Select(m => $"{m.Reference} - {m.Name}"));
     }
 
-    private bool SearchItems(Material value, string searchString)
+    private static bool SearchItems(Material value, string searchString)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true; // Si la chaîne de recherche est vide, on considère que l'élément correspond.

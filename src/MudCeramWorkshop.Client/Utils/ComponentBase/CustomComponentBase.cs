@@ -13,7 +13,7 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
 
         [CascadingParameter] public Task<UserInfoState> UserInfoState { get; set; } = default!;
 
-        protected CultureInfo CurrentCultur => CultureInfo.CreateSpecificCulture("fr-fr");
+        protected static CultureInfo CurrentCultur => CultureInfo.CreateSpecificCulture("fr-fr");
 
         protected CancellationToken ComponentDisposed => (_cancellationTokenSource ??= new()).Token;
         private CancellationTokenSource? _cancellationTokenSource;

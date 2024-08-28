@@ -9,7 +9,6 @@
             @if (!IdProduct.HasValue)
             {
                 <MudFileUpload T="IBrowserFile"
-                               @ref="@_fileUpload"
                                FilesChanged="OnInputFileChanged"
                                Hidden="@false"
                                InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
@@ -53,7 +52,6 @@
 
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
-    private MudFileUpload<IBrowserFile>? _fileUpload;
     private readonly List<string> _fileNames = new();
 
     public ImageInstruction imageInstruction { get; set; } = new ImageInstruction();

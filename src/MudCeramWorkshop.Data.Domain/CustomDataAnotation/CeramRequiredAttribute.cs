@@ -5,6 +5,7 @@ namespace MudCeramWorkshop.Data.Domain.CustomDataAnotation;
 /// <summary>
 /// Represents a custom validation attribute that requires a property to be non-null or non-empty.
 /// </summary>
+[AttributeUsage(AttributeTargets.Property)]
 public class CeramRequiredAttribute : RequiredAttribute
 {
     /// <summary>
