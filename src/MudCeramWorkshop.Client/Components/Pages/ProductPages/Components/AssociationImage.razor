@@ -76,10 +76,10 @@
     [Inject] IDialogService DialogService { get; set; } = default!;
     [Inject] private FileUploader fileUploader { get; set; } = default!;
 
+    public string SelectedImageComment { get; set; } = string.Empty;
     public IList<ImageInstruction> ImageInstructions { get; set; } = new List<ImageInstruction>();
 
-    public string SelectedImageComment { get; set; }
-    private MudCarousel<ImageInstruction> _carousel;
+    private MudCarousel<ImageInstruction> _carousel = default!;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -132,7 +132,7 @@
         var dialog = await DialogService.ShowAsync<DialogImageAssociation>(string.Empty, parameters, options);
         var result = await dialog.Result;
 
-        if (result.Canceled) return;
+        if (result == null || result.Canceled) return;
 
         //Adding image
         if (!idProduct.HasValue && result is not null && result.Data is not null)
@@ -187,9 +187,10 @@
             });
 
         if (!result.HasValue || !result.Value) return;
+        if (_carousel != null && _carousel.ItemsSource != null && _carousel!.ItemsSource.Any()) return;
 
 
-        ImageInstruction imageToDelete = _carousel.ItemsSource.ElementAt(_carousel.SelectedIndex);
+        ImageInstruction imageToDelete = _carousel!.ItemsSource!.ElementAt(_carousel.SelectedIndex);
 
         fileUploader.RemoveFileInput(imageToDelete.Url);
         fileUploader.RemoveFileInput(imageToDelete.UrlMedium);

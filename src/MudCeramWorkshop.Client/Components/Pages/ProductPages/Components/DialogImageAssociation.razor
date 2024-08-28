@@ -46,9 +46,9 @@
     [Inject] private FileUploader fileUploader { get; set; } = default!;
 
     [Parameter] public int? IdProduct { get; set; }
-    [Parameter] public string Comment { get; set; }
-    [Parameter] public string ButtonText { get; set; }
-    [Parameter] public string Title { get; set; }
+    [Parameter] public string Comment { get; set; } = string.Empty;
+    [Parameter] public string ButtonText { get; set; } = string.Empty;
+    [Parameter] public string Title { get; set; } = string.Empty;
 
 
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
