@@ -121,13 +121,15 @@
 
             parameters.Add(x => x.Comment, imageToUpdate.Comment);
             parameters.Add(x => x.ButtonText, "Update");
+            parameters.Add(x => x.Title, "Modifier le commentaire");
         }
         else
         {
-            parameters.Add(x => x.ButtonText, "Add");            
+            parameters.Add(x => x.ButtonText, "Add");
+            parameters.Add(x => x.Title, "Ajouter une nouvelle image");
         }
 
-        var dialog = await DialogService.ShowAsync<DialogImageAssociation>("Choisir les materiaux à ajouter", parameters, options);
+        var dialog = await DialogService.ShowAsync<DialogImageAssociation>(string.Empty, parameters, options);
         var result = await dialog.Result;
 
         if (result.Canceled) return;

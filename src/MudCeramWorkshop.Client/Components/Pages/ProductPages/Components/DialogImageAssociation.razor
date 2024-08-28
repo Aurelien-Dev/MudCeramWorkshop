@@ -1,6 +1,9 @@
 ﻿@using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
 
 <MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+    </TitleContent>
     <DialogContent>
         <MudStack Style="width: 100%">
             @if (!IdProduct.HasValue)
@@ -44,8 +47,9 @@
 
     [Parameter] public int? IdProduct { get; set; }
     [Parameter] public string Comment { get; set; }
-
     [Parameter] public string ButtonText { get; set; }
+    [Parameter] public string Title { get; set; }
+
 
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
