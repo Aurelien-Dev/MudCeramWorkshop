@@ -50,9 +50,9 @@
                         </CardHeaderContent>
                         <CardHeaderActions>
                             <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Default" OnClick="@(async () => await AddImageDialog(null))" />
-                            <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Default" OnClick="@(async () => await AddImageDialog(ProductId))" />
                             @if (ImageInstructions.Any())
                             {
+                                <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Default" OnClick="@(async () => await AddImageDialog(ProductId))" />
                                 <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error" OnClick="DeleteImage" />
                             }
                         </CardHeaderActions>
@@ -187,7 +187,7 @@
             });
 
         if (!result.HasValue || !result.Value) return;
-        if (_carousel != null && _carousel.ItemsSource != null && _carousel!.ItemsSource.Any()) return;
+        if (_carousel != null && _carousel.ItemsSource != null && !_carousel!.ItemsSource.Any()) return;
 
 
         ImageInstruction imageToDelete = _carousel!.ItemsSource!.ElementAt(_carousel.SelectedIndex);

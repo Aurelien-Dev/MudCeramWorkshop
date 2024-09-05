@@ -16,7 +16,14 @@
         {
             <MudItem xs="12" sm="4" md="3">
                 <MudCard Elevation="2" Style="height:100%">
-                    <MudCardMedia Image="https://fotorama.io/fit/frog.png" Height="200" loading="lazy" />
+                    @if (product.ImageInstructions is not null && product.ImageInstructions.Any())
+                    {
+                        <MudCardMedia Image="@product.ImageInstructions.First().UrlMedium.Replace("\\","/")" Height="200" loading="lazy" />
+                    }
+                    else
+                    {
+                        <MudCardMedia Image="https://fotorama.io/fit/frog.png" Height="200" loading="lazy" />
+                    }
                     <MudCardContent>
                         <MudText Typo="Typo.h6" GutterBottom="false">@product.Name</MudText>
                         <MudText Typo="Typo.overline" GutterBottom="false">#@product.Reference</MudText>

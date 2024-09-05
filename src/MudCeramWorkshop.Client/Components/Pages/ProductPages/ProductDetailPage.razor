@@ -10,57 +10,57 @@
 
 @if (product is not null)
 {
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex flex-grow-1 gap-4 align-top" Style="height: 100vh;">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex flex-grow-1 gap-4 align-top" Style="height: 100vh;">
 
-            <MudStack Class="mud-width-full">
+        <MudStack Class="mud-width-full">
 
-                <MudGrid Spacing="1">
-                    <MudItem md="2" xs="12">
-                        <MudTextField @bind-Value="@product.Reference" Label="Reference" ShrinkLabel="true"
-                                      Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem md="10" xs="12">
-                        <MudTextField @bind-Value="@product.Name" Label="Name" ShrinkLabel="true"
-                                      Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                </MudGrid>
+            <MudGrid Spacing="1">
+                <MudItem md="2" xs="12">
+                    <MudTextField @bind-Value="@product.Reference" Label="Reference" ShrinkLabel="true"
+                                  Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+                <MudItem md="10" xs="12">
+                    <MudTextField @bind-Value="@product.Name" Label="Name" ShrinkLabel="true"
+                                  Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+            </MudGrid>
 
-                <MudGrid Spacing="1">
+            <MudGrid Spacing="1">
 
-                        <AssociationImage ProductId="product.Id" />
+                <AssociationImage ProductId="product.Id" />
 
-                    <MudItem md="6" xs="12">
-                        <MudPaper Class="pa-4" MinHeight="600px">
-                            <MudText Typo="Typo.overline">Informations</MudText>
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                <MudItem md="6" xs="12">
+                    <MudPaper Class="pa-4" MinHeight="600px">
+                        <MudText Typo="Typo.overline">Informations</MudText>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
 
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
-                            <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
-
-
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(wasNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
-                        </MudPaper>
-                    </MudItem>
-
-                </MudGrid>
-
-                <MudGrid Spacing="1">
-
-                    <AssociationMaterial ProductId="product.Id" />
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
 
-                    <AssociationFiring ProductId="product.Id" />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(wasNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                    </MudPaper>
+                </MudItem>
 
-                </MudGrid>
+            </MudGrid>
 
-            </MudStack>
+            <MudGrid Spacing="1">
 
-        </MudContainer>
+                <AssociationMaterial ProductId="product.Id" />
+
+
+                <AssociationFiring ProductId="product.Id" />
+
+            </MudGrid>
+
+        </MudStack>
+
+    </MudContainer>
 }
 
 @code {
