@@ -141,4 +141,7 @@
   <data name="NavMenu_MyProducts" xml:space="preserve">
     <value>Mes produits</value>
   </data>
+  <data name="NavMenu_Materials" xml:space="preserve">
+    <value>Materials</value>
+  </data>
 </root>

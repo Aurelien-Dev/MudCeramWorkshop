@@ -119,8 +119,6 @@
         await GetDatas();
     }
 
-
-
     public async Task CommittedItemChanges(Material item)
     {
         await MaterialRepository.Update(item, ComponentDisposed);

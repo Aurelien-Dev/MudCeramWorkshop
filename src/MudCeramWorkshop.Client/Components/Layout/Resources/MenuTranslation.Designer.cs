@@ -97,6 +97,15 @@ namespace MudCeramWorkshop.Client.Components.Layout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Materials.
+        /// </summary>
+        public static string NavMenu_Materials {
+            get {
+                return ResourceManager.GetString("NavMenu_Materials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mon inventaire.
         /// </summary>
         public static string NavMenu_MyInventory {
