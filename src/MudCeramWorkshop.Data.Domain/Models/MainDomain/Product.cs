@@ -78,6 +78,12 @@ public class Product
     public EnumProductStatus Status { get; set; }
 
     /// <summary>
+    /// Gets or sets the tags associated with the product.
+    /// </summary>
+    public List<string> Tags { get; set; } = new List<string>();
+
+
+    /// <summary>
     /// Gets or sets the image instructions associated with the product.
     /// </summary>
     public ICollection<ImageInstruction> ImageInstructions { get; set; } = new List<ImageInstruction>();

@@ -43,8 +43,9 @@
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
+                        <MudChipField ShrinkLabel="true" T="string" @bind-Values="@product.Tags" Label="Tags" />
 
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(wasNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
                     </MudPaper>
                 </MudItem>
 
@@ -73,11 +74,11 @@
     #region styling
 
     private readonly Margin margin = Margin.Normal;
-    private bool wasNewProduct = false;
+    private bool IsNewProduct = false;
 
     #endregion
 
-    private Product product = new();
+    private Product product = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,8 +90,11 @@
         else
         {
             product = new Product(userState.GetWorkshopId(), string.Empty, string.Empty);
-            wasNewProduct = true;
+            IsNewProduct = true;
         }
+
+        if (product is null)
+            throw new ArgumentNullException("Product is allready null after loading");
     }
 
     public async Task UpdateProduct()
@@ -99,10 +103,10 @@
 
         await productRepository.Update(product, ComponentDisposed);
 
-        if (wasNewProduct)
+        if (IsNewProduct)
         {
             NavigationManager.NavigateTo($"Product/{product.Id}", true);
-            wasNewProduct = false;
+            IsNewProduct = false;
         }
     }
 

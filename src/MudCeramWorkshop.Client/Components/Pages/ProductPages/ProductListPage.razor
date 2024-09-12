@@ -30,6 +30,8 @@
                     </MudCardContent>
                     <MudCardActions>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@($"product/{@product.Id}")" Size="Size.Small">@Localizer["ProductList_ShowProduct"]</MudButton>
+                        <MudSpacer />
+                        <MudIconButton Icon="@Icons.Material.Outlined.Delete" Style="@($"color:{Colors.Red.Lighten1};")" Size="Size.Medium" OnClick="@(() => DeleteItem(product))" />
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -45,8 +47,27 @@
 
     protected override async Task OnInitializedAsync()
     {
-        UserInfoState userState = await UserInfoState;
+        await GetDatas();
+    }
 
+    public async Task GetDatas()
+    {
+        UserInfoState userState = await UserInfoState;
         products = await productRepository.GetAll(userState.GetWorkshopId(), ComponentDisposed);
+    }
+
+    public async Task DeleteItem(Product item)
+    {
+        bool? result = await Dialog.ShowMessageBox("Warning", "Deleting can not be undone!",
+        yesText: "Delete!", cancelText: "Cancel",
+        options: new DialogOptions()
+            {
+                CloseOnEscapeKey = true
+            });
+
+        if (!result.HasValue || !result.Value) return;
+
+        await productRepository.Delete(item, ComponentDisposed);
+        await GetDatas();
     }
 }
