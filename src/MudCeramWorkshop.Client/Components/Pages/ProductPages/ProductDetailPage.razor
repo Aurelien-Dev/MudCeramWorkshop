@@ -45,7 +45,10 @@
 
                         <MudChipField ShrinkLabel="true" T="string" @bind-Values="@product.Tags" Label="Tags" />
 
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(wasNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => eshopGenerator.LaunchGPT())">Launch GPT</MudButton>
+
                     </MudPaper>
                 </MudItem>
 
@@ -65,11 +68,15 @@
     </MudContainer>
 }
 
+<EshopGenerator @ref="eshopGenerator" />
+
 @code {
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
     [Inject] IProductRepository productRepository { get; set; } = default!;
     [Inject] IProductFiringRepository productFiringRepository { get; set; } = default!;
     [Parameter] public int? Id { get; set; } = default!;
+
+    EshopGenerator eshopGenerator;
 
     #region styling
 
