@@ -71,7 +71,7 @@ namespace MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ø Bottom.
+        ///   Looks up a localized string similar to s.
         /// </summary>
         public static string Text_BottomDiameter {
             get {

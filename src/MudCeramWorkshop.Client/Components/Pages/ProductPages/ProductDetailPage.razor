@@ -31,13 +31,14 @@
 
                 <MudItem md="6" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
-                        <MudText Typo="Typo.overline">Informations</MudText>
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                        <MudText Typo="Typo.h6">Informations</MudText>
 
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
+
+                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
 
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
                         <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>

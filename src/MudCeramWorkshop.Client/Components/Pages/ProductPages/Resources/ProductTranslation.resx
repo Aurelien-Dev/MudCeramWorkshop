@@ -127,9 +127,6 @@
   <data name="Text_Comment" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="Text_BottomDiameter" xml:space="preserve">
-    <value>Ø Bottom</value>
-  </data>
   <data name="Text_BuildInstructions" xml:space="preserve">
     <value>Instruction de construction</value>
   </data>
@@ -165,5 +162,8 @@
   </data>
   <data name="ProductList_ShowProduct" xml:space="preserve">
     <value>Voir</value>
+  </data>
+  <data name="Text_BottomDiameter" xml:space="preserve">
+    <value>s</value>
   </data>
 </root>
