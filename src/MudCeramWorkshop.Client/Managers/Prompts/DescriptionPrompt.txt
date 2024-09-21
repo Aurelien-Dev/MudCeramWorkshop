@@ -1,0 +1,16 @@
+﻿Ton rôle est de générer une description de produit.
+
+- Une section courte qui décrit le produit (couleurs, forme, etc).
+- Une seconde section qui sera une liste de point qui donne les infos technique (dimensions,  brillant ou mat, etc)
+
+Je te donne des tags pour orienter ta description mais tu n'est pas obligé d'utiliser tout ces termes.
+
+Finir la description par cette phrase : En choisissant ce --nom du produit--, vous optez pour une pièce unique réalisée à la main par un céramiste passionné, garantissant une qualité et un savoir-faire artisanal. ❤️
+
+En texte facilement copiable.
+
+Tags:
+{0}
+
+Dimension : diamètre {1}cm, hauteur {2}cm
+Produits utilisés : {3}

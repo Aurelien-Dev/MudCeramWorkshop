@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
+using MudCeramWorkshop.Client.Managers;
 using MudCeramWorkshop.Client.Routes;
 using MudCeramWorkshop.Client.Utils;
 using MudCeramWorkshop.Client.Utils.Singletons;
@@ -30,6 +31,8 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 builder.Services.AddScoped<FileUploader>();
+
+builder.Services.AddScoped<ChatGptManager>();
 
 builder.Services.AddAuthentication(options =>
     {

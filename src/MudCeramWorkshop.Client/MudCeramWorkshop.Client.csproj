@@ -8,6 +8,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Managers\Prompts\DescriptionPrompt.txt" />
+	  <None Remove="Managers\Prompts\PersonatPrompt.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.12.0" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="7.0.1" />
@@ -65,8 +70,13 @@
 
 
 	<ItemGroup>
-	  <Folder Include="Managers\" />
 	  <Folder Include="wwwroot\ProductImages\" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Managers\Prompts\DescriptionPrompt.txt" />
+	  <EmbeddedResource Include="Managers\Prompts\PersonatPrompt.txt" />
 	</ItemGroup>
 
 </Project>

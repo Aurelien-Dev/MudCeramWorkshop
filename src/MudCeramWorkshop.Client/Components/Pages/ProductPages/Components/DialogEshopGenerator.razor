@@ -1,0 +1,53 @@
+﻿@using MudCeramWorkshop.Client.Managers
+@using OpenAI_API
+@using OpenAI_API.Chat
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Style="width: 100%">
+            <MudTextField T="string" Label="Outlined" Variant="Variant.Outlined" Text="@Description" Lines="10" />
+
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudLoadingButton @bind-Loading="Loading" Size="Size.Large" LoadingAdornment="Adornment.End" OnClick="GenerateEshopDescription" Variant="Variant.Filled" Color="Color.Primary">CLICK ME</MudLoadingButton>
+        <MudButton Color="Color.Primary">Enregistrer</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<style>
+    .my-custom-class {
+        backdrop-filter: blur(10px);
+    }
+</style>
+
+@code {
+    [Inject] IConfiguration Config { get; set; }
+    [Inject] NavigationManager Navigation { get; set; }
+    [Inject] ChatGptManager ChatGptManager { get; set; }
+
+    [Parameter] public Product Product { get; set; }
+    [Parameter] public List<ProductMaterial> ProductMaterials { get; set; }
+    [Parameter] public ImageInstruction ImageInstruction { get; set; }
+
+    public bool Loading { get; set; } = false;
+    public string Description { get; set; } = string.Empty;
+
+    public async Task GenerateEshopDescription()
+    {
+        Loading = true;
+
+        // Obtenir l'URL de base dynamiquement
+        string baseUrl = Navigation.BaseUri;
+        // Remplacer les barres obliques inverses par des barres obliques
+        string filePath = ImageInstruction.UrlMedium.Replace("\\", "/");
+        // Combiner l'URL de base avec le chemin du fichier
+        string imageUrl = $"{baseUrl}{filePath}";
+
+        string result = await ChatGptManager.GenerateDescription(imageUrl, Product, ProductMaterials);
+
+        Description = result;
+
+        Loading = false;
+    }
+}

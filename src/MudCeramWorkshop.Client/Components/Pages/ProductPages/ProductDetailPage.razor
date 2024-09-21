@@ -27,7 +27,7 @@
 
             <MudGrid Spacing="1">
 
-                <AssociationImage ProductId="product.Id" />
+                <AssociationImage @ref="associationImage" ProductId="product.Id" />
 
                 <MudItem md="6" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
@@ -46,8 +46,8 @@
                         <MudChipField ShrinkLabel="true" T="string" @bind-Values="@product.Tags" Label="Tags" />
 
 
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(wasNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => eshopGenerator.LaunchGPT())">Launch GPT</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenEshopGPT">Launch GPT</MudButton>
 
                     </MudPaper>
                 </MudItem>
@@ -56,7 +56,7 @@
 
             <MudGrid Spacing="1">
 
-                <AssociationMaterial ProductId="product.Id" />
+                <AssociationMaterial @ref="associationMaterial" ProductId="product.Id" />
 
 
                 <AssociationFiring ProductId="product.Id" />
@@ -68,15 +68,14 @@
     </MudContainer>
 }
 
-<EshopGenerator @ref="eshopGenerator" />
-
 @code {
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
     [Inject] IProductRepository productRepository { get; set; } = default!;
     [Inject] IProductFiringRepository productFiringRepository { get; set; } = default!;
     [Parameter] public int? Id { get; set; } = default!;
 
-    EshopGenerator eshopGenerator;
+    private AssociationImage associationImage;
+    private AssociationMaterial associationMaterial;
 
     #region styling
 
@@ -102,6 +101,27 @@
 
         if (product is null)
             throw new ArgumentNullException("Product is allready null after loading");
+    }
+
+    public async Task OpenEshopGPT()
+    {
+        var options = new DialogOptions
+            {
+                BackgroundClass = "my-custom-class",
+                CloseButton = true,
+                BackdropClick = false,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            };
+
+        var parameters = new DialogParameters<DialogEshopGenerator>
+        {
+            { x => x.Product, product },
+            { x => x.ProductMaterials, associationMaterial.ProductMaterials},
+            { x=> x.ImageInstruction, associationImage.SelectedImage}
+        };
+
+        var dialog = await Dialog.ShowAsync<DialogEshopGenerator>("Eshop description generator", parameters, options);
     }
 
     public async Task UpdateProduct()
