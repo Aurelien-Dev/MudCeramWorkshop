@@ -12,6 +12,7 @@
 @inject UrlEncoder UrlEncoder
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<EnableAuthenticator> Logger
+@inject IConfiguration Configuration
 
 <PageTitle>Configure authenticator app</PageTitle>
 
@@ -73,7 +74,7 @@ else
 }
 
 @code {
-    private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+    private string AuthenticatorUriFormat = string.Empty;
 
     private string? message;
     private ApplicationUser user = default!;
@@ -89,8 +90,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        AuthenticatorUriFormat = Configuration["IdentitySettings:AuthenticatorUri"] ?? string.Empty;
         user = await UserAccessor.GetRequiredUserAsync(HttpContext);
-
         await LoadSharedKeyAndQrCodeUriAsync(user);
     }
 
@@ -140,7 +141,7 @@ else
         authenticatorUri = GenerateQrCodeUri(email!, unformattedKey!);
     }
 
-    private string FormatKey(string unformattedKey)
+    private static string FormatKey(string unformattedKey)
     {
         var result = new StringBuilder();
         int currentPosition = 0;

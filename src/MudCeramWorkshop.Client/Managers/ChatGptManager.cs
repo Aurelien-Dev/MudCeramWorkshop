@@ -30,7 +30,7 @@ namespace MudCeramWorkshop.Client.Managers
             return (result.ToString(), CalculateCost(result));
         }
 
-        public async Task<ChatMessage> GenerateChatMessage(string promptName, ChatMessageRole chatMessageRole, string? imageDataUrl = null, Func<string, string>? textFormaterAction = null)
+        public static async Task<ChatMessage> GenerateChatMessage(string promptName, ChatMessageRole chatMessageRole, string? imageDataUrl = null, Func<string, string>? textFormaterAction = null)
         {
             string assistantPrompt = await ReadEmbeddedResourceAsync($"MudCeramWorkshop.Client.Managers.Prompts.{promptName}.txt");
             ChatMessage chatMessage = new ChatMessage(chatMessageRole, string.Empty);
