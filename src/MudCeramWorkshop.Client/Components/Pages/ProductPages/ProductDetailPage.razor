@@ -134,15 +134,11 @@
     [Inject] IProductFiringRepository productFiringRepository { get; set; } = default!;
     [Parameter] public int? Id { get; set; } = default!;
 
-    private AssociationImage associationImage;
-    private AssociationMaterial associationMaterial;
-    private Typo _typo = Typo.subtitle2;
-    #region styling
+    private AssociationImage? associationImage;
+    private AssociationMaterial? associationMaterial;
 
-    private readonly Margin margin = Margin.Normal;
+    private readonly Typo _typo = Typo.subtitle2;
     private bool IsNewProduct = false;
-
-    #endregion
 
     private Product product = default!;
 
@@ -174,8 +170,8 @@
         var parameters = new DialogParameters<DialogEshopGenerator>
         {
             { x => x.Product, product },
-            { x => x.ProductMaterials, associationMaterial.ProductMaterials},
-            { x=> x.ImageInstruction, associationImage.SelectedImage}
+            { x => x.ProductMaterials, associationMaterial?.ProductMaterials},
+            { x=> x.ImageInstruction, associationImage?.SelectedImage}
         };
 
         var dialog = await Dialog.ShowAsync<DialogEshopGenerator>("Générateur de description", parameters, options);

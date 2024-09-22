@@ -1,6 +1,4 @@
-﻿using MudCeramWorkshop.Data.Domain.Models.MainDomain;
-using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums;
-using OpenAI_API;
+﻿using OpenAI_API;
 using OpenAI_API.Chat;
 using System.Reflection;
 
@@ -31,7 +29,25 @@ namespace MudCeramWorkshop.Client.Managers
 
             return (result.ToString(), CalculateCost(result));
         }
-        private decimal CalculateCost(ChatResult result)
+
+        public async Task<ChatMessage> GenerateChatMessage(string promptName, ChatMessageRole chatMessageRole, string? imageDataUrl = null, Func<string, string>? textFormaterAction = null)
+        {
+            string assistantPrompt = await ReadEmbeddedResourceAsync($"MudCeramWorkshop.Client.Managers.Prompts.{promptName}.txt");
+            ChatMessage chatMessage = new ChatMessage(chatMessageRole, string.Empty);
+
+            if (textFormaterAction == null)
+                chatMessage.TextContent = assistantPrompt;
+            else
+                chatMessage.TextContent = textFormaterAction(assistantPrompt);
+
+            if (!string.IsNullOrWhiteSpace(imageDataUrl))
+                chatMessage.Images.Add(new ChatMessage.ImageInput(imageDataUrl));
+
+            return chatMessage;
+        }
+
+
+        private static decimal CalculateCost(ChatResult result)
         {
             ////gpt-4o-mini
             //// Tarifs en dollars par token (à ajuster selon les tarifs actuels)
@@ -64,26 +80,10 @@ namespace MudCeramWorkshop.Client.Managers
             return totalCostEUR;
         }
 
-        public async Task<ChatMessage> GenerateChatMessage(string promptName, ChatMessageRole chatMessageRole, string imageDataUrl = null, Func<string, string> textFormaterAction = null!)
-        {
-            string assistantPrompt = await ReadEmbeddedResourceAsync($"MudCeramWorkshop.Client.Managers.Prompts.{promptName}.txt");
-            ChatMessage chatMessage = new ChatMessage(chatMessageRole, string.Empty);
-
-            if (textFormaterAction == null)
-                chatMessage.TextContent = assistantPrompt;
-            else
-                chatMessage.TextContent = textFormaterAction(assistantPrompt);
-
-            if (!string.IsNullOrWhiteSpace(imageDataUrl))
-                chatMessage.Images.Add(new ChatMessage.ImageInput(imageDataUrl));
-
-            return chatMessage;
-        }
-
-        private async Task<string> ReadEmbeddedResourceAsync(string resourceName)
+        private static async Task<string> ReadEmbeddedResourceAsync(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (Stream? stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)
                 {
@@ -97,7 +97,7 @@ namespace MudCeramWorkshop.Client.Managers
             }
         }
 
-        private async Task<string> DownloadImageAsBase64(string imageUrl)
+        private static async Task<string> DownloadImageAsBase64(string imageUrl)
         {
             using (HttpClient client = new HttpClient())
             {
