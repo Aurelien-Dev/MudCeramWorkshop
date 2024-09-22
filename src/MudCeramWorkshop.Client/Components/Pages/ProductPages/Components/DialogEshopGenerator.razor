@@ -80,10 +80,13 @@
 
         // Obtenir l'URL de base dynamiquement
         string baseUrl = Navigation.BaseUri;
-        // Remplacer les barres obliques inverses par des barres obliques
-        string filePath = ImageInstruction.UrlMedium.Replace("\\", "/");
-        // Combiner l'URL de base avec le chemin du fichier
-        _imageUrl = $"{baseUrl}{filePath}";
+        if (ImageInstruction != null)
+        {
+            // Remplacer les barres obliques inverses par des barres obliques
+            string filePath = ImageInstruction.UrlMedium.Replace("\\", "/");
+            // Combiner l'URL de base avec le chemin du fichier
+            _imageUrl = $"{baseUrl}{filePath}";
+        }
     }
 
     private void Submit() => MudDialog.Close(DialogResult.Ok(_description));

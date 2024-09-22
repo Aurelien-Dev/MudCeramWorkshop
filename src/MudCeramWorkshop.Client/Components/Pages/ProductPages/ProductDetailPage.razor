@@ -158,9 +158,6 @@
             product = new Product(userState.GetWorkshopId(), string.Empty, string.Empty);
             IsNewProduct = true;
         }
-
-        if (product is null)
-            throw new ArgumentNullException("Product is allready null after loading");
     }
 
     public async Task OpenEshopGPT()

@@ -15,7 +15,17 @@ namespace MudCeramWorkshop.Client.Utils.ComponentBase
 
         protected static CultureInfo CurrentCultur => CultureInfo.CreateSpecificCulture("fr-fr");
 
-        protected CancellationToken ComponentDisposed => (_cancellationTokenSource ??= new()).Token;
+        protected CancellationToken ComponentDisposed
+        {
+            get
+            {
+                if (_cancellationTokenSource == null)
+                {
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+                return _cancellationTokenSource.Token;
+            }
+        }
         private CancellationTokenSource? _cancellationTokenSource;
 
         public void Dispose()
