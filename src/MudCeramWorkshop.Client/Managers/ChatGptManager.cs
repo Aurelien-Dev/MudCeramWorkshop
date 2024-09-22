@@ -8,50 +8,76 @@ namespace MudCeramWorkshop.Client.Managers
 {
     public class ChatGptManager(IConfiguration Config)
     {
-        public async Task<string> GenerateDescription(string imagePath, Product product, List<ProductMaterial> productMaterials)
+        public async Task<(string, decimal)> GenerateDescription(string imagePath, string materials, string tags, double diameter, double height)
         {
             if (string.IsNullOrWhiteSpace(imagePath)) { throw new ArgumentNullException(nameof(imagePath)); }
-            if (product == null) { throw new ArgumentNullException(nameof(product)); }
 
             var api = new OpenAIAPI(Config["OpenAiSecret"]);
 
             string imageBase64 = await DownloadImageAsBase64(imagePath);
             string imageDataUrl = $"data:image/jpeg;base64,{imageBase64}";
 
-
-            string[] argiles = productMaterials.Where(m => m.Material.Type == EnumMaterialType.Argile).Select(s => s.Material.Name).ToArray();
-
             ChatMessage personatPrompt = await GenerateChatMessage("PersonatPrompt", ChatMessageRole.Assistant);
-
             ChatMessage instructionPrompt = await GenerateChatMessage("DescriptionPrompt", ChatMessageRole.User, imageDataUrl, (s) =>
             {
-                return string.Format(s, string.Join(", ", product.Tags), product.TopDiameter, product.Height, string.Join(", ", argiles));
+                return string.Format(s, tags, diameter, height, materials);
             });
 
             var result = await api.Chat.CreateChatCompletionAsync(
                 [
                     personatPrompt,
                     instructionPrompt
-                ], model: "gpt-4o");
+                ], model: "gpt-4o-2024-08-06");
 
-            return result.ToString();
+            return (result.ToString(), CalculateCost(result));
         }
+        private decimal CalculateCost(ChatResult result)
+        {
+            ////gpt-4o-mini
+            //// Tarifs en dollars par token (à ajuster selon les tarifs actuels)
+            //decimal costPerInputTokenUSD = 0.150m / 1000000m; // $0.150 / 1M input tokens
+            //decimal costPerOutputTokenUSD = 0.600m / 1000000m; // $0.600 / 1M output tokens
 
+            ////gpt-4o
+            //// Tarifs en dollars par token (à ajuster selon les tarifs actuels)
+            //decimal costPerInputTokenUSD = 5m / 1000000m; // $0.150 / 1M input tokens
+            //decimal costPerOutputTokenUSD = 15m / 1000000m; // $0.600 / 1M output tokens
+
+            //gpt-4o-2024-08-06
+            // Tarifs en dollars par token (à ajuster selon les tarifs actuels)
+            decimal costPerInputTokenUSD = 2.5m / 1000000m; // $0.150 / 1M input tokens
+            decimal costPerOutputTokenUSD = 10m / 1000000m; // $0.600 / 1M output tokens
+
+            // Taux de conversion USD -> EUR
+            decimal conversionRate = 0.85m;
+
+            // Obtenir le nombre de tokens utilisés
+            int inputTokens = result.Usage.PromptTokens;
+            int outputTokens = result.Usage.CompletionTokens;
+
+            // Calculer le coût total en dollars
+            decimal totalCostUSD = (inputTokens * costPerInputTokenUSD) + (outputTokens * costPerOutputTokenUSD);
+
+            // Convertir le coût en euros
+            decimal totalCostEUR = totalCostUSD * conversionRate;
+
+            return totalCostEUR;
+        }
 
         public async Task<ChatMessage> GenerateChatMessage(string promptName, ChatMessageRole chatMessageRole, string imageDataUrl = null, Func<string, string> textFormaterAction = null!)
         {
             string assistantPrompt = await ReadEmbeddedResourceAsync($"MudCeramWorkshop.Client.Managers.Prompts.{promptName}.txt");
-            ChatMessage d = new ChatMessage(chatMessageRole, string.Empty);
+            ChatMessage chatMessage = new ChatMessage(chatMessageRole, string.Empty);
 
             if (textFormaterAction == null)
-                d.TextContent = assistantPrompt;
+                chatMessage.TextContent = assistantPrompt;
             else
-                d.TextContent = textFormaterAction(assistantPrompt);
+                chatMessage.TextContent = textFormaterAction(assistantPrompt);
 
             if (!string.IsNullOrWhiteSpace(imageDataUrl))
-                d.Images.Add(new ChatMessage.ImageInput(imageDataUrl));
+                chatMessage.Images.Add(new ChatMessage.ImageInput(imageDataUrl));
 
-            return d;
+            return chatMessage;
         }
 
         private async Task<string> ReadEmbeddedResourceAsync(string resourceName)

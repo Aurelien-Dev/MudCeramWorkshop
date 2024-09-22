@@ -10,7 +10,7 @@ namespace MudCeramWorkshop.Client.Utils
             {
                 H6 = new H6()
                 {
-                    FontSize = "1.4rem"
+                    FontSize = "1.2rem"
                 }
             }
         };
