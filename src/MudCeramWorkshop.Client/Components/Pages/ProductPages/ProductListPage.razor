@@ -6,15 +6,14 @@
 
 @inherits MudCeramWorkshop.Client.Utils.ComponentBase.CustomComponentBase
 
-<MudText Typo="Typo.h6">ProductList</MudText>
+@* <MudText Typo="Typo.h6">ProductList</MudText> *@
 
 
-
-<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+<MudContainer Class="mt-2 px-2" MaxWidth="MaxWidth.False">
     <MudGrid>
         @foreach (Product product in products.OrderBy(p => p.Name))
         {
-            <MudItem xs="12" sm="4" md="3">
+            <MudItem xs="12" sm="4" md="3" xl="2">
                 <MudCard Elevation="2" Style="height:100%">
                     @if (product.ImageInstructions is not null && product.ImageInstructions.Any())
                     {

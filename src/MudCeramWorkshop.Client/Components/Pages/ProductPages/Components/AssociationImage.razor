@@ -77,6 +77,8 @@
     [Inject] private FileUploader fileUploader { get; set; } = default!;
 
     public string SelectedImageComment { get; set; } = string.Empty;
+    public ImageInstruction SelectedImage { get; set; } = default!;
+
     public IList<ImageInstruction> ImageInstructions { get; set; } = new List<ImageInstruction>();
 
     private MudCarousel<ImageInstruction> _carousel = default!;
@@ -212,6 +214,7 @@
     public Task CarouselIndexChanged(int index)
     {
         SelectedImageComment = ImageInstructions[index].Comment;
+        SelectedImage = ImageInstructions[index];
 
         return Task.CompletedTask;
     }

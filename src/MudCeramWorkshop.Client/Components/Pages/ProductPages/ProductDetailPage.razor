@@ -4,56 +4,119 @@
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Components
 @using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
 @using MudCeramWorkshop.Client.Utils
+@using MudCeramWorkshop.Client.Utils.Extension
 @using MudCeramWorkshop.Data.Domain.Models.Identity
 
 @inherits CustomComponentBase
 
-@if (product is not null)
-{
-    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex flex-grow-1 gap-4 align-top" Style="height: 100vh;">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    @if (product is not null)
+    {
 
-        <MudStack Class="mud-width-full">
+        <MudStack Class="mud-width-full" Spacing="1">
 
             <MudGrid Spacing="1">
                 <MudItem md="2" xs="12">
                     <MudTextField @bind-Value="@product.Reference" Label="Reference" ShrinkLabel="true"
-                                  Typo="Typo.h6" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
+                                  Typo="Typo.h5" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tag" Variant="Variant.Text"></MudTextField>
                 </MudItem>
                 <MudItem md="10" xs="12">
                     <MudTextField @bind-Value="@product.Name" Label="Name" ShrinkLabel="true"
-                                  Typo="Typo.h6" Variant="Variant.Text"></MudTextField>
+                                  Typo="Typo.h5" Variant="Variant.Text"></MudTextField>
                 </MudItem>
             </MudGrid>
 
             <MudGrid Spacing="1">
 
-                <AssociationImage ProductId="product.Id" />
+                <AssociationImage @ref="associationImage" ProductId="product.Id" />
 
                 <MudItem md="6" xs="12">
                     <MudPaper Class="pa-4" MinHeight="600px">
-                        <MudText Typo="Typo.h6">Informations</MudText>
+                        <MudStack Spacing="1">
 
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
+                            <MudText Typo="Typo.h6">Informations général</MudText>
 
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                            <MudAlert Severity="Severity.Normal" Icon="@Icons.Material.Filled.Height">
+                                <MudStack Row="true">
+                                    <MudText Typo="_typo">@Localizer["Text_Height"]</MudText>
+                                    <MudText>@product.Height</MudText>
 
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
-                        <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                                    <MudText Typo="_typo">@Localizer["Text_TopDiameter"]</MudText>
+                                    <MudText>@product.TopDiameter</MudText>
 
-                        <MudChipField ShrinkLabel="true" T="string" @bind-Values="@product.Tags" Label="Tags" />
+                                    <MudText Typo="_typo">@Localizer["Text_BottomDiameter"]</MudText>
+                                    <MudText>@product.BottomDiameter</MudText>
+                                </MudStack>
 
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                            </MudAlert>
+
+
+                            <MudAlert Severity="Severity.Normal" Icon="@Icons.Material.Filled.EuroSymbol">
+                                <MudStack Row="true">
+                                    <MudText Typo="_typo">@Localizer["Text_SellingPrice"]</MudText>
+                                    <MudText>@product.Price.ToStringMonetary(CurrentCultur)</MudText>
+                                </MudStack>
+                            </MudAlert>
+
+                            <MudAlert Severity="Severity.Normal">
+                                <MudText Typo="_typo">@Localizer["Text_Description"]</MudText>
+                                <MudText>@product.Description</MudText>
+
+                                <MudText Typo="_typo" Class="mt-2">@Localizer["Text_DesignInstructions"]</MudText>
+                                <MudText>@product.DesignInstruction</MudText>
+
+                                <MudText Typo="_typo" Class="mt-2">@Localizer["Text_GlazingInstructions"]</MudText>
+                                <MudText>@product.GlazingInstruction</MudText>
+
+                                <MudText Typo="_typo" Class="mt-2">Tags</MudText>
+                                @foreach (string tag in product.Tags)
+                                {
+                                    <MudChip T="string" Variant="Variant.Outlined" Size="Size.Small">@tag</MudChip>
+
+                                }
+                            </MudAlert>
+
+                            <MudAlert Severity="Severity.Normal">
+                                <MudText Typo="_typo">E-shop description</MudText>
+                                <MudText>@product.Description</MudText>
+                            </MudAlert>
+
+                            <MudStack Row="true" Class="mt-2">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenEshopGPT">Launch GPT</MudButton>
+                            </MudStack>
+                        </MudStack>
+
                     </MudPaper>
+                    @* <MudPaper Class="pa-4" MinHeight="600px">
+                <MudText Typo="Typo.h6">Informations</MudText>
+
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
+
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+
+                <MudChipField ShrinkLabel="true" T="string" @bind-Values="@product.Tags" Label="Tags" />
+
+                <MudStack Row="true" Class="mt-2">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenEshopGPT">Launch GPT</MudButton>
+
+                </MudStack>
+
+                </MudPaper> *@
                 </MudItem>
 
             </MudGrid>
 
             <MudGrid Spacing="1">
 
-                <AssociationMaterial ProductId="product.Id" />
+                <AssociationMaterial @ref="associationMaterial" ProductId="product.Id" />
 
 
                 <AssociationFiring ProductId="product.Id" />
@@ -62,8 +125,8 @@
 
         </MudStack>
 
-    </MudContainer>
-}
+    }
+</MudContainer>
 
 @code {
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
@@ -71,6 +134,9 @@
     [Inject] IProductFiringRepository productFiringRepository { get; set; } = default!;
     [Parameter] public int? Id { get; set; } = default!;
 
+    private AssociationImage associationImage;
+    private AssociationMaterial associationMaterial;
+    private Typo _typo = Typo.subtitle2;
     #region styling
 
     private readonly Margin margin = Margin.Normal;
@@ -92,9 +158,27 @@
             product = new Product(userState.GetWorkshopId(), string.Empty, string.Empty);
             IsNewProduct = true;
         }
+    }
 
-        if (product is null)
-            throw new ArgumentNullException("Product is allready null after loading");
+    public async Task OpenEshopGPT()
+    {
+        var options = new DialogOptions
+            {
+                BackgroundClass = "my-custom-class",
+                CloseButton = true,
+                BackdropClick = false,
+                MaxWidth = MaxWidth.Large,
+                FullWidth = true
+            };
+
+        var parameters = new DialogParameters<DialogEshopGenerator>
+        {
+            { x => x.Product, product },
+            { x => x.ProductMaterials, associationMaterial.ProductMaterials},
+            { x=> x.ImageInstruction, associationImage.SelectedImage}
+        };
+
+        var dialog = await Dialog.ShowAsync<DialogEshopGenerator>("Générateur de description", parameters, options);
     }
 
     public async Task UpdateProduct()

@@ -5,7 +5,7 @@
 
 @if (ProductId is not null)
 {
-    <MudItem xs="12" sm="12" md="12" lg="12" xl="6">
+    <MudItem Class="@Class" xs="12" sm="12" md="12" lg="12" xl="6">
         <MudPaper Class="pa-0">
             <MudDataGrid T="ProductFiring" Items="@ProductFirings" Dense="true" FixedHeader="false" Elevation="0" Bordered="true"
                          ReadOnly="false" Class="rounded-t-11"
@@ -47,6 +47,7 @@
 
 @code {
     [Parameter] public int? ProductId { get; set; } = default!;
+    [Parameter] public string? Class { get; set; }
 
     [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
     [Inject] IProductFiringRepository ProductFiringRepository { get; set; } = default!;
