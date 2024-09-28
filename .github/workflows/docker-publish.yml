@@ -29,6 +29,6 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         passphrase: ${{ secrets.DEPLOY_PASSPHRASE }}
         script: |
-          cd ${{ secrets.DEPLOY_TARGET }}
+          cd ${{ secrets.DEPLOY_TARGET }}/src
           docker-compose down
           docker-compose up -d
