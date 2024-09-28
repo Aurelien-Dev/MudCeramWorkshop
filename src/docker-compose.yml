@@ -4,13 +4,13 @@ services:
     image: ${DOCKER_REGISTRY-}mudceramworkshopclient
     container_name: mudceramworkshop.client
     ports:
-      - "80:80"  # Expose le port 80 de l'hote vers le port 80 du conteneur
+      - "80:80"  # Expose le port 80 de l'hôte vers le port 80 du conteneur
     build:
       context: .
       dockerfile: MudCeramWorkshop.Client/Dockerfile
     depends_on:
       - mudceramworkshop.data
-- 
+
   mudceramworkshop.data:
     image: postgres:latest
     container_name: mudceramworkshop.data
