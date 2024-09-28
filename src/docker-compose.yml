@@ -12,6 +12,9 @@ services:
       - mudceramworkshop.data
     volumes:
       - /home/data/client:/app/data  # Mapping du volume
+      # Monter les certificats SSL
+      - /etc/letsencrypt/live/atelier-cremazie.com/fullchain.pem:/app/certs/fullchain.pem
+      - /etc/letsencrypt/live/atelier-cremazie.com/privkey.pem:/app/certs/privkey.pem
 
   mudceramworkshop.data:
     image: postgres:latest
