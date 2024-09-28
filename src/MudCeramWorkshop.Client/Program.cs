@@ -15,7 +15,6 @@ using MudExtensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add MudBlazor services
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();

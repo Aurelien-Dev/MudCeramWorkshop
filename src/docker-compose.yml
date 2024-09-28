@@ -1,0 +1,25 @@
+services:
+
+  mudceramworkshop.data:
+    image: postgres:latest
+    container_name: mudceramworkshop.data
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: PGUserPwd
+      POSTGRES_DB: ceramworkshopdb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  mudceramworkshop.client:
+    image: ${DOCKER_REGISTRY-}mudceramworkshopclient
+    container_name: mudceramworkshop.client
+    build:
+      context: .
+      dockerfile: MudCeramWorkshop.Client/Dockerfile
+    depends_on:
+      - mudceramworkshop.data
+
+volumes:
+  postgres-data:

@@ -20,7 +20,7 @@ public static class DependencyInjection
         services.AddTransient<IImageInstructionRepository, ImageInstructionRepository>();
         services.AddTransient<IProductFiringRepository, ProductFiringRepository>();
         services.AddTransient<IProductMaterialRepository, ProductMaterialRepository>();
-        
+
 
         //Workers
         services.AddTransient<IProductWorker, ProductWorker>();
@@ -30,8 +30,8 @@ public static class DependencyInjection
         //DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            var sqlServerCs = $"Server=localhost,1433;Database=CeramWorkshopTest;User Id=sa;Password=Password_123#;TrustServerCertificate=True";
-            options.UseSqlServer(sqlServerCs);
+            var postgresCs = "Host=mudceramworkshop.data;Port=5432;Database=CeramWorkshopDb;Username=pguser;Password=PGUserPwd";
+            options.UseNpgsql(postgresCs);
         }, ServiceLifetime.Transient);
 
         return services;
