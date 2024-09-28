@@ -4,6 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
+EXPOSE 80
 EXPOSE 8080
 EXPOSE 8081
 
@@ -16,6 +17,7 @@ COPY ["MudCeramWorkshop.Client/MudCeramWorkshop.Client.csproj", "MudCeramWorksho
 COPY ["MudCeramWorkshop.Data.Domain/MudCeramWorkshop.Data.Domain.csproj", "MudCeramWorkshop.Data.Domain/"]
 COPY ["MudCeramWorkshop.Data.Repository/MudCeramWorkshop.Data.Repository.csproj", "MudCeramWorkshop.Data.Repository/"]
 RUN dotnet restore "./MudCeramWorkshop.Client/MudCeramWorkshop.Client.csproj"
+RUN dotnet dev-certs https
 COPY . .
 WORKDIR "/src/MudCeramWorkshop.Client"
 RUN dotnet build "./MudCeramWorkshop.Client.csproj" -c $BUILD_CONFIGURATION -o /app/build
