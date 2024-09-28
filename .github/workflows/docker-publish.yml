@@ -15,6 +15,7 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+        ssh-passphrase: ${{ secrets.DEPLOY_PASSPHRASE }}
 
     - name: Copy files via SSH
       run: |
