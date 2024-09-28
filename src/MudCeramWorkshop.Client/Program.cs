@@ -15,6 +15,14 @@ using MudExtensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Ajouter cette ligne si ce n'est pas déjà le cas
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel"));
+});
+
+
+
 // Add MudBlazor services
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
