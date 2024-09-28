@@ -6,6 +6,7 @@ services:
     user: "root"
     ports:
       - "80:80"
+      - "443:443"
     build:
       context: .
       dockerfile: MudCeramWorkshop.Client/Dockerfile
