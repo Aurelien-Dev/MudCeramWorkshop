@@ -44,6 +44,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Aurelien-Dev_MudCeramWorkshop" /o:"aurelien-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations/**" /s:"./src/MudCeramWorkshop.sln"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Aurelien-Dev_MudCeramWorkshop" /o:"aurelien-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations/**" /s:"../MudCeramWorkshop.sln"
           dotnet build src/
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
