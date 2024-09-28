@@ -76,9 +76,16 @@
                                 }
                             </MudAlert>
 
-                            <MudAlert Severity="Severity.Normal">
-                                <MudText Typo="_typo">E-shop description</MudText>
-                                <MudText>@product.Description</MudText>
+                            <MudAlert Severity="Severity.Normal" ShowCloseIcon>
+                                <MudToolBar>
+                                    <MudText Typo="_typo">E-shop description</MudText>
+
+                                    <MudSpacer />
+
+                                    <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" Size="Size.Small"></MudIconButton>
+                                </MudToolBar>
+
+                                <MudText>@product.EshopDescription</MudText>
                             </MudAlert>
 
                             <MudStack Row="true" Class="mt-2">
@@ -175,7 +182,14 @@
         };
 
         var dialog = await Dialog.ShowAsync<DialogEshopGenerator>("Générateur de description", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && result.Data is not null)
+        {
+            product.EshopDescription = result.Data.ToString();
+        }
     }
+
 
     public async Task UpdateProduct()
     {

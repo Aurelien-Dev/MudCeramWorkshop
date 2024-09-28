@@ -38,6 +38,11 @@ public class Product
     public string? Description { get; set; }
 
     /// <summary>
+    /// Gets or sets the e-shop description of the product.
+    /// </summary>
+    public string EshopDescription { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the height of the product.
     /// </summary>
     public double? Height { get; set; }
@@ -105,7 +110,7 @@ public class Product
 
     public Product()
     {
-            
+
     }
     /// <summary>
     /// Initializes a new instance of the <see cref="Product"/> class with the specified name and reference.
@@ -125,7 +130,7 @@ public class Product
     {
         get => ImageInstructions.FirstOrDefault(i => i.IsFavoriteImage);
     }
-    
+
     public Product GetClone()
     {
         //Both Cloned and Existing Object Point to the Same Memory Location of the Address Object

@@ -22,8 +22,9 @@
                     <MudTextField Value="_diameter" Label="Diamètre" Variant="Variant.Text" ReadOnly="true" Margin="Margin.Dense" />
                     <MudTextField Value="_height" Label="Hauteur" Variant="Variant.Text" ReadOnly="true" Margin="Margin.Dense" />
 
+                    <MudText Typo="Typo.subtitle2">Result :</MudText>
 
-                    <MudTextField T="string" Label="Outlined" Variant="Variant.Outlined" Text="@_description" Lines="10">
+                    <MudTextField T="string" Label="Outlined" Variant="Variant.Outlined" @bind-Value="@_description" Lines="10">
                     </MudTextField>
                     <MudTextField @bind-Value="_cost" Label="Coût de la requête" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.EuroSymbol" ReadOnly="true" />
                 </MudStack>
