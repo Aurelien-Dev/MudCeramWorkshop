@@ -15,6 +15,11 @@ using MudExtensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+{
+    serverOptions.ListenAnyIP(80);
+});
+
 // Add MudBlazor services
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
