@@ -12,12 +12,12 @@ EXPOSE 8081
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+RUN dotnet dev-certs https
 WORKDIR /src
 COPY ["MudCeramWorkshop.Client/MudCeramWorkshop.Client.csproj", "MudCeramWorkshop.Client/"]
 COPY ["MudCeramWorkshop.Data.Domain/MudCeramWorkshop.Data.Domain.csproj", "MudCeramWorkshop.Data.Domain/"]
 COPY ["MudCeramWorkshop.Data.Repository/MudCeramWorkshop.Data.Repository.csproj", "MudCeramWorkshop.Data.Repository/"]
 RUN dotnet restore "./MudCeramWorkshop.Client/MudCeramWorkshop.Client.csproj"
-RUN dotnet dev-certs https
 COPY . .
 WORKDIR "/src/MudCeramWorkshop.Client"
 RUN dotnet build "./MudCeramWorkshop.Client.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -30,5 +30,6 @@ RUN dotnet publish "./MudCeramWorkshop.Client.csproj" -c $BUILD_CONFIGURATION -o
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
+COPY --from=publish /root/.dotnet/corefx/cryptography/x509stores/my/* /root/.dotnet/corefx/cryptography/x509stores/my/
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MudCeramWorkshop.Client.dll"]
