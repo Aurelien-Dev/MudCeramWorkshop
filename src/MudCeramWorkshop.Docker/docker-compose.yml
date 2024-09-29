@@ -3,7 +3,7 @@ services:
   mudceramworkshop.client:
     image: ${DOCKER_REGISTRY-}mudceramworkshopclient
     container_name: mudceramworkshop.client
-    user: "app"
+    user: "root"
     ports:
       - "80:80"
     build:
