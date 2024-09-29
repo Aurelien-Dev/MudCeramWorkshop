@@ -9,7 +9,7 @@ services:
       - "443:443"
     build:
       context: .
-      dockerfile: MudCeramWorkshop.Client/Dockerfile
+      dockerfile: ../MudCeramWorkshop.Client/Dockerfile
 
     environment:
       - ASPNETCORE_Kestrel__Endpoints__Https__Url=https://*:443

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Data.Domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudCeramWorkshop.Data.Repository", "MudCeramWorkshop.Data.Repository\MudCeramWorkshop.Data.Repository.csproj", "{49629159-9F2C-4848-B583-385AADE67B6D}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BBF741A0-F513-4ED0-9DC4-7C2D6FC3CF58}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "MudCeramWorkshop.Docker\docker-compose.dcproj", "{BBF741A0-F513-4ED0-9DC4-7C2D6FC3CF58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
