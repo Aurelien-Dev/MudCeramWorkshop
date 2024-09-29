@@ -30,5 +30,5 @@ jobs:
         passphrase: ${{ secrets.DEPLOY_PASSPHRASE }}
         script: |
           cd ${{ secrets.DEPLOY_TARGET }}/src
-          docker-compose down
-          docker-compose up -d
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d

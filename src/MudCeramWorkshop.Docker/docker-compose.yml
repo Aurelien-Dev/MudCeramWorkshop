@@ -6,23 +6,17 @@ services:
     user: "root"
     ports:
       - "80:80"
-      - "443:443"
     build:
-      context: .
-      dockerfile: ../MudCeramWorkshop.Client/Dockerfile
+      context: ../MudCeramWorkshop.Client
+      dockerfile: Dockerfile
 
     environment:
-      - ASPNETCORE_Kestrel__Endpoints__Https__Url=https://*:443
-      - ASPNETCORE_Kestrel__Endpoints__Https__Certificate__Path=/app/certs/fullchain.pem
-      - ASPNETCORE_Kestrel__Endpoints__Https__Certificate__KeyPath=/app/certs/privkey.pem
+      - ASPNETCORE_ENVIRONMENT=Development
 
     depends_on:
       - mudceramworkshop.data
     volumes:
-      - /home/data/client:/app/data  # Mapping du volume
-      # Monter les certificats SSL
-      - /etc/letsencrypt/live/workshop.atelier-cremazie.com/fullchain.pem:/app/certs/fullchain.pem:ro
-      - /etc/letsencrypt/live/workshop.atelier-cremazie.com/privkey.pem:/app/certs/privkey.pem:ro
+      - /home/data/client:/app/data:ro  # Mapping du volume
 
   mudceramworkshop.data:
     image: postgres:latest

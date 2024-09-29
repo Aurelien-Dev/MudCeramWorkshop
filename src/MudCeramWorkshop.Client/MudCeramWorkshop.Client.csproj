@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<UserSecretsId>aspnet-MudCeramWorkshop.Client-e2382502-4b14-48d9-87d5-6f60adcd7626</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+		<DockerComposeProjectPath>../MudCeramWorkshop.Docker/docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
 
 	<ItemGroup>

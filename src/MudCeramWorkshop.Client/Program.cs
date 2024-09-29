@@ -15,13 +15,16 @@ using MudExtensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Ajouter cette ligne si ce n'est pas déjà le cas
-builder.WebHost.ConfigureKestrel((context, options) =>
+if (builder.Environment.IsProduction())
 {
-    options.Configure(context.Configuration.GetSection("Kestrel"));
-});
-
-
+    builder.WebHost.ConfigureKestrel((context, options) =>
+    {
+        options.ListenAnyIP(443, listenOptions =>
+        {
+            listenOptions.UseHttps("/app/certs/fullchain.pem", "/app/certs/privkey.pem");
+        });
+    });
+}
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
@@ -119,7 +122,7 @@ else
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.MapPageRoute();
 
