@@ -97,14 +97,11 @@ namespace MudCeramWorkshop.Client.Managers
             }
         }
 
-        private static async Task<string> DownloadImageAsBase64(string imageUrl)
+        private static async Task<string> DownloadImageAsBase64(string absolutePath)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                byte[] imageByte = await client.GetByteArrayAsync(imageUrl);
+            byte[] imageBytes = await File.ReadAllBytesAsync($"wwwroot/{absolutePath}");
 
-                return Convert.ToBase64String(imageByte);
-            }
+            return Convert.ToBase64String(imageBytes);
         }
     }
 }

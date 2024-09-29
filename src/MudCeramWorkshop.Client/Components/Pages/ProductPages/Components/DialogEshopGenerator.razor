@@ -12,7 +12,7 @@
             <MudItem lg="6">
                 <MudImage Src="@(_imageUrl)"
                           ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"
-                          Style="width:100%; height:100%"
+                          Style="width:100%; height:100%; max-height:300px;"
                           Class="rounded-t-lg" />
             </MudItem>
             <MudItem lg="6">
@@ -83,7 +83,7 @@
             // Remplacer les barres obliques inverses par des barres obliques
             string filePath = ImageInstruction.UrlMedium.Replace("\\", "/");
             // Combiner l'URL de base avec le chemin du fichier
-            _imageUrl = $"{baseUrl}{filePath}";
+            _imageUrl = $"{filePath}";
         }
     }
 

@@ -34,7 +34,11 @@
                     <MudPaper Class="pa-4" MinHeight="600px">
                         <MudStack Spacing="1">
 
-                            <MudText Typo="Typo.h6">Informations général</MudText>
+                            <MudToolBar Class="ma-0 pa-0">
+                                <MudText Typo="Typo.h6">Informations général</MudText>
+                                <MudSpacer />
+                                <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="OpenGeneralInfoEdit" />
+                            </MudToolBar>
 
                             <MudAlert Severity="Severity.Normal" Icon="@Icons.Material.Filled.Height">
                                 <MudStack Row="true">
@@ -76,58 +80,26 @@
                                 }
                             </MudAlert>
 
-                            <MudAlert Severity="Severity.Normal" ShowCloseIcon>
-                                <MudToolBar>
-                                    <MudText Typo="_typo">E-shop description</MudText>
+                            <MudAlert Severity="Severity.Normal" Icon="@Icons.Material.Filled.ShoppingCart">
 
-                                    <MudSpacer />
-
-                                    <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" Size="Size.Small"></MudIconButton>
-                                </MudToolBar>
-
+                                <MudText Typo="_typo">E-shop description</MudText>
                                 <MudText>@product.EshopDescription</MudText>
+
+                                <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" />
+
                             </MudAlert>
 
                             <MudStack Row="true" Class="mt-2">
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
                                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenEshopGPT">Launch GPT</MudButton>
                             </MudStack>
                         </MudStack>
-
                     </MudPaper>
-                    @* <MudPaper Class="pa-4" MinHeight="600px">
-                <MudText Typo="Typo.h6">Informations</MudText>
-
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.Height" Label="@Localizer["Text_Height"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.TopDiameter" Label="@Localizer["Text_TopDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.BottomDiameter" Label="@Localizer["Text_BottomDiameter"]" Variant="Variant.Text" Margin="margin"></MudTextField>
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.Price" Label="@Localizer["Text_SellingPrice"]" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
-
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
-
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
-                <MudTextField ShrinkLabel="true" @bind-Value="@product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
-
-                <MudChipField ShrinkLabel="true" T="string" @bind-Values="@product.Tags" Label="Tags" />
-
-                <MudStack Row="true" Class="mt-2">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdateProduct">@(IsNewProduct ? "Enregistre le nouveau produit" : "Sauvegarder") </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenEshopGPT">Launch GPT</MudButton>
-
-                </MudStack>
-
-                </MudPaper> *@
                 </MudItem>
-
             </MudGrid>
 
             <MudGrid Spacing="1">
-
                 <AssociationMaterial @ref="associationMaterial" ProductId="product.Id" />
-
-
                 <AssociationFiring ProductId="product.Id" />
-
             </MudGrid>
 
         </MudStack>
@@ -162,6 +134,27 @@
             IsNewProduct = true;
         }
     }
+    public async Task OpenGeneralInfoEdit()
+    {
+        var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            };
+
+        var parameters = new DialogParameters<DialogInformationGeneral>
+        {
+            { x => x.Product, product }
+        };
+
+        var dialog = await Dialog.ShowAsync<DialogInformationGeneral>("Information général", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await productRepository.Update(product);
+        }
+    }
 
     public async Task OpenEshopGPT()
     {
@@ -189,19 +182,4 @@
             product.EshopDescription = result.Data.ToString();
         }
     }
-
-
-    public async Task UpdateProduct()
-    {
-        if (product is null) return;
-
-        await productRepository.Update(product, ComponentDisposed);
-
-        if (IsNewProduct)
-        {
-            NavigationManager.NavigateTo($"Product/{product.Id}", true);
-            IsNewProduct = false;
-        }
-    }
-
 }

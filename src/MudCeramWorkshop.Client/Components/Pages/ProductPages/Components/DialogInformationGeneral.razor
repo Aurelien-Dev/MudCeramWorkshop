@@ -1,0 +1,44 @@
+﻿@using MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources
+@using MudCeramWorkshop.Data.Domain.Models.MainDomain.Enums
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="6">
+                <MudText Typo="Typo.subtitle2">@Localizer["Text_Height"]</MudText>
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.Height" Variant="Variant.Text" Margin="margin"></MudTextField>
+                <MudText Typo="Typo.subtitle2">@Localizer["Text_TopDiameter"]</MudText>
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.TopDiameter" Variant="Variant.Text" Margin="margin"></MudTextField>
+                <MudText Typo="Typo.subtitle2">@Localizer["Text_BottomDiameter"]</MudText>
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.BottomDiameter" Variant="Variant.Text" Margin="margin"></MudTextField>
+                <MudText Typo="Typo.subtitle2">@Localizer["Text_SellingPrice"]</MudText>
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.Price" Variant="Variant.Text" Margin="margin" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudTextField>
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.Description" Label="@Localizer["Text_Description"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+            </MudItem>
+
+            <MudItem xs="6">
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.DesignInstruction" Label="@Localizer["Text_DesignInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                <MudTextField ShrinkLabel="true" @bind-Value="@Product.GlazingInstruction" Label="@Localizer["Text_GlazingInstructions"]" Variant="Variant.Text" Lines="3" Margin="margin"></MudTextField>
+                <MudChipField ShrinkLabel="true" T="string" @bind-Values="@Product.Tags" Label="Tags" />
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Enregistrer</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+    [Inject] IStringLocalizer<ProductTranslation> Localizer { get; set; } = default!;
+
+    [Parameter] public Product Product { get; set; }
+    [Parameter] public int? IdProduct { get; set; }
+
+    private Margin margin = Margin.Dense;
+
+    private void Submit() => MudDialog.Close();
+
+    private void Cancel() => MudDialog.Cancel();
+}
