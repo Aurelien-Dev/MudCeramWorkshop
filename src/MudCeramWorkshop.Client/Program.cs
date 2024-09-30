@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor;
 using MudBlazor.Services;
 using MudCeramWorkshop.Client.Components;
 using MudCeramWorkshop.Client.Components.Account;
@@ -29,6 +30,7 @@ if (builder.Environment.IsProduction())
 // Add MudBlazor services
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
+builder.Services.AddMudMarkdownServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
