@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources {
+namespace MudCeramWorkshop.Client.Components.Pages.ProductPage.Resources {
     using System;
     
     
@@ -39,8 +39,8 @@ namespace MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MudCeramWorkshop.Client.Components.Pages.ProductPages.Resources.ProductTranslatio" +
-                            "n", typeof(ProductTranslation).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MudCeramWorkshop.Client.Components.Pages.ProductPage.Resources.ProductTranslation" +
+                            "", typeof(ProductTranslation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

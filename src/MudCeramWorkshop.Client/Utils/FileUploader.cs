@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Markdig.Extensions.Tables;
+using Microsoft.AspNetCore.Components.Forms;
 using MudCeramWorkshop.Client.Utils.Singletons;
 
 namespace MudCeramWorkshop.Client.Utils
@@ -18,17 +19,27 @@ namespace MudCeramWorkshop.Client.Utils
         /// <returns>Return path of uploaded img</returns>
         public async Task<string> LoadFileInput(IBrowserFile e, string workshopFolderName)
         {
-            string fileName = CreateTempFileName(workshopFolderName, Path.GetExtension(e.Name));
-            string workshopFolder = Path.Combine(ProductFolderFullPath, workshopFolderName, fileName);
+            try
+            {
+                string fileName = CreateTempFileName(workshopFolderName, Path.GetExtension(e.Name));
+                string workshopFolder = Path.Combine(ProductFolderFullPath, workshopFolderName, fileName);
 
-            if (!Directory.Exists(Path.Combine(ProductFolderFullPath, workshopFolderName)))
-                Directory.CreateDirectory(Path.Combine(ProductFolderFullPath, workshopFolderName));
+                if (!Directory.Exists(Path.Combine(ProductFolderFullPath, workshopFolderName)))
+                    Directory.CreateDirectory(Path.Combine(ProductFolderFullPath, workshopFolderName));
 
-            await using FileStream fs = new(workshopFolder, FileMode.Create);
-            await e.OpenReadStream(MaxFileSize).CopyToAsync(fs);
-            fs.Close();
+                await using FileStream fs = new(workshopFolder, FileMode.Create);
+                await e.OpenReadStream(MaxFileSize).CopyToAsync(fs);
+                fs.Close();
 
-            return Path.Combine(ProductFolderShort, workshopFolderName, fileName);
+                return Path.Combine(ProductFolderShort, workshopFolderName, fileName);
+            }
+            catch (Exception ex )
+            {
+                Console.WriteLine($"Error uploading file: {ex.Message}");
+                Console.WriteLine($"Error uploading file: {ex.StackTrace}");
+
+                throw new Exception("Error uploading file");
+            }
         }
 
         /// <summary>

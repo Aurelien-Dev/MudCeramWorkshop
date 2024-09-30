@@ -51,7 +51,7 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>MenuTranslation.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Components\Pages\ProductPages\Resources\ProductTranslation.Designer.cs">
+		<Compile Update="Components\Pages\ProductPage\Resources\ProductTranslation.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>ProductTranslation.resx</DependentUpon>
@@ -64,10 +64,10 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>MenuTranslation.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Components\Pages\ProductPages\Resources\ProductTranslation.en.resx">
+		<EmbeddedResource Update="Components\Pages\ProductPage\Resources\ProductTranslation.en.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Components\Pages\ProductPages\Resources\ProductTranslation.resx">
+		<EmbeddedResource Update="Components\Pages\ProductPage\Resources\ProductTranslation.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>ProductTranslation.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
