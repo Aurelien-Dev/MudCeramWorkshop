@@ -28,5 +28,5 @@ RUN dotnet publish "./MudCeramWorkshop.Client.csproj" -c $BUILD_CONFIGURATION -o
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-VOLUME ["/app/data"]  # Ajout de l'instruction VOLUME
+VOLUME ["/app/data"] 
 ENTRYPOINT ["dotnet", "MudCeramWorkshop.Client.dll"]
