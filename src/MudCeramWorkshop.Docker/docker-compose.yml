@@ -7,12 +7,10 @@ services:
     ports:
       - "80:80"
     build:
-      context: ../MudCeramWorkshop.Client
-      dockerfile: Dockerfile
-
+      context: .
+      dockerfile: ../MudCeramWorkshop.Client/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-
     depends_on:
       - mudceramworkshop.data
     volumes:

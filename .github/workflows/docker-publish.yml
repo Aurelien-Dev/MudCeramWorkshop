@@ -13,9 +13,7 @@ jobs:
     steps:
     
     - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-          ref: main
+      uses: actions/checkout@v4
     
     - name: Copy files via SSH
       uses: appleboy/scp-action@v0.1.3
@@ -37,4 +35,4 @@ jobs:
         script: |
           cd ${{ secrets.DEPLOY_TARGET }}/src
           docker-compose -f MudCeramWorkshop.Docker/docker-compose.yml -f MudCeramWorkshop.Docker/docker-compose.prod.yml down
-          docker-compose -f MudCeramWorkshop.Docker/docker-compose.yml -f MudCeramWorkshop.Docker/docker-compose.prod.yml up -d
+          docker-compose -f MudCeramWorkshop.Docker/docker-compose.yml -f MudCeramWorkshop.Docker/docker-compose.prod.yml up --build -d
