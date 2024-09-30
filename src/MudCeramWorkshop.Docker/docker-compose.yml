@@ -27,3 +27,4 @@ services:
       - /home/data/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+       
