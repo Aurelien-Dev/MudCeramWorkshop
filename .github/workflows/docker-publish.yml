@@ -37,4 +37,4 @@ jobs:
         script: |
           cd ${{ secrets.DEPLOY_TARGET }}/src
           docker-compose -f MudCeramWorkshop.Docker/docker-compose.yml -f MudCeramWorkshop.Docker/docker-compose.prod.yml down
-          docker-compose -f MudCeramWorkshop.Docker/docker-compose.yml -f MudCeramWorkshop.Docker/docker-compose.prod.yml up -d
+          docker-compose -f MudCeramWorkshop.Docker/docker-compose.yml -f MudCeramWorkshop.Docker/docker-compose.prod.yml up -d --build
