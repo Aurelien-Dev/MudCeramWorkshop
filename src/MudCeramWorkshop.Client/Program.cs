@@ -127,6 +127,7 @@ else
 app.UseHttpsRedirection();
 
 app.MapPageRoute();
+app.MapTaLPageRoute();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
