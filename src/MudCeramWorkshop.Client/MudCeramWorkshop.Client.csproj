@@ -15,26 +15,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Azure.Identity" Version="1.12.0" />
+		<PackageReference Include="Azure.Identity" Version="1.13.1" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="7.0.1" />
+		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="7.0.2" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
 		<PackageReference Include="Lorem.Universal.Net" Version="4.0.80" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
-		<PackageReference Include="MudBlazor" Version="7.8.0" />
-		<PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.1.2" />
-		<PackageReference Include="MudBlazor.Markdown" Version="7.8.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+		<PackageReference Include="MudBlazor" Version="7.14.0" />
+		<PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.1.5" />
+		<PackageReference Include="MudBlazor.Markdown" Version="7.14.0" />
 		<PackageReference Include="OpenAI" Version="1.11.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
+		<PackageReference Include="PuppeteerSharp" Version="20.0.5" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
 		<PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
 	</ItemGroup>
 
