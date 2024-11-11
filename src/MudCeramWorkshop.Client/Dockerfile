@@ -22,12 +22,25 @@ WORKDIR "/src/MudCeramWorkshop.Client"
 RUN dotnet build "./MudCeramWorkshop.Client.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Installer les dépendances nécessaires pour Chromium
-RUN apt-get update && apt-get install -y \
-    gconf-service libasound2 libatk1.0-0 libcups2 libdbus-1-3 libnss3 \
-    libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libgbm-dev libxshmfence1 \
-    libxss1 libgdk-pixbuf2.0-0 libgtk-3-0 libpango-1.0-0 libcairo2 \
-    fonts-liberation libappindicator3-1 xdg-utils libcurl4 \
-    --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+RUN npm init -y &&  \
+    npm i puppeteer \
+    # Add user so we don't need --no-sandbox.
+    # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
+    && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+    && mkdir -p /home/pptruser/Downloads \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /node_modules \
+    && chown -R pptruser:pptruser /package.json \
+    && chown -R pptruser:pptruser /package-lock.json
+USER pptruser
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
