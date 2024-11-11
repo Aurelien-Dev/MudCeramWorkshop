@@ -44,8 +44,17 @@ public static class ThroneAndLibertyRoutes
 
     private static async Task<string> GetHtmlPage()
     {
-        await new BrowserFetcher().DownloadAsync();
-        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
+        ViewPortOptions vpo = new ViewPortOptions();
+        vpo.Width = 1920;
+        vpo.Height = 1280;
+
+        var download = await new BrowserFetcher().DownloadAsync();
+        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+        {
+            Headless = true,
+            DefaultViewport = vpo,
+            ExecutablePath = download.GetExecutablePath(),
+        });
         await using var page = await browser.NewPageAsync();
 
         var customHeaders = new Dictionary<string, string>
@@ -97,7 +106,7 @@ public static class ThroneAndLibertyRoutes
 
         //convert timeValue to datetime now with timeValue
         var time = DateTime.ParseExact(timeValue, "HH:mm", CultureInfo.InvariantCulture);
-        
+
         string type = "";
         //verify if n the url we have DynamicEvent, FieldBossEvent or WorldBossEvent and return this type
         if (imageUrl.Contains("DynamicEvent"))
@@ -112,8 +121,8 @@ public static class ThroneAndLibertyRoutes
         {
             type = "WorldBossEvent";
         }
-        
-        
+
+
         return (time, imageUrl, type);
     }
 }
