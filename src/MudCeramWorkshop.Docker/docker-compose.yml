@@ -1,39 +1,39 @@
-services:
+# services:
 
-  mudceramworkshop.client:
-    image: ${DOCKER_REGISTRY-}mudceramworkshopclient
-    container_name: mudceramworkshop.client
-    user: "root"
-    # ports:
-    #   - "82:82"
-    build:
-      context: ..
-      dockerfile: ./MudCeramWorkshop.Client/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    depends_on:
-      - mudceramworkshop.data
-    volumes:
-      - /home/data/client:/app/data:ro  # Mapping du volume
-    networks:
-      testnet:
-        ipv4_address: 172.26.0.2
+#   mudceramworkshop.client:
+#     image: ${DOCKER_REGISTRY-}mudceramworkshopclient
+#     container_name: mudceramworkshop.client
+#     user: "root"
+#     # ports:
+#     #   - "82:82"
+#     build:
+#       context: ..
+#       dockerfile: ./MudCeramWorkshop.Client/Dockerfile
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#     depends_on:
+#       - mudceramworkshop.data
+#     volumes:
+#       - /home/data/client:/app/data:ro  # Mapping du volume
+#     networks:
+#       testnet:
+#         ipv4_address: 172.26.0.2
 
-  mudceramworkshop.data:
-    image: postgres:latest
-    container_name: mudceramworkshop.data
-    environment:
-      POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: PGUserPwd
-      POSTGRES_DB: ceramworkshopdb
-    volumes:
-      - /home/data/db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      testnet:
-        ipv4_address: 172.26.0.2
+#   mudceramworkshop.data:
+#     image: postgres:latest
+#     container_name: mudceramworkshop.data
+#     environment:
+#       POSTGRES_USER: pguser
+#       POSTGRES_PASSWORD: PGUserPwd
+#       POSTGRES_DB: ceramworkshopdb
+#     volumes:
+#       - /home/data/db:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     networks:
+#       testnet:
+#         ipv4_address: 172.26.0.2
         
-networks:
-  testnet:
-    external: true
+# networks:
+#   testnet:
+#     external: true
