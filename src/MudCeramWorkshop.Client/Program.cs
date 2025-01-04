@@ -16,16 +16,16 @@ using MudExtensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsProduction())
-{
-    builder.WebHost.ConfigureKestrel((context, options) =>
-    {
-        options.ListenAnyIP(443, listenOptions =>
-        {
-            listenOptions.UseHttps("/app/certs/fullchain.pem", "/app/certs/privkey.pem");
-        });
-    });
-}
+//if (builder.Environment.IsProduction())
+//{
+//    builder.WebHost.ConfigureKestrel((context, options) =>
+//    {
+//        options.ListenAnyIP(443, listenOptions =>
+//        {
+//            listenOptions.UseHttps("/app/certs/fullchain.pem", "/app/certs/privkey.pem");
+//        });
+//    });
+//}
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
