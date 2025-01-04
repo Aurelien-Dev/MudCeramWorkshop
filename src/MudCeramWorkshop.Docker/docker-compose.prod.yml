@@ -5,7 +5,7 @@ services:
     container_name: mudceramworkshop.client
     user: "root"
     ports:
-      - "810:810"
+      - "8080:8080"
     build:
       context: ..
       dockerfile: ./MudCeramWorkshop.Client/Dockerfile
@@ -22,7 +22,6 @@ services:
       - /etc/letsencrypt/live/workshop.atelier-cremazie.com/privkey.pem:/app/certs/privkey.pem:ro
     networks:
       testnet:
-        ipv4_address: 172.26.0.2
 
   mudceramworkshop.data:
     image: postgres:latest
@@ -37,7 +36,6 @@ services:
       - "5432:5432"
     networks:
       testnet:
-        ipv4_address: 172.26.0.3
         
 networks:
   testnet:
