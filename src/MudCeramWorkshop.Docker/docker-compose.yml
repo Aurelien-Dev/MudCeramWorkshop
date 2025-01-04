@@ -30,6 +30,9 @@ services:
       - /home/data/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.2
         
 networks:
   testnet:
