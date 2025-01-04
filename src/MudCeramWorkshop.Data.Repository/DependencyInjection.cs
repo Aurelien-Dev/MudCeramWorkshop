@@ -30,7 +30,7 @@ public static class DependencyInjection
         //DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            var postgresCs = "Host=172.26.0.3;Port=5432;Database=CeramWorkshopDb;Username=pguser;Password=PGUserPwd";
+            var postgresCs = "Host=172.26.0.39;Port=5432;Database=CeramWorkshopDb;Username=pguser;Password=PGUserPwd";
             options.UseNpgsql(postgresCs);
         }, ServiceLifetime.Transient);
 
