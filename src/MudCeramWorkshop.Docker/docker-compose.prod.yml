@@ -4,8 +4,14 @@ services:
     image: ${DOCKER_REGISTRY-}mudceramworkshopclient
     container_name: mudceramworkshop.client
     user: "root"
+
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.38
     ports:
       - "8080:8080"
+    restart: always
+
     build:
       context: ..
       dockerfile: ./MudCeramWorkshop.Client/Dockerfile
@@ -20,8 +26,6 @@ services:
       - /home/data/client:/app/data:ro
       - /etc/letsencrypt/live/workshop.atelier-cremazie.com/fullchain.pem:/app/certs/fullchain.pem:ro
       - /etc/letsencrypt/live/workshop.atelier-cremazie.com/privkey.pem:/app/certs/privkey.pem:ro
-    networks:
-      testnet:
 
   mudceramworkshop.data:
     image: postgres:latest
@@ -32,10 +36,13 @@ services:
       POSTGRES_DB: ceramworkshopdb
     volumes:
       - /home/data/db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+
     networks:
       testnet:
+        ipv4_address: 172.26.0.39
+    ports:
+      - "5432:5432"
+    restart: always
         
 networks:
   testnet:
