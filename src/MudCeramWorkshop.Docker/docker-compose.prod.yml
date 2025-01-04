@@ -21,6 +21,9 @@ services:
       - /home/data/client:/app/data:ro
       - /etc/letsencrypt/live/workshop.atelier-cremazie.com/fullchain.pem:/app/certs/fullchain.pem:ro
       - /etc/letsencrypt/live/workshop.atelier-cremazie.com/privkey.pem:/app/certs/privkey.pem:ro
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.2
 
   mudceramworkshop.data:
     image: postgres:latest
@@ -33,3 +36,7 @@ services:
       - /home/data/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+        
+networks:
+  testnet:
+    external: true
