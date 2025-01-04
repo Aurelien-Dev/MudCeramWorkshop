@@ -9,7 +9,7 @@ services:
       testnet:
         ipv4_address: 172.26.0.38
     ports:
-      - "9090:80"
+      - "9090:443"
     restart: always
 
     build:
