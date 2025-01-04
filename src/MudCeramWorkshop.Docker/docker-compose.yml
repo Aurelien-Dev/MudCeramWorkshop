@@ -5,7 +5,7 @@ services:
     container_name: mudceramworkshop.client
     user: "root"
     ports:
-      - "80:80"
+      - "82:82"
     build:
       context: ..
       dockerfile: ./MudCeramWorkshop.Client/Dockerfile
@@ -15,6 +15,9 @@ services:
       - mudceramworkshop.data
     volumes:
       - /home/data/client:/app/data:ro  # Mapping du volume
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.2
 
   mudceramworkshop.data:
     image: postgres:latest
@@ -28,3 +31,6 @@ services:
     ports:
       - "5432:5432"
         
+networks:
+  testnet:
+    external: true
