@@ -5,8 +5,7 @@ services:
     container_name: mudceramworkshop.client
     user: "root"
     ports:
-      - "80:80"
-      - "443:443"
+      - "810:810"
     build:
       context: ..
       dockerfile: ./MudCeramWorkshop.Client/Dockerfile
