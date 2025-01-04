@@ -4,8 +4,8 @@ services:
     image: ${DOCKER_REGISTRY-}mudceramworkshopclient
     container_name: mudceramworkshop.client
     user: "root"
-    ports:
-      - "82:82"
+    # ports:
+    #   - "82:82"
     build:
       context: ..
       dockerfile: ./MudCeramWorkshop.Client/Dockerfile
