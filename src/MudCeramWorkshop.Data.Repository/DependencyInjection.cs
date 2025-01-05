@@ -1,8 +1,8 @@
-﻿using MudCeramWorkshop.Data.Domain.InterfacesRepository;
-using MudCeramWorkshop.Data.Domain.InterfacesWorker;
-using Domain.InterfacesWorker;
+﻿using Domain.InterfacesWorker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MudCeramWorkshop.Data.Domain.InterfacesRepository;
+using MudCeramWorkshop.Data.Domain.InterfacesWorker;
 using MudCeramWorkshop.Data.Repository.Repositories;
 using MudCeramWorkshop.Data.Repository.Workers;
 

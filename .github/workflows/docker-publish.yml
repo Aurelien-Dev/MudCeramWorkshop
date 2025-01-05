@@ -35,4 +35,4 @@ jobs:
         script: |
           cd ${{ secrets.DEPLOY_TARGET }}/src
           docker compose -f MudCeramWorkshop.Docker/docker-compose.prod.yml down
-          docker compose -f MudCeramWorkshop.Docker/docker-compose.prod.yml up --build -d
+          OPENAI_SECRET=${{ secrets.OPENAI_SECRET }} docker compose -f MudCeramWorkshop.Docker/docker-compose.prod.yml up --build -d
