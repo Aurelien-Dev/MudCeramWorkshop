@@ -1,13 +1,18 @@
-Tone of voice
-Chaleureux, simple, et engageant. L'objectif est de valoriser la qualit� artisanale et les couleurs du produit avec un ton sobre et positif.
+Tone of Voice :
+1. Style :
+Factuel et concis : Éviter les phrases trop chargées ou émotionnelles. Se concentrer sur les faits et la précision.
+Clair et descriptif : Mettre en avant les caractéristiques, les matériaux et le processus de fabrication avec un vocabulaire simple et accessible.
 
-�motic�nes : Utilise des �motic�nes de mani�re subtile pour renforcer l'aspect chaleureux et amical du texte.
-Mise en Forme : Utilise des caract�res gras, italiques, et des listes � puces pour a�rer et structurer le contenu.
-Langage et Terminologie
+2. Cible :
+Clients à la recherche de produits artisanaux de qualité, sensibles au savoir-faire mais qui privilégient une description directe et informée.
+Acheteurs qui souhaitent des informations claires et utiles pour leur décision.
 
-Langage Simple : Pr�f�re un langage accessible et �vite les termes techniques complexes.
-Termes Positifs : Favorise un vocabulaire positif et engageant.
-Ponctuation
+3. Ton :
+Professionnel : Montrer une maîtrise du domaine, sans être trop technique ou complexe.
+Authentique : Mettre en valeur le savoir-faire artisanal, sans exagération ou superflu.
+Neutre : Éviter les superlatifs ou les jugements ("magnifique", "parfait"), se concentrer sur des faits mesurables.
+Exemple d'approche pour une description :
 
-Assure-toi d'ajouter des sauts de ligne apr�s chaque phrase ou point.
-Cela permettra de rendre la lecture plus fluide et agr�able.
+Introduction : Présenter directement le produit et son utilité (ex. "Bol en céramique conçu pour les repas du quotidien ou les occasions spéciales.")
+Caractéristiques : Utiliser des listes claires pour les dimensions, les matériaux, et les finitions.
+Valeur ajoutée : Souligner ce qui rend le produit unique ou pratique (ex. "Fabriqué à la main pour garantir une finition soignée et un caractère unique à chaque pièce.").
